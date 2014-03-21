@@ -2,8 +2,8 @@ package com.acme.enums;
 
 public enum Parameters {
 	NAME("<adý>"),SURNAME("<Soyadý>"),PHONENUMBER("<Telfon Numarasý>"),DATE("<Tarih>"),
-	TIME("Saat"),ACCOUNTCODE("<Cari Hesap Kodu>"),ACCOUNTTITLE("Cari Hesap Unvaný"),
-	ACCOUNTBALANCE("Cari Hesap Bakiyesi");
+	TIME("<Saat>"),ACCOUNTCODE("<Cari Hesap Kodu>"),ACCOUNTTITLE("<Cari Hesap Unvaný>"),
+	ACCOUNTBALANCE("<Cari Hesap Bakiyesi>");
 	
 	private String parameterName;
 
