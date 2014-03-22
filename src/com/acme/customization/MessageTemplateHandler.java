@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import com.acme.entity.entityParameter;
 import com.acme.enums.Parameters;
+import com.acme.events.OnInitializeEvent;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.buttonpanel.JLbsPrefixPanel;
 import com.lbs.controls.maskededit.JLbsTextEdit;
@@ -17,25 +18,15 @@ import com.lbs.xui.customization.JLbsXUIGridEvent;
 
 public class MessageTemplateHandler extends JLbsCustomXUIEventListener {
 	private Parameters parameter[] = Parameters.values();
+	private OnInitializeEvent  initialize;
 
 	public MessageTemplateHandler() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public void onInitialize(JLbsXUIControlEvent event) {
-		JLbsXUIPane container = event.getContainer();
-
-		ArrayList parameterList = new ArrayList();
-
-		for (Parameters param : parameter) {
-			parameterList.add(new entityParameter(param.getParameterName()));
-		}
-
-		JLbsObjectListGrid objectGrid = (JLbsObjectListGrid) container
-				.getComponentByTag(3000005);
-		objectGrid.setObjectClass(parameterList.getClass());
-		objectGrid.setObjects(parameterList);
-
+		initialize=new OnInitializeEvent();
+		initialize.getterParameter(parameter, event, 3000005);
 	}
 
 	public void parameterOnClick(JLbsXUIControlEvent event) {
