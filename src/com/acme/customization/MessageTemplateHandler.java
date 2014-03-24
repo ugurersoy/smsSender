@@ -46,6 +46,7 @@ public class MessageTemplateHandler extends JLbsCustomXUIEventListener {
 		{
 			JOptionPane.showMessageDialog(null, str);
 		}
+		
 	}
 
 }
