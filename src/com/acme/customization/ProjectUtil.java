@@ -41,6 +41,7 @@ import com.lbs.invoke.MethodInvoker;
 import com.lbs.invoke.RttiUtil;
 import com.lbs.invoke.SessionReestablishedException;
 import com.lbs.invoke.SessionTimeoutException;
+import com.lbs.platform.interfaces.IApplicationContext;
 import com.lbs.platform.interfaces.IServerContext;
 import com.lbs.platform.interfaces.IServerDataContext;
 import com.lbs.platform.server.LbsServerContext;
@@ -401,7 +402,7 @@ public class ProjectUtil
 		return null;
 	}
 	
-	public static CustomBusinessObject readObject(IServerContext context, String BOName, int BORef)
+	public static CustomBusinessObject readObject(IApplicationContext context, String BOName, int BORef)
 	{
 		IObjectFactory objFactory = context.getObjectFactory();
 		CustomBusinessObject CBO = new CustomBusinessObject(BOName);

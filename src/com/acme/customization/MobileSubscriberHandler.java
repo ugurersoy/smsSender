@@ -2,10 +2,13 @@ package com.acme.customization;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import com.lbs.appobjects.GOBOUser;
 import com.lbs.control.interfaces.ILbsComboBox;
 import com.lbs.control.interfaces.ILbsComponent;
 import com.lbs.controls.JLbsComboBox;
+import com.lbs.controls.maskededit.JLbsTextEdit;
 import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.query.QueryBusinessObject;
 import com.lbs.data.query.QueryBusinessObjects;
@@ -26,9 +29,6 @@ import com.lbs.xui.customization.JLbsXUIControlEvent;
 
 public class MobileSubscriberHandler{
 	
-	public static int USER_TYPE_USER = 0;
-	public static int USER_TYPE_ARP = 1;
-	public static int USER_TYPE_OTHER = 2;
 	
 	private ArrayList<GOBOUser> userList = new ArrayList<GOBOUser>();
 	
@@ -50,13 +50,13 @@ public class MobileSubscriberHandler{
 	private void setPermanentStates(JLbsXUIControlEvent event, int userType)
 	{
 		
-		if(userType == USER_TYPE_USER)
+		if(userType == ProjectGlobals.USER_TYPE_USER)
 		{
 			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_EXCLUDED); // usercombo
 			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_ACTIVE); // arpcode
 			fillUserList(event, userType);
 		}
-		else if(userType == USER_TYPE_ARP)
+		else if(userType == ProjectGlobals.USER_TYPE_ARP)
 		{
 			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_EXCLUDED); // arpcode
 			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_ACTIVE); // usercombo
@@ -75,7 +75,7 @@ public class MobileSubscriberHandler{
 				.getComponentByTag(16);
 		JLbsStringListEx list = new JLbsStringListEx();
 		list.add("(Belirtilmemiþ)", -1);
-		if (userType == USER_TYPE_USER) {
+		if (userType == ProjectGlobals.USER_TYPE_USER) {
 			try {
 				QueryBusinessObjects results = ProjectUtil.runQuery(event, "CQOGetUserInfo", new String[0] , new Object[0]);
 				if (results!=null && results.size() > 0) {
@@ -232,6 +232,19 @@ public class MobileSubscriberHandler{
 		ProjectUtil.setMemberValueUn(data, "Tckno", arpCard.getIDTCNo());
 		
 		resetValues(container, event);
+	}
+
+	public void onSaveData(JLbsXUIControlEvent event)
+	{
+		/** onSaveData : This method is called before form data is saved to determine whether the form data can be saved or not. Event parameter object (JLbsXUIControlEvent) contains form object in 'container' and 'component' properties, and form data object in 'data' property. A boolean ('true' means form data can be saved) return value is expected. If no return value is specified or the return value is not of type boolean, default value is 'true'. */
+		CustomBusinessObject data = (CustomBusinessObject) event.getData();
+		JLbsTextEdit phoneNumTxtEdit =  (JLbsTextEdit)event.getContainer().getComponentByTag(2002);
+		JLbsTextEdit tcknoTxtEdit =  (JLbsTextEdit)event.getContainer().getComponentByTag(2003);
+		if(phoneNumTxtEdit.getText().length() == 0 && tcknoTxtEdit.getText().length()==0)
+		{
+			JOptionPane.showMessageDialog(null,"Telefon numarasý veya TC Kimlik No girilmelidir");
+			event.setReturnObject(false);
+		}
 	}
 	
 }
