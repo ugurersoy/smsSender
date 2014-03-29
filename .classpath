@@ -114,7 +114,7 @@
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsConfiguratorGwt-Server.jar"/>
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsCustomizationLib.jar"/>
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsCustomizationObjects.jar"/>
-	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsData.Client.jar"/>
+	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsData.Client.jar" sourcepath="C:/JAVA/_JGUAR_SMS/regfile/PlatformInternalOnly_v2.30.8.0.src.zip"/>
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsData.Export.jar"/>
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsData.Server.jar"/>
 	<classpathentry kind="lib" path="C:/JAVA/_JGUAR_SMS/ws/logo/WebContent/WEB-INF/lib/LbsDBReporting.jar"/>
