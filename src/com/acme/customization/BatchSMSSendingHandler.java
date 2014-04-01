@@ -72,6 +72,7 @@ public class BatchSMSSendingHandler {
 		ProjectUtil.setMemberValueUn(user, "Name", userName + ' ' + surName);
 		if (usersGrid.getSelectedRow() + 1 == usersGrid.getObjects().size())
 			addNewUserLine();
+		usersGrid.rowListChanged();
 		return true;
 	}
 
@@ -86,20 +87,10 @@ public class BatchSMSSendingHandler {
 		container.resetValueByTag(3001);
 		return true;
 	}
-
-	public boolean addUserToGrid(CustomBusinessObject cBO, int rowIndex) {
-		String userName = ProjectUtil.getBOStringFieldValue(cBO, "Name");
-		String surName = ProjectUtil.getBOStringFieldValue(cBO, "SurName");
-		ProjectUtil.setMemberValueUn(cBO, "Name", userName + ' ' + surName);
-		usersGrid.getObjects().set(rowIndex, cBO);
-		addNewUserLine();
-		return true;
-	}
-
+	
 	private void addNewUserLine() {
 		CustomBusinessObject newLine = ProjectUtil.createNewCBO("CBOMaster");
 		usersGrid.getObjects().add(newLine);
-		usersGrid.rowListChanged();
 	}
 
 	public void onGridCanInsertRow(JLbsXUIGridEvent event) {
@@ -124,12 +115,12 @@ public class BatchSMSSendingHandler {
 		usersGrid.rowListChanged();
 	}
 
-	public boolean addGroupLinesToGrid(ILbsXUIPane container, Object data,
-			IClientContext context) {
+	public void addGroupLinesToGrid(JLbsXUIControlEvent event, int groupRef) {
 
-		CustomBusinessObject group = ProjectUtil.readObject(context,
-				"CBOMblInfoGroup",
-				ProjectUtil.getBOIntFieldValue(data, "GroupRef"));
+		CustomBusinessObject group = ProjectUtil.readObject(event,
+				"CBOMblInfoGroup", groupRef);
+		if (group == null)
+			return;
 		CustomBusinessObjects<CustomBusinessObject> groupLines = (CustomBusinessObjects<CustomBusinessObject>) ProjectUtil
 				.getMemberValue(group, "MblInfoUsrGrpLnsLink");
 		for (int i = 0; i < groupLines.size(); i++) {
@@ -138,43 +129,28 @@ public class BatchSMSSendingHandler {
 					.get(i);
 			CustomBusinessObject mblInfoUserLink = (CustomBusinessObject) ProjectUtil
 					.getMemberValue(groupLine, "MblInfoUserLink");
-			ProjectUtil.setMemberValueUn(user, "Name",
-					ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Name"));
-			ProjectUtil.setMemberValueUn(user, "SurName", ProjectUtil
-					.getBOStringFieldValue(mblInfoUserLink, "SurName"));
-			ProjectUtil.setMemberValueUn(user, "Phonenumber", ProjectUtil
-					.getBOStringFieldValue(mblInfoUserLink, "Phonenumber"));
-			ProjectUtil
-					.setMemberValueUn(user, "Tckno", ProjectUtil
-							.getBOStringFieldValue(mblInfoUserLink, "Tckno"));
 
-			addUserToGrid(user, usersGrid.getSelectedRow() + i);
+			String name = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Name");
+			String surName = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "SurName");
+			String phoneNumber = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Phonenumber");
+			ProjectUtil.setMemberValueUn(user, "Name", name);
+			ProjectUtil.setMemberValueUn(user, "SurName", surName);
+			ProjectUtil.setMemberValueUn(user, "Phonenumber", phoneNumber);
+			ProjectUtil.setMemberValueUn(user, "Tckno", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Tckno"));
+
+			String title = name + ' ' + surName;
+			ProjectUtil.setMemberValueUn(user, "Name", title);
+
+			if (!isPhoneNumberInList(phoneNumber, title)) {
+				usersGrid.getObjects().set(usersGrid.getObjects().size() - 1, user);
+				addNewUserLine();
+			}
 		}
-
-		return true;
-	}
-
-	public void onGridLookup(JLbsXUIGridEvent event) {
-		/**
-		 * onGridLookup : This method is called when a lookup is initiated from
-		 * a grid cell. Event parameter object (JLbsXUIGridEvent) contains form
-		 * object in 'container' property, grid row data object in 'data'
-		 * property, grid component in 'grid' property, row number in 'row'
-		 * property (starts from 0), column number in 'column' property (starts
-		 * from 0), column's tag value in 'columnTag' property, and the editor
-		 * component that belongs to the cell that is subject to the lookup in
-		 * 'editor' property. A boolean ('true' if the lookup is successful)
-		 * return value is expected. If no return value is specified or the
-		 * return value is not of type boolean, default value is 'false'.
-		 */
-		return;
 	}
 
 	public void onClickSelectSubscriber(JLbsXUIControlEvent event) {
 
-		CustomBusinessObject data = (CustomBusinessObject) event.getData();
 		JLbsXUIPane container = event.getContainer();
-
 		JLbsXUILookupInfo info = new JLbsXUILookupInfo();
 		boolean ok = container.openChild("Forms/MobileSubscribersBrowser.lfrm",
 				info, true, JLbsXUITypes.XUIMODE_DBSELECT);
@@ -188,18 +164,38 @@ public class BatchSMSSendingHandler {
 			QueryBusinessObject qbo = (QueryBusinessObject) qId
 					.getAssociatedData();
 			CustomBusinessObject user = ProjectUtil.createNewCBO("CBOMaster");
-			String name = QueryUtil.getStringProp(qbo, "MBLINFUSER_NAME");// info.getStringData("MBLINFUSER_NAME");
-			String surName = QueryUtil.getStringProp(qbo, "MBLINFUSER_SURNAME");// info.getStringData("MBLINFUSER_SURNAME");
+			String name = QueryUtil.getStringProp(qbo, "MBLINFUSER_NAME");
+			String surName = QueryUtil.getStringProp(qbo, "MBLINFUSER_SURNAME");
 			String phoneNumber = QueryUtil.getStringProp(qbo,
-					"MBLINFUSER_PHONENUMBER");// info.getStringData("MBLINFUSER_PHONENUMBER");
-			String tckNo = QueryUtil.getStringProp(qbo, "MBLINFUSER_TCKNO"); // info.getStringData("MBLINFUSER_TCKNO");
+					"MBLINFUSER_PHONENUMBER");
+			String tckNo = QueryUtil.getStringProp(qbo, "MBLINFUSER_TCKNO");
 			ProjectUtil.setMemberValueUn(user, "Name", name + ' ' + surName);
 			ProjectUtil.setMemberValueUn(user, "Phonenumber", phoneNumber);
 			ProjectUtil.setMemberValueUn(user, "Tckno", tckNo);
-			addUserToGrid(user, usersGrid.getSelectedRow() + i);
+			ProjectUtil.setMemberValueUn(user, "Name", name + ' ' + surName);
+			if (!isPhoneNumberInList(phoneNumber, name + ' ' + surName)) {
+				usersGrid.getObjects().set(usersGrid.getObjects().size() - 1,
+						user);
+				addNewUserLine();
+			}
 		}
-
 		usersGrid.rowListChanged();
+	}
+
+	private boolean isPhoneNumberInList(String phoneNumber, String name)
+	{
+		for(int i=0; i<usersGrid.getObjects().size();i++)
+		{
+			CustomBusinessObject user = (CustomBusinessObject) usersGrid.getObjects().get(i);
+			String number = ProjectUtil.getBOStringFieldValue(user, "Phonenumber");
+			if (number != null && number.compareTo(phoneNumber) == 0)
+			{
+				String warningMsg = "\""+phoneNumber +"\""+ " numaralý telefon " +"\""+ name+"\""+ " alýcý ünvanýyla eklenmiþ.";
+				JOptionPane.showMessageDialog(null, warningMsg);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void sendSmsOnClick(JLbsXUIControlEvent event) {
@@ -339,6 +335,22 @@ public class BatchSMSSendingHandler {
 		// System.out.println("Message Id (if status = true and statusCode = 200):"
 		// + response.messageId);
 
+	}
+
+	public void onClickSelectGroup(JLbsXUIControlEvent event) {
+		JLbsXUIPane container = event.getContainer();
+		JLbsXUILookupInfo info = new JLbsXUILookupInfo();
+		boolean ok = container.openChild("Forms/MobileSubscriberGroupsBrowser.lfrm", info, true, JLbsXUITypes.XUIMODE_DBSELECT);
+		if ((!ok) || (info.getResult() <= 0))
+			return;
+
+		MultiSelectionList list = (MultiSelectionList) info.getParameter("MultiSelectionList");
+		for (int i = 0; i < list.size(); i++) {
+			QueryObjectIdentifier qId = (QueryObjectIdentifier) list.get(i);
+			QueryBusinessObject qbo = (QueryBusinessObject) qId.getAssociatedData();
+			addGroupLinesToGrid(event, QueryUtil.getIntProp(qbo, "MBLINFOGRP_REF"));
+		}
+		usersGrid.rowListChanged();
 	}
 
 }
