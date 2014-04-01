@@ -4,38 +4,55 @@ import java.util.ArrayList;
 
 import com.acme.entity.entityParameter;
 import com.acme.enums.Parameters;
+import com.lbs.control.interfaces.ILbsEditorPane;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.JLbsScrollPane;
 import com.lbs.grids.JLbsObjectListGrid;
+import com.lbs.xui.ILbsXUIPane;
 import com.lbs.xui.JLbsXUIPane;
 import com.lbs.xui.customization.JLbsXUIControlEvent;
 
 public class OnClickButtonEvent {
 
-	 public void addParameterOnGrid(JLbsXUIControlEvent event,int tagNumberMessage,int tagNumberGrid)
-	 {
-		 
-		 JLbsXUIPane container = event.getContainer();
-			//	((JLbsEditorPane)((com.lbs.controls.JLbsScrollPane)container.getComponentByTag(3000007)).getInnerComponent()).getText();
-				JLbsEditorPane messageTemplate =((JLbsEditorPane)((JLbsScrollPane)container.getComponentByTag(tagNumberMessage)).getInnerComponent());
+	public void addParameterOnGrid(JLbsXUIControlEvent event,
+			int tagNumberMessage, int tagNumberGrid) {
 
-				JLbsObjectListGrid objectGrid = (JLbsObjectListGrid) container
-						.getComponentByTag(tagNumberGrid);
+		JLbsXUIPane container = event.getContainer();
+		// ((JLbsEditorPane)((com.lbs.controls.JLbsScrollPane)container.getComponentByTag(3000007)).getInnerComponent()).getText();
+		JLbsEditorPane messageTemplate = ((JLbsEditorPane) ((JLbsScrollPane) container
+				.getComponentByTag(tagNumberMessage)).getInnerComponent());
+		
+		
+		int possion=messageTemplate.getCaretPosition();
+		
+		JLbsObjectListGrid objectGrid = (JLbsObjectListGrid) container
+				.getComponentByTag(tagNumberGrid);
 
-				ArrayList list = (ArrayList) objectGrid.getDisplayList();
+		ArrayList list = (ArrayList) objectGrid.getDisplayList();
 
-				for (int i = 0; i < list.size(); i++) {
-					if (list.indexOf(list.get(i)) == objectGrid.getSelectedRow()) {
-						entityParameter param = (entityParameter) list.get(i);
-						if(!messageTemplate.getText().isEmpty())
-						{
-							messageTemplate.setText(messageTemplate.getText()+" "+param.parameter);
-						}
-						else 
-						messageTemplate.setText(param.parameter);
-						continue;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.indexOf(list.get(i)) == objectGrid.getSelectedRow()) {
+				entityParameter param = (entityParameter) list.get(i);
+				if (!messageTemplate.getText().isEmpty()) {
+				
+					if(possion>=messageTemplate.getText().length())
+					{
+						messageTemplate.setText(messageTemplate.getText() + " "
+								+ param.parameter);
 					}
-				}
-	 }
-	
+					else{
+						messageTemplate.setText(messageTemplate.getText().substring(0,possion) + param.parameter + messageTemplate.getText().substring(possion));
+						
+					}
+				
+				} else{
+					messageTemplate.setText(param.parameter);
+				  }
+				
+				break;
+			}
+		}
+	}
+
+
 }

@@ -20,18 +20,30 @@ public class DoubleClickOnGridEvent {
 				JLbsObjectListGrid objectGrid = (JLbsObjectListGrid) container
 						.getComponentByTag(tagNumberGrid);
 
+				int possion=messageTemplate.getCaretPosition();
+				
 				ArrayList list = (ArrayList) objectGrid.getDisplayList();
 
 				for (int i = 0; i < list.size(); i++) {
 					if (list.indexOf(list.get(i)) == objectGrid.getSelectedRow()) {
 						entityParameter param = (entityParameter) list.get(i);
-						if(!messageTemplate.getText().isEmpty())
-						{
-							messageTemplate.setText(messageTemplate.getText()+" "+param.parameter);
-						}
-						else 
-						messageTemplate.setText(param.parameter);
-						continue;
+						if (!messageTemplate.getText().isEmpty()) {
+							
+							if(possion>=messageTemplate.getText().length())
+							{
+								messageTemplate.setText(messageTemplate.getText() + " "
+										+ param.parameter);
+							}
+							else{
+								messageTemplate.setText(messageTemplate.getText().substring(0,possion) + param.parameter + messageTemplate.getText().substring(possion));
+								
+							}
+						
+						} else{
+							messageTemplate.setText(param.parameter);
+						  }
+						
+						break;
 					}
 				}
 	 }
