@@ -1,5 +1,6 @@
 package com.acme.customization;
 
+import com.acme.entity.entityParameter;
 import com.lbs.util.StringUtil;
 
 public class MessageSplitControl {

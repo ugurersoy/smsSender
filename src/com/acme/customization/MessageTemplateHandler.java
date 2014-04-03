@@ -25,14 +25,14 @@ public class MessageTemplateHandler extends JLbsCustomXUIEventListener {
 
 	public void parameterOnClick(JLbsXUIControlEvent event) {
 		OnClickButtonEvent click= new OnClickButtonEvent();
-		click.addParameterOnGrid(event,3000002 , 3000005);
+		click.addParameterOnGrid(event,3000002 , 3000005,null,null);
 
 	}
 
 	public void selectParameterDoubleClick(JLbsXUIGridEvent event)
 	{
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
-		doubleClick.addDoubleClickOnText(event, 3000002, 3000005);
+		doubleClick.addDoubleClickOnText(event, 3000002, 3000005,null,null);
 	}
 
 	public void onClick(JLbsXUIControlEvent event)

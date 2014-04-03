@@ -42,6 +42,7 @@ public class BatchSMSSendingHandler {
 	private Parameters parameter[] = Parameters.values();
 	private OnInitializeEvent initialize;
 	private String message = "";
+	String mainMassage ="";
 
 	public void onInitialize(JLbsXUIControlEvent event) {
 		CustomBusinessObject user = ProjectUtil.createNewCBO("CBOMaster");
@@ -56,12 +57,12 @@ public class BatchSMSSendingHandler {
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
-		doubleClick.addDoubleClickOnText(event, 3001, 200);
+		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001);
 	}
 
 	public void ParameterOnClick(JLbsXUIControlEvent event) {
 		OnClickButtonEvent click = new OnClickButtonEvent();
-		click.addParameterOnGrid(event, 3001, 200);
+		click.addParameterOnGrid(event, 3001, 200,100,4001);
 	}
 
 	public boolean concatNameSurName(ILbsXUIPane container, Object data,
@@ -351,6 +352,26 @@ public class BatchSMSSendingHandler {
 			addGroupLinesToGrid(event, QueryUtil.getIntProp(qbo, "MBLINFOGRP_REF"));
 		}
 		usersGrid.rowListChanged();
+	}
+
+	public void onKeyTypedMessage(JLbsXUIControlEvent event)
+	{
+		
+		
+	}
+
+	public void onKeyPressedMessage(JLbsXUIControlEvent event)
+	{
+		JLbsXUIPane container = event.getContainer();
+		 mainMassage=  ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(3001)).getInnerComponent()).getText();
+		
+		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(4001)).getInnerComponent());
+		
+		
+		message.setText(mainMassage);
+		container.resetValueByTag(4001);
 	}
 
 }
