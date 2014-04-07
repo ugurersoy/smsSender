@@ -1,31 +1,30 @@
 package com.acme.customization;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
 import com.acme.enums.Parameters;
 import com.acme.events.DoubleClickOnGridEvent;
 import com.acme.events.OnClickButtonEvent;
 import com.acme.events.OnInitializeEvent;
-import com.java.net.maradit.api.Maradit;
 import com.java.net.maradit.api.Response;
-import com.java.net.maradit.api.SubmitResponse;
-import com.lbs.appobjects.GOBOUser;
-import com.lbs.controls.JLbsComboTextEdit;
+import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.JLbsScrollPane;
-import com.lbs.controls.maskededit.JLbsTextEdit;
 import com.lbs.data.grids.MultiSelectionList;
 import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.objects.CustomBusinessObjects;
 import com.lbs.data.query.QueryBusinessObject;
+import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
 import com.lbs.grids.JLbsObjectListGrid;
 import com.lbs.remoteclient.IClientContext;
-import com.lbs.unity.UnityHelper;
-import com.lbs.unity.fi.bo.FIBOARPCardLink;
+import com.lbs.util.JLbsStringListEx;
 import com.lbs.util.QueryUtil;
 import com.lbs.util.StringUtil;
 import com.lbs.xui.ILbsXUIPane;
@@ -38,21 +37,30 @@ import com.lbs.xui.customization.JLbsXUIGridEvent;
 public class BatchSMSSendingHandler {
 
 	private JLbsObjectListGrid usersGrid;
+	private JLbsObjectListGrid senderInfoGrid;
 
 	private Parameters parameter[] = Parameters.values();
 	private OnInitializeEvent initialize;
 	private String message = "";
 	String mainMassage ="";
+	
+	ArrayList senderInfoList = new ArrayList();
+	private ArrayList senderInfoDeleteList = new ArrayList();
+	JLbsComboBox cbxSenderInfo = null;
 
 	public void onInitialize(JLbsXUIControlEvent event) {
 		CustomBusinessObject user = ProjectUtil.createNewCBO("CBOMaster");
-		usersGrid = ((com.lbs.grids.JLbsObjectListGrid) event.getContainer()
-				.getComponentByTag(100));
+		usersGrid = ((com.lbs.grids.JLbsObjectListGrid) event.getContainer().getComponentByTag(100));
 		usersGrid.getObjects().add(user);
 		usersGrid.rowListChanged();
 		initialize = new OnInitializeEvent();
 		initialize.getterParameter(parameter, event, 200);
 
+		senderInfoGrid =  ((com.lbs.grids.JLbsObjectListGrid) event.getContainer().getComponentByTag(10000032));
+		cbxSenderInfo = (JLbsComboBox) event.getContainer().getComponentByTag(10000021);
+		updateSenderInfoGrid(event);
+		fillSenderShortDefinition(event, senderInfoList);
+		
 	}
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
@@ -353,7 +361,7 @@ public class BatchSMSSendingHandler {
 		}
 		usersGrid.rowListChanged();
 	}
-
+	
 	public void onKeyTypedMessage(JLbsXUIControlEvent event)
 	{
 		
@@ -373,5 +381,104 @@ public class BatchSMSSendingHandler {
 		message.setText(mainMassage);
 		container.resetValueByTag(4001);
 	}
+
+	public void onClickSaveSenderInfo(JLbsXUIControlEvent event)
+	{
+		 JLbsObjectListGrid senderInfoGrid = ((com.lbs.grids.JLbsObjectListGrid) event.getContainer().getComponentByTag(10000032));
+		 for(int i=0; i<senderInfoGrid.getObjects().size();i++)
+		 {
+			 CustomBusinessObject cBO = (CustomBusinessObject)senderInfoGrid.getObjects().get(i);
+			 cBO.setObjectName("CBOSenderInfo");
+			 cBO.setCustomization(ProjectGlobals.getM_ProjectGUID());
+			if (ProjectUtil.getBOIntFieldValue(cBO, "LogicalReference") == 0) {
+				cBO._setState(CustomBusinessObject.STATE_NEW);
+			} else
+				cBO._setState(CustomBusinessObject.STATE_MODIFIED);
+			 
+			 ProjectUtil.setMemberValueUn(cBO, "Linenr", i+1);
+			 ProjectUtil.setMemberValueUn(cBO, "UserNr", ProjectUtil.getUserNr(event.getClientContext()));
+			 ProjectUtil.persistCBO(event, cBO);
+		 }
+		 
+		 for(int i=0; i<senderInfoDeleteList.size();i++)
+		 {
+			 CustomBusinessObject cBO = (CustomBusinessObject)senderInfoDeleteList.get(i);
+			 cBO.setCustomization(ProjectGlobals.getM_ProjectGUID());
+			 cBO._setState(CustomBusinessObject.STATE_DELETED);
+			 ProjectUtil.persistCBO(event, cBO);
+		 }			
+
+		
+	}
+
+	public void onPageChange(JLbsXUIControlEvent event) {
+		JTabbedPane tabbedPane = (JTabbedPane) event.getComponent();
+		if (tabbedPane.getSelectedIndex() == 0) {
+			Collections.sort(senderInfoList, new CompareToDefault());
+			fillSenderShortDefinition(event, senderInfoList);
+		}
+	}
+	
+	private void updateSenderInfoGrid(JLbsXUIControlEvent event)
+	{
+		senderInfoList.clear();
+		 
+		int userNr = ProjectUtil.getUserNr(event.getClientContext());
+		String [] paramNames = {"P_USERNR"};
+		String [] paramVals = {String.valueOf(userNr)};
+		QueryBusinessObjects results = ProjectUtil.runQuery(event, "CQOGetSenderInfo", paramNames, paramVals);
+		if (results != null && results.size() > 0) {
+			for (int i = 0; i < results.size(); i++) {
+				QueryBusinessObject result = (QueryBusinessObject) results.get(i);
+				CustomBusinessObject senderInfo = new CustomBusinessObject();
+				senderInfo.setObjectName("CBOSenderInfo");
+				senderInfo.setCustomization(ProjectGlobals.getM_ProjectGUID());
+				ProjectUtil.setMemberValueUn(senderInfo, "LogicalReference", QueryUtil.getIntProp(result, "LogicalRef"));
+				ProjectUtil.setMemberValueUn(senderInfo, "Default_", QueryUtil.getIntProp(result, "Default_"));
+				ProjectUtil.setMemberValueUn(senderInfo, "UserName", QueryUtil.getStringProp(result, "UserName"));
+				ProjectUtil.setMemberValueUn(senderInfo, "Password", QueryUtil.getStringProp(result, "PassWord"));
+				ProjectUtil.setMemberValueUn(senderInfo, "Subscriber",	QueryUtil.getStringProp(result, "Subscriber"));
+				ProjectUtil.setMemberValueUn(senderInfo, "SenderReference",	QueryUtil.getStringProp(result, "SenderRef"));
+				senderInfoList.add(senderInfo);
+			}
+		}
+		senderInfoGrid.setObjects(senderInfoList);
+	}
+	
+	private void fillSenderShortDefinition(JLbsXUIControlEvent event, ArrayList senderInfoList)
+	{
+		JLbsStringListEx senderInfoStringList = new JLbsStringListEx();
+		for (int i = 0; i < senderInfoList.size(); i++) {
+			CustomBusinessObject cBO = (CustomBusinessObject)senderInfoList.get(i);
+			int logicalRef = (Integer)ProjectUtil.getMemberValue(cBO, "LogicalReference");
+			String senderRef = (String)ProjectUtil.getMemberValue(cBO, "SenderReference");
+			senderInfoStringList.add(senderRef, logicalRef);
+		}
+		
+		if (cbxSenderInfo != null) {
+			cbxSenderInfo.setItems(senderInfoStringList);
+		}
+	}
+	
+	public void onGridRowDeletedSenderInfo(JLbsXUIGridEvent event)
+	{
+		senderInfoDeleteList.add(event.getData());
+	}
+	
+	private  class CompareToDefault implements Comparator
+	{
+		public int compare(Object obj0, Object obj1)
+		{
+			int default_0 = ((Boolean)ProjectUtil.getBOFieldValue(obj0, "Default_")).booleanValue() == true ? 1 : 0;   	
+			int default_1 = ((Boolean) ProjectUtil.getBOFieldValue(obj1, "Default_")).booleanValue() == true ? 1 : 0; 	
+			if (default_0 > default_1)
+				return -1;
+			else if (default_0 < default_1)
+				return 1;
+			return 0;
+		}
+
+	}
+	
 
 }
