@@ -24,6 +24,7 @@ import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
 import com.lbs.grids.JLbsObjectListGrid;
 import com.lbs.remoteclient.IClientContext;
+import com.lbs.unity.UnityHelper;
 import com.lbs.util.JLbsStringListEx;
 import com.lbs.util.QueryUtil;
 import com.lbs.util.StringUtil;
@@ -59,7 +60,7 @@ public class BatchSMSSendingHandler {
 		senderInfoGrid =  ((com.lbs.grids.JLbsObjectListGrid) event.getContainer().getComponentByTag(10000032));
 		cbxSenderInfo = (JLbsComboBox) event.getContainer().getComponentByTag(10000021);
 		updateSenderInfoGrid(event);
-		fillSenderShortDefinition(event, senderInfoList);
+		fillSenderShortDefinition(senderInfoList);
 		
 	}
 
@@ -413,9 +414,8 @@ public class BatchSMSSendingHandler {
 
 	public void onPageChange(JLbsXUIControlEvent event) {
 		JTabbedPane tabbedPane = (JTabbedPane) event.getComponent();
-		if (tabbedPane.getSelectedIndex() == 0) {
-			Collections.sort(senderInfoList, new CompareToDefault());
-			fillSenderShortDefinition(event, senderInfoList);
+		if (tabbedPane.getSelectedIndex() == 0 && senderInfoGrid != null) {
+			fillSenderShortDefinition(senderInfoList);
 		}
 	}
 	
@@ -445,16 +445,18 @@ public class BatchSMSSendingHandler {
 		senderInfoGrid.setObjects(senderInfoList);
 	}
 	
-	private void fillSenderShortDefinition(JLbsXUIControlEvent event, ArrayList senderInfoList)
+	private void fillSenderShortDefinition(List senderInfoList)
 	{
+		List clonnedSenderInfoList = new ArrayList();
+		clonnedSenderInfoList.addAll(senderInfoList);
+		Collections.sort(clonnedSenderInfoList, new CompareToDefault());
 		JLbsStringListEx senderInfoStringList = new JLbsStringListEx();
-		for (int i = 0; i < senderInfoList.size(); i++) {
-			CustomBusinessObject cBO = (CustomBusinessObject)senderInfoList.get(i);
-			int logicalRef = (Integer)ProjectUtil.getMemberValue(cBO, "LogicalReference");
-			String senderRef = (String)ProjectUtil.getMemberValue(cBO, "SenderReference");
+		for (int i = 0; i < clonnedSenderInfoList.size(); i++) {
+			CustomBusinessObject cBO = (CustomBusinessObject)clonnedSenderInfoList.get(i);
+			int logicalRef = (Integer)ProjectUtil.getBOIntFieldValue(cBO, "LogicalReference");
+			String senderRef = (String)ProjectUtil.getBOStringFieldValue(cBO, "SenderReference");
 			senderInfoStringList.add(senderRef, logicalRef);
 		}
-		
 		if (cbxSenderInfo != null) {
 			cbxSenderInfo.setItems(senderInfoStringList);
 		}
@@ -469,15 +471,47 @@ public class BatchSMSSendingHandler {
 	{
 		public int compare(Object obj0, Object obj1)
 		{
-			int default_0 = ((Boolean)ProjectUtil.getBOFieldValue(obj0, "Default_")).booleanValue() == true ? 1 : 0;   	
-			int default_1 = ((Boolean) ProjectUtil.getBOFieldValue(obj1, "Default_")).booleanValue() == true ? 1 : 0; 	
+			int default_0 = getIntValueOfDefault(obj0); 	
+			int default_1 = getIntValueOfDefault(obj1); 	
 			if (default_0 > default_1)
 				return -1;
 			else if (default_0 < default_1)
 				return 1;
 			return 0;
+			
+		}
+		
+		private int getIntValueOfDefault(Object obj)
+		{
+			if(ProjectUtil.getBOFieldValue(obj, "Default_") instanceof Boolean)
+				return ((Boolean)ProjectUtil.getBOFieldValue(obj, "Default_")).booleanValue() == true ? 1 : 0;
+			else
+				return ProjectUtil.getBOIntFieldValue(obj, "Default_"); 
 		}
 
+	}
+
+	public void onGridCellCheckStateChange(JLbsXUIGridEvent event)
+	{
+		/** onGridCellCheckStateChange : This method is called when the user changes the selection state of a checkbox grid cell. Event parameter object (JLbsXUIGridEvent) contains form object in 'container' property, grid row data object in 'data' property, grid component in 'grid' property, row number in 'row' property (starts from 0), column number in 'column' property (starts from 0), column's tag value in 'columnTag' property, and the selection state (0 if deselected, 1 if selected) in 'index' and 'tag' properties. No return value is expected. */
+		if(event.getIndex() == 1)
+		{
+			for (int i = 0; i < senderInfoList.size(); i++) {
+				CustomBusinessObject cBO = (CustomBusinessObject) senderInfoList.get(i);
+				if (i == event.getRow())
+					ProjectUtil.setMemberValueUn(cBO, "Default_", new Integer(1));
+				else
+					ProjectUtil.setMemberValueUn(cBO, "Default_", new Integer(0));
+			}
+		}
+	}
+
+	public void onGridRowInsertedSenderInfo(JLbsXUIGridEvent event)
+	{
+		/** onGridRowInserted : This method is called right after a new row is added to an edit grid. Event parameter object (JLbsXUIGridEvent) contains form object in 'container' property, grid row data object in 'data' property, grid component in 'grid' property, and row number in 'row' property (starts from 0). A boolean ('true' if the row data object is changed in this method) return value is expected. If no return value is specified or the return value is not of type boolean, default value is 'false'. */
+		CustomBusinessObject senderInfo = (CustomBusinessObject) event.getData();
+		senderInfo.setObjectName("CBOSenderInfo");
+		senderInfo.setCustomization(ProjectGlobals.getM_ProjectGUID());
 	}
 	
 
