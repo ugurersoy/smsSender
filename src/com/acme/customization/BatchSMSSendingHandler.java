@@ -12,6 +12,7 @@ import com.acme.enums.Parameters;
 import com.acme.events.DoubleClickOnGridEvent;
 import com.acme.events.OnClickButtonEvent;
 import com.acme.events.OnInitializeEvent;
+import com.acme.events.OnKeyPressedMessages;
 import com.java.net.maradit.api.Response;
 import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.JLbsEditorPane;
@@ -225,9 +226,9 @@ public class BatchSMSSendingHandler {
 			String strlistMessage[]=null;
 
 			if (control.controlParams(strlist)) {
-				for (int j = 0; j < messageReveiverGrid.getColumnCount(); j++) {
+				for (int j = 0; j < messageReveiverGrid.getObjects().size(); j++) {
 					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
-							.getRowObject(j);
+							.getObjects().get(j);
 					strlistMessage=control.splitControl(messageMain);
 					for (int i = 0; i < strlistMessage.length; i++) {
 					
@@ -371,16 +372,7 @@ public class BatchSMSSendingHandler {
 
 	public void onKeyPressedMessage(JLbsXUIControlEvent event)
 	{
-		JLbsXUIPane container = event.getContainer();
-		 mainMassage=  ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
-				.getComponentByTag(3001)).getInnerComponent()).getText();
-		
-		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
-				.getComponentByTag(4001)).getInnerComponent());
-		
-		
-		message.setText(mainMassage);
-		container.resetValueByTag(4001);
+		 OnKeyPressedMessages.OnKeyPress(event, 3001, 4001,100);
 	}
 
 	public void onClickSaveSenderInfo(JLbsXUIControlEvent event)
