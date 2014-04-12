@@ -53,76 +53,7 @@ public class DoubleClickOnGridEvent {
 				}
 				
 				if (gridTag != null&& !messageTemplate.getText().isEmpty()) {
-					JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
-							.getComponentByTag(gridTag);
-					
-					JLbsEditorPane otherMessage = ((JLbsEditorPane) ((JLbsScrollPane) container
-							.getComponentByTag(messageTag)).getInnerComponent());
-
-					MessageSplitControl control = new MessageSplitControl();
-					
-					
-					String strlist[] = control.splitControl(messageTemplate.getText());
-		            CustomBusinessObject obj =   (CustomBusinessObject) messageReveiverGrid.getRowObject(messageReveiverGrid.getSelectedRow());  
-				
-		            
-					for (int i = 0; i < strlist.length; i++) {
-
-						if (control.controlParamsText(strlist[i])) {
-							if(strlist[i]!=null){
-								addMessage+=strlist[i];
-								otherMessage.setText(strlist[i]);
-							}
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".adý.")) {
-							strlist[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Name");
-							if(strlist[i]!=null){
-							addMessage +=strlist[i];
-							otherMessage.setText(addMessage);
-						}
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Soyadý.")) {
-							strlist[i] = (String) ProjectUtil.getMemberValue(
-									obj, "SurName");
-							if(strlist[i]!=null){
-							addMessage+=strlist[i];
-							otherMessage.setText(addMessage);
-							}
-							
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Telfon Numarasý.")) {
-							strlist[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Phonenumber");
-							if(strlist[i]!=null){
-							addMessage+=strlist[i];
-							otherMessage.setText(addMessage);
-							}
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Tarih.")) {
-
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Saat.")) {
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
-							continue;
-						}
-						if (StringUtil
-								.equals(strlist[i], ".Cari Hesap Unvaný.")) {
-							continue;
-						}
-						if (StringUtil.equals(strlist[i],
-								".Cari Hesap Bakiyesi.")) {
-							continue;
-						}
-						
-					}
+					MessageSplitControl. messageCalculaterGridEvent(event, tagNumberMessage, messageTag, gridTag);
 
 				}
 	 }
