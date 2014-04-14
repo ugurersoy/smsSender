@@ -1,6 +1,5 @@
 package com.acme.customization;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,14 +11,14 @@ import javax.swing.JTabbedPane;
 import com.acme.enums.Parameters;
 import com.acme.events.DoubleClickOnGridEvent;
 import com.acme.events.OnClickButtonEvent;
-import com.acme.events.OnGridCellSelectedReceivers;
 import com.acme.events.OnInitializeEvent;
 import com.acme.events.OnKeyPressedMessages;
 import com.java.net.maradit.api.Response;
+import com.lbs.batch.ClientBatchService;
+import com.lbs.controls.JLbsCheckBox;
 import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.JLbsScrollPane;
-import com.lbs.controls.numericedit.JLbsNumericEdit;
 import com.lbs.data.grids.MultiSelectionList;
 import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.objects.CustomBusinessObjects;
@@ -28,7 +27,9 @@ import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
 import com.lbs.grids.JLbsObjectListGrid;
 import com.lbs.remoteclient.IClientContext;
+import com.lbs.unity.UnityBatchHelper;
 import com.lbs.unity.UnityHelper;
+import com.lbs.unity.dialogs.IUODMessageConstants;
 import com.lbs.util.JLbsStringListEx;
 import com.lbs.util.QueryUtil;
 import com.lbs.util.StringUtil;
@@ -41,6 +42,7 @@ import com.lbs.xui.customization.JLbsXUIGridEvent;
 
 public class BatchSMSSendingHandler {
 
+	UnityBatchHelper batchHelper = new UnityBatchHelper();
 	private JLbsObjectListGrid usersGrid;
 	private JLbsObjectListGrid senderInfoGrid;
 
@@ -54,6 +56,7 @@ public class BatchSMSSendingHandler {
 	JLbsComboBox cbxSenderInfo = null;
 
 	public void onInitialize(JLbsXUIControlEvent event) {
+		batchHelper.reset(event.getContainer(), 400, 500, -1);
 		CustomBusinessObject user = ProjectUtil.createNewCBO("CBOMaster");
 		usersGrid = ((com.lbs.grids.JLbsObjectListGrid) event.getContainer().getComponentByTag(100));
 		usersGrid.getObjects().add(user);
@@ -65,39 +68,17 @@ public class BatchSMSSendingHandler {
 		cbxSenderInfo = (JLbsComboBox) event.getContainer().getComponentByTag(10000021);
 		updateSenderInfoGrid(event);
 		fillSenderShortDefinition(senderInfoList);
-		JLbsXUIPane container = event.getContainer();
-		JLbsNumericEdit remainingText = (JLbsNumericEdit) container.getComponentByTag(10000042);
-		remainingText.setNumber(612);
-		JLbsNumericEdit sizeText = (JLbsNumericEdit) container.getComponentByTag(10000041);
-		sizeText.setNumber(0);
-		JLbsNumericEdit messageText = (JLbsNumericEdit) container.getComponentByTag(10000044);
-		messageText.setNumber(0);
-		
-		
-		
-		
-		
 		
 	}
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
 		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001);
-		 try {
-				MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
-			} catch (ParseException e) {
-			 	e.printStackTrace();
-			}
 	}
 
 	public void ParameterOnClick(JLbsXUIControlEvent event) {
 		OnClickButtonEvent click = new OnClickButtonEvent();
 		click.addParameterOnGrid(event, 3001, 200,100,4001);
-		 try {
-				MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
-			} catch (ParseException e) {
-			 	e.printStackTrace();
-			}
 	}
 
 	public boolean concatNameSurName(ILbsXUIPane container, Object data,
@@ -240,8 +221,7 @@ public class BatchSMSSendingHandler {
 		String messageMain = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(3001)).getInnerComponent()).getText();
 
-		List<String> phoneNumberList = new ArrayList<String>();
-		List<String> messageList = new ArrayList<String>();
+		ArrayList<SMSObject> smsObjectList = new ArrayList<SMSObject>();
 		JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 				.getComponentByTag(100);
 
@@ -254,6 +234,11 @@ public class BatchSMSSendingHandler {
 				for (int j = 0; j < messageReveiverGrid.getObjects().size(); j++) {
 					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 							.getObjects().get(j);
+					
+					if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
+							.length() == 0)
+						continue;
+					
 					strlistMessage=control.splitControl(messageMain);
 					for (int i = 0; i < strlistMessage.length; i++) {
 					
@@ -306,49 +291,74 @@ public class BatchSMSSendingHandler {
 						}
 
 					}
-				
-					messageList.add(message);
+					String title = (String) ProjectUtil.getMemberValue(obj, "Name")	+ " "+ (String) ProjectUtil.getMemberValue(obj,	"SurName");
+					SMSObject smsObject = new SMSObject(message, (String) ProjectUtil.getMemberValue(obj, "Phonenumber"), title);
+					smsObjectList.add(smsObject);
 					message = "";
-					
-					phoneNumberList.add((String) ProjectUtil.getMemberValue(
-							obj, "Phonenumber"));
 				}
 
 			} else {
-				for (int i = 0; i < messageReveiverGrid.getColumnCount(); i++) {
-					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
-							.getRowObject(i);
-
-					String name = (String) ProjectUtil.getMemberValue(obj,
-							"Phonenumber");
-
-					phoneNumberList.add((String) ProjectUtil.getMemberValue(
-							obj, "Phonenumber"));
-				}
-
 				JLbsEditorPane messageTemplate = ((JLbsEditorPane) ((JLbsScrollPane) container
 						.getComponentByTag(3001)).getInnerComponent());
-
 				message = messageTemplate.getText();
+				for (int i = 0; i < messageReveiverGrid.getObjects().size(); i++) {
+					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
+							.getObjects().get(i);
+					if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
+							.length() == 0)
+						continue;
+					String title = (String) ProjectUtil.getMemberValue(obj, "Name")	+ " "+ (String) ProjectUtil.getMemberValue(obj,	"SurName");
+					SMSObject smsObject = new SMSObject(message, (String) ProjectUtil.getMemberValue(obj, "Phonenumber"), title);
+					smsObjectList.add(smsObject);
+				}
+				message = "";
 
 			}
-		} else {
+			
+			CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
+			String userName = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName");
+			String passWord = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password");
+			JLbsCheckBox checkbox = (JLbsCheckBox) container.getComponentByTag(450);
+			if (event.getClientContext() != null)
+				try
+				{
+					ClientBatchService batchServ = new ClientBatchService(event.getClientContext());
+					
+					if (checkbox.isSelected())
+						batchServ.scheduleBatchOperation("BatchSMSSending",  new Object[] {userName, passWord, smsObjectList}, UnityBatchHelper
+								.getScheduleDate(container));
+					else
+						event.getClientContext().requestBatchOperation("BatchSMSSending", new Object[] {userName, passWord, smsObjectList });
+
+					container.showMessage(IUODMessageConstants.TRANSACTION_COMPLETED, "", null);
+				}
+				catch (Exception e)
+				{
+					event.getClientContext().getLogger().error("BatchSMSSending operation batch exception :", e);
+				}
+		}
+		
+		
+		else {
 			// TO DO UYAR MESAJI EKLENECEK
 		}
 
-		//TO DO mesajýn gönderileceði yer
 
-		//Numarayý listeleyen döngü
-		for (String list : phoneNumberList) {
-			System.out.println(list);
-		}
-		
-		//mesajlarý listeliyen döngü
-		   if (messageList.size() != 0)
-			for (String list : messageList) {
-				System.out.println("---"+list);
+	}
+	
+	private CustomBusinessObject getSelectedSenderInfo()
+	{
+		String selected = cbxSenderInfo.getSelectedItemValue() != null ? (String) cbxSenderInfo.getSelectedItemValue() : "";
+		for(int i=0; i<senderInfoGrid.getObjects().size();i++)
+		{
+			CustomBusinessObject cBO = (CustomBusinessObject)senderInfoGrid.getObjects().get(i);
+			String senderRef = (String)ProjectUtil.getBOStringFieldValue(cBO, "SenderReference");
+			if(senderRef.compareTo(selected)==0)
+			{
+				return cBO;
 			}
-
+		}
+		return null;
 	}
 
 	public static void printResponse(Response response) {
@@ -389,36 +399,15 @@ public class BatchSMSSendingHandler {
 		usersGrid.rowListChanged();
 	}
 	
+	public void onKeyTypedMessage(JLbsXUIControlEvent event)
+	{
+		
+		
+	}
+
 	public void onKeyPressedMessage(JLbsXUIControlEvent event)
 	{
 		 OnKeyPressedMessages.OnKeyPress(event, 3001, 4001,100);
-		 try {
-			MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
-		} catch (ParseException e) {
-		 	e.printStackTrace();
-		}
-	}
-	
-	public void onGridCellSelectedReceiver(JLbsXUIGridEvent event)
-	{  
-		OnGridCellSelectedReceivers.OnCellSelected(event, 3001, 4001, 100);
-		 try {
-				MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
-			} catch (ParseException e) {
-			 	e.printStackTrace();
-			}
-	}
-	
-	public void lookupSelected(ILbsXUIPane container, Object data, IClientContext context)
-	{
-		MessageSplitControl.messageCalculaterLookUp(container, 3001, 4001, 100);
-		
-		 try {
-				MessageSizeCalculater.messageFindSize((JLbsXUIPane) container, 10000041, 10000042, 4001, 10000044);
-			} catch (ParseException e) {
-			 	e.printStackTrace();
-			}
-		
 	}
 
 	public void onClickSaveSenderInfo(JLbsXUIControlEvent event)
@@ -474,7 +463,7 @@ public class BatchSMSSendingHandler {
 				ProjectUtil.setMemberValueUn(senderInfo, "LogicalReference", QueryUtil.getIntProp(result, "LogicalRef"));
 				ProjectUtil.setMemberValueUn(senderInfo, "Default_", QueryUtil.getIntProp(result, "Default_"));
 				ProjectUtil.setMemberValueUn(senderInfo, "UserName", QueryUtil.getStringProp(result, "UserName"));
-				ProjectUtil.setMemberValueUn(senderInfo, "Password", QueryUtil.getStringProp(result, "PassWord"));
+				ProjectUtil.setMemberValueUn(senderInfo, "Password", QueryUtil.getStringProp(result, "Password"));
 				ProjectUtil.setMemberValueUn(senderInfo, "Subscriber",	QueryUtil.getStringProp(result, "Subscriber"));
 				ProjectUtil.setMemberValueUn(senderInfo, "SenderReference",	QueryUtil.getStringProp(result, "SenderRef"));
 				senderInfoList.add(senderInfo);
@@ -552,6 +541,35 @@ public class BatchSMSSendingHandler {
 		senderInfo.setCustomization(ProjectGlobals.getM_ProjectGUID());
 	}
 
+	public void onCheckSchedule(JLbsXUIControlEvent event)
+	{
+		JLbsCheckBox checkbox = (JLbsCheckBox) event.getComponent();
+		if (checkbox.isSelected())
+		{
+			event.getContainer().setPermanentStateByTag(400, JLbsXUITypes.XUISTATE_ACTIVE);
+			event.getContainer().setPermanentStateByTag(500, JLbsXUITypes.XUISTATE_ACTIVE);
+		}
+		else
+		{
+			event.getContainer().setPermanentStateByTag(400, JLbsXUITypes.XUISTATE_RESTRICTED);
+			event.getContainer().setPermanentStateByTag(500, JLbsXUITypes.XUISTATE_RESTRICTED);
+		}
+	}
+	
+	public void onClickResetDate(JLbsXUIControlEvent event)
+	{
+		if (event.getContainer().getContext() != null)
+		{
+			try
+			{
+				batchHelper.reset(event.getContainer(), 400, 500, -1);
+			}
+			catch (Exception e)
+			{
+				event.getContainer().getContext().getLogger().error("resetDate() exception", e);
+			}
+		}
+	} //END of resetDate()	
 	
 	
 

@@ -5,6 +5,7 @@ public class ProjectGlobals
 	public static int USER_TYPE_USER = 0;
 	public static int USER_TYPE_ARP = 1;
 	public static int USER_TYPE_OTHER = 2;
+	public static int OPERTYPE_SMSSENDING = 10;
 
 	public static String getM_ProjectGUID()
 	

@@ -583,7 +583,7 @@ public class ProjectUtil
 			String s = (String) o;
 			return s;
 		}
-		return null;
+		return "";
 	}
 	public static Calendar getBODateFieldValue(Object bo, String fieldName)
 	{
@@ -779,7 +779,7 @@ public class ProjectUtil
 		userLoginInfo = (LbsUserLoginInfo) context.getVariable(ms_UserInfo);
 		return userLoginInfo.getFirm().getLogicalRef();
 	}
-	public static String getCompanyName(IClientContext context)
+	public static String getCompanyName(IApplicationContext context)
 	{
 		LbsUserLoginInfo userLoginInfo;
 		userLoginInfo = (LbsUserLoginInfo) context.getVariable(ms_UserInfo);
