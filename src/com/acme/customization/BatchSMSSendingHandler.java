@@ -1,5 +1,6 @@
 package com.acme.customization;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import javax.swing.JTabbedPane;
 import com.acme.enums.Parameters;
 import com.acme.events.DoubleClickOnGridEvent;
 import com.acme.events.OnClickButtonEvent;
+import com.acme.events.OnGridCellSelectedReceivers;
 import com.acme.events.OnInitializeEvent;
 import com.acme.events.OnKeyPressedMessages;
 import com.java.net.maradit.api.Response;
@@ -19,6 +21,7 @@ import com.lbs.controls.JLbsCheckBox;
 import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.JLbsScrollPane;
+import com.lbs.controls.numericedit.JLbsNumericEdit;
 import com.lbs.data.grids.MultiSelectionList;
 import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.objects.CustomBusinessObjects;
@@ -69,16 +72,41 @@ public class BatchSMSSendingHandler {
 		updateSenderInfoGrid(event);
 		fillSenderShortDefinition(senderInfoList);
 		
+		JLbsXUIPane container = event.getContainer();
+		JLbsNumericEdit remainingText = (JLbsNumericEdit) container.getComponentByTag(10000054);
+		remainingText.setNumber(612);
+		JLbsNumericEdit sizeText = (JLbsNumericEdit) container.getComponentByTag(10000053);
+		sizeText.setNumber(0);
+		JLbsNumericEdit messageText = (JLbsNumericEdit) container.getComponentByTag(10000056);
+		messageText.setNumber(0);
+		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(3001)).getInnerComponent());
+		mainMessage.setText("");
+
+		
 	}
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
 		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001);
+	
+				try {
+					MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 
 	public void ParameterOnClick(JLbsXUIControlEvent event) {
 		OnClickButtonEvent click = new OnClickButtonEvent();
 		click.addParameterOnGrid(event, 3001, 200,100,4001);
+		try {
+			MessageSizeCalculater.messageFindSize(event.getContainer(), 10000041, 10000042, 4001, 10000044);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean concatNameSurName(ILbsXUIPane container, Object data,
@@ -399,16 +427,40 @@ public class BatchSMSSendingHandler {
 		usersGrid.rowListChanged();
 	}
 	
-	public void onKeyTypedMessage(JLbsXUIControlEvent event)
-	{
-		
-		
-	}
-
 	public void onKeyPressedMessage(JLbsXUIControlEvent event)
 	{
 		 OnKeyPressedMessages.OnKeyPress(event, 3001, 4001,100);
+		 try {
+			MessageSizeCalculater.messageFindSize(event.getContainer(), 10000053, 10000054, 4001, 10000056);
+		} catch (ParseException e) {
+		 	e.printStackTrace();
+		}
+
 	}
+	
+	public void onGridCellSelectedReceiver(JLbsXUIGridEvent event)
+	{  
+		OnGridCellSelectedReceivers.OnCellSelected(event, 3001, 4001, 100);
+		 try {
+				MessageSizeCalculater.messageFindSize(event.getContainer(), 10000053, 10000054, 4001, 10000056);
+			} catch (ParseException e) {
+			 	e.printStackTrace();
+			}
+	}
+	
+	public void lookupSelected(ILbsXUIPane container, Object data, IClientContext context)
+	{
+		MessageSplitControl.messageCalculaterLookUp(container, 3001, 4001, 100);
+		
+		 try {
+				MessageSizeCalculater.messageFindSize((JLbsXUIPane) container, 10000053, 10000054, 4001, 10000056);
+			} catch (ParseException e) {
+			 	e.printStackTrace();
+			}
+		
+	}
+
+
 
 	public void onClickSaveSenderInfo(JLbsXUIControlEvent event)
 	{
