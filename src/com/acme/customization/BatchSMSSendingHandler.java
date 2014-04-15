@@ -249,7 +249,7 @@ public class BatchSMSSendingHandler {
 		String messageMain = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(3001)).getInnerComponent()).getText();
 
-		ArrayList<SMSObject> smsObjectList = new ArrayList<SMSObject>();
+		ArrayList smsObjectList = new ArrayList();
 		JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 				.getComponentByTag(100);
 
@@ -257,20 +257,16 @@ public class BatchSMSSendingHandler {
 			MessageSplitControl control = new MessageSplitControl();
 			String strlist[] = control.splitControl(messageMain);
 			String strlistMessage[]=null;
-
-			if (control.controlParams(strlist)) {
-				for (int j = 0; j < messageReveiverGrid.getObjects().size(); j++) {
-					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
-							.getObjects().get(j);
-					
-					if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
-							.length() == 0)
-						continue;
-					
+			for (int j = 0; j < messageReveiverGrid.getObjects().size(); j++) {
+				CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid.getObjects().get(j);
+				if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
+						.length() == 0)
+					continue;
+				if (control.controlParams(strlist)) {
+				
 					strlistMessage=control.splitControl(messageMain);
 					for (int i = 0; i < strlistMessage.length; i++) {
 					
-
 						if (control.controlParamsText(strlistMessage[i])) {
 							if(strlistMessage[i]!=null)
 							message += strlistMessage[i];
@@ -319,58 +315,48 @@ public class BatchSMSSendingHandler {
 						}
 
 					}
-					String title = (String) ProjectUtil.getMemberValue(obj, "Name")	+ " "+ (String) ProjectUtil.getMemberValue(obj,	"SurName");
-					SMSObject smsObject = new SMSObject(message, (String) ProjectUtil.getMemberValue(obj, "Phonenumber"), title);
-					smsObjectList.add(smsObject);
-					message = "";
 				}
-
-			} else {
-				JLbsEditorPane messageTemplate = ((JLbsEditorPane) ((JLbsScrollPane) container
-						.getComponentByTag(3001)).getInnerComponent());
-				message = messageTemplate.getText();
-				for (int i = 0; i < messageReveiverGrid.getObjects().size(); i++) {
-					CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
-							.getObjects().get(i);
-					if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
-							.length() == 0)
-						continue;
+				else 
+					message = messageMain;
+				
+					ProjectUtil.setMemberValueUn(obj, "Message", message);
 					String title = (String) ProjectUtil.getMemberValue(obj, "Name")	+ " "+ (String) ProjectUtil.getMemberValue(obj,	"SurName");
-					SMSObject smsObject = new SMSObject(message, (String) ProjectUtil.getMemberValue(obj, "Phonenumber"), title);
-					smsObjectList.add(smsObject);
+					ProjectUtil.setMemberValueUn(obj, "Title", title);
+					smsObjectList.add(obj);
 				}
 				message = "";
 
 			}
+			 else {
+						// TO DO UYAR MESAJI EKLENECEK
+					}
 			
-			CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
-			String userName = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName");
-			String passWord = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password");
-			JLbsCheckBox checkbox = (JLbsCheckBox) container.getComponentByTag(450);
-			if (event.getClientContext() != null)
-				try
-				{
-					ClientBatchService batchServ = new ClientBatchService(event.getClientContext());
-					
-					if (checkbox.isSelected())
-						batchServ.scheduleBatchOperation("BatchSMSSending",  new Object[] {userName, passWord, smsObjectList}, UnityBatchHelper
-								.getScheduleDate(container));
-					else
-						event.getClientContext().requestBatchOperation("BatchSMSSending", new Object[] {userName, passWord, smsObjectList });
-
-					container.showMessage(IUODMessageConstants.TRANSACTION_COMPLETED, "", null);
-				}
-				catch (Exception e)
-				{
-					event.getClientContext().getLogger().error("BatchSMSSending operation batch exception :", e);
-				}
-		}
-		
-		
-		else {
-			// TO DO UYAR MESAJI EKLENECEK
-		}
-
+			if (smsObjectList.size() > 0)
+			{
+				CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
+				String userName = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName");
+				String passWord = ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password");
+				JLbsCheckBox checkbox = (JLbsCheckBox) container.getComponentByTag(450);
+				
+				
+				if (event.getClientContext() != null)
+					try
+					{
+						ClientBatchService batchServ = new ClientBatchService(event.getClientContext());
+						
+						if (checkbox.isSelected())
+							batchServ.scheduleBatchOperation("BatchSMSSending",  new Object[] {userName, passWord, smsObjectList}, UnityBatchHelper
+									.getScheduleDate(container));
+						else
+							event.getClientContext().requestBatchOperation("BatchSMSSending", new Object[] {userName, passWord, smsObjectList });
+	
+						container.showMessage(IUODMessageConstants.TRANSACTION_COMPLETED, "", null);
+					}
+					catch (Exception e)
+					{
+						event.getClientContext().getLogger().error("BatchSMSSending operation batch exception :", e);
+					}
+			}
 
 	}
 	

@@ -2,57 +2,21 @@ package com.acme.customization;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 
-import com.acme.enums.Parameters;
-import com.acme.events.DoubleClickOnGridEvent;
-import com.acme.events.OnClickButtonEvent;
-import com.acme.events.OnInitializeEvent;
-import com.acme.events.OnKeyPressedMessages;
 import com.java.net.maradit.api.Maradit;
-import com.java.net.maradit.api.Response;
 import com.java.net.maradit.api.SubmitResponse;
 import com.lbs.batch.BatchOperationBase;
 import com.lbs.batch.BatchSuspensionResult;
-import com.lbs.batch.ClientBatchService;
 import com.lbs.batch.IBatchSuspendable;
 import com.lbs.batch.IBatchTerminatable;
 import com.lbs.batch.classes.BatchSuspensionDataBase;
 import com.lbs.batch.classes.ServerBatchUtil;
-import com.lbs.controls.JLbsCheckBox;
-import com.lbs.controls.JLbsComboBox;
-import com.lbs.controls.JLbsEditorPane;
-import com.lbs.controls.JLbsScrollPane;
 import com.lbs.data.database.cache.DBPreparedStatementCache;
-import com.lbs.data.grids.MultiSelectionList;
 import com.lbs.data.objects.CustomBusinessObject;
-import com.lbs.data.objects.CustomBusinessObjects;
-import com.lbs.data.query.QueryBusinessObject;
-import com.lbs.data.query.QueryBusinessObjects;
-import com.lbs.data.query.QueryObjectIdentifier;
-import com.lbs.filter.JLbsFilterList;
-import com.lbs.grids.JLbsObjectListGrid;
-import com.lbs.remoteclient.IClientContext;
-import com.lbs.unity.UnityBatchHelper;
-import com.lbs.unity.UnityHelper;
-import com.lbs.unity.dialogs.IUODMessageConstants;
-import com.lbs.util.JLbsStringListEx;
-import com.lbs.util.QueryUtil;
-import com.lbs.util.StringUtil;
-import com.lbs.xui.ILbsXUIPane;
-import com.lbs.xui.JLbsXUILookupInfo;
-import com.lbs.xui.JLbsXUIPane;
-import com.lbs.xui.JLbsXUITypes;
-import com.lbs.xui.customization.JLbsXUIControlEvent;
-import com.lbs.xui.customization.JLbsXUIGridEvent;
-import com.lbs.xui.events.swing.JLbsCustomXUIEventListener;
+import com.acme.customization.SMSObject;
 
 public class BatchSMSSending extends BatchOperationBase implements IBatchTerminatable, IBatchSuspendable, Serializable{
 	
@@ -67,11 +31,11 @@ public class BatchSMSSending extends BatchOperationBase implements IBatchTermina
 	private ServerBatchUtil batchUtil = new ServerBatchUtil();
 	boolean okay = true;
 	
-	public int setParams(String userName, String password, JLbsFilterList smsObjectList)
+	public int setParams(String userName, String password, ArrayList smsObjectList)
 	{
 		m_UserName = userName;
 		m_Password = password;
-		m_SMSObjectList = smsObjectList;
+		m_SMSObjectList = smsObjectList ;
 		return STATUS_COMPLETED;
 	}
 	
@@ -111,19 +75,20 @@ public class BatchSMSSending extends BatchOperationBase implements IBatchTermina
 			{
 				totalCount++;
 				recStartCount++;
-				SMSObject smsObj = (SMSObject) m_SMSObjectList.get(i);
+				CustomBusinessObject smsObj = (CustomBusinessObject) m_SMSObjectList.get(i);
 
-				String phoneNumber = smsObj.getPhoneNumber();
-				String title = smsObj.getTitle();
-				String message = smsObj.getMessage();
+				String phoneNumber = ProjectUtil.getBOStringFieldValue(smsObj, "Phonenumber");
+				String title = ProjectUtil.getBOStringFieldValue(smsObj, "Title");
+				String message = ProjectUtil.getBOStringFieldValue(smsObj, "Message");
 				ArrayList ToList = new ArrayList<String>();
 				ToList.add(phoneNumber);
 				SubmitResponse response = maradit.submit(ToList, message);
-				if (!response.status) {
+				if (response.statusCode != 200 || !response.status) {
 					SMSObject logRec = new SMSObject();
 					logRec.setPhoneNumber(phoneNumber);
 					logRec.setTitle(title);
 					logRec.setError(response.error);
+					logRec.setStatusDesc(response.statusDescription);
 					m_LogList.add(logRec);
 				}
 			}
@@ -160,7 +125,7 @@ public class BatchSMSSending extends BatchOperationBase implements IBatchTermina
 	public int finalizeBatch()
 	{
 
-		Vector logList = getBatchLog(m_LogList, new Object[] { "PhoneNumber", "Title", "Error" });
+		Vector logList = getBatchLog(m_LogList, new Object[] { "PhoneNumber", "Title", "Error", "StatusDesc" });
 		insertBatchExceptions(logList, 0, 1);
 		updateBatchRecCounts(totalCount, recStartCount);
 

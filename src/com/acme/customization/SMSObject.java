@@ -10,6 +10,7 @@ public class SMSObject implements Serializable {
 	private String phoneNumber = "";
 	private String title = "";
 	private String error = "";
+	private String statusDesc = "";
 	
 	public SMSObject() {
 		super();
@@ -47,5 +48,13 @@ public class SMSObject implements Serializable {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public String getStatusDesc() {
+		return statusDesc;
+	}
+
+	public void setStatusDesc(String statusDesc) {
+		this.statusDesc = statusDesc;
 	}
 }
