@@ -1,0 +1,1353 @@
+
+smsSender
+
+Number    Form Name                                                   Version   Base Form                                    Base ModeInherited
+--------------------------------------------------------------------------------------------------------------------------------------------
+1         Status.lfrm                                                 0         -                                            0        true     
+2         MobileSubscribersBrowser.lfrm                               0         -                                            0        true     
+3         MobileSubscriberGroupsBrowser.lfrm                          0         -                                            0        true     
+4         MobileSubscriberGroup.lfrm                                  0         -                                            0        true     
+5         MobileSubscriber.lfrm                                       0         -                                            0        true     
+6         MessageTemplatesBrowser.lfrm                                0         -                                            0        true     
+7         MessageTemplate.lfrm                                        0         -                                            0        true     
+8         BatchSMSSending.lfrm                                        0         -                                            0        true     
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+Contents of Profile: ourProfile (ourProfile.lpro)
+	Customized Nodes on Tree: ourTree (ourTree.ltre)
+		Inherited Nodes
+			Node Name                                         
+			--------------------------------------------------
+			Malzemeler                                        
+			Malzeme Sınıfları                                 
+			Malzeme Sınıfı Ağacı                              
+			Birim Setleri                                     
+			Malzeme Özellikleri                               
+			Malzeme Özellik Grupları                          
+			Malzeme Özellik Setleri                           
+			Malzeme Grup Kodları                              
+			Teslimat Kodları                                  
+			Ek Malzeme Kartları                               
+			Ek Vergi Tanımları                                
+			Tanımlar                                          
+			Malzeme Fişleri                                   
+			Takım Fişleri                                     
+			Ambar Sayım İşlemleri                             
+			Maliyet Dağıtım Fişleri                           
+			TFRS Stok Değerleme Fişleri                       
+			Satış Primleri Dağıtım Fişleri                    
+			Hareketler                                        
+			Otomatik Malzeme ve Hizmet Üretme                 
+			Dönem Kapatma                                     
+			Dönem Geri Alma                                   
+			Malzeme Türü Değiştirme                           
+			Dönem Kapatma Raporu                              
+			Maliyet Üzerinden Fiyatlandırma                   
+			Maliyetlendirme                                   
+			Malzeme Standart Maliyetleri Güncelleme           
+			KDV Oranı Güncelleme                              
+			Malzemelere Barkod Atama                          
+			Ambar Sayımı                                      
+			Otomatik Satış Sipariş Fişi Oluşturma             
+			Standart Malzeme Maliyetleri Güncelleme           
+			Ek Vergi Güncelleme                               
+			Malzeme Hareketleri Standart Maliyet Güncelleme   
+			Envanter Değerleme                                
+			Malzeme Marka Güncelleme                          
+			Malzeme Ortalama Stokta Kalma Süresi Güncelleme   
+			Malzeme Organizasyonel Birim Parametrelerini Güncelleme
+			Üretim Parametreleri Güncelleme                   
+			İşlemler                                          
+			Malzeme ve Hizmet Listesi                         
+			Hareketsiz Malzemeler Listesi                     
+			Birim Setleri Listesi                             
+			Malzeme Birimleri Listesi                         
+			Özellikler Listesi                                
+			Özellik Atamaları Listesi                         
+			Alternatif Malzemeler Listesi                     
+			Ek Malzemeler Listesi                             
+			Muhasebe Hesabı Atamaları Listesi                 
+			Sınıf Bağlantıları Listesi                        
+			Tedarikçi ve Müşteri Atamaları Listesi            
+			Dağıtım Şablonları Listesi                        
+			Ürün Reçetesi Malzeme İlişkisi Listesi            
+			Ek Vergi Listesi                                  
+			Finished Good Child Materials List                
+			Ambar Sayımı İşlemleri Listesi                    
+			Malzeme Özellik Seti Atamaları Listesi            
+			Malzeme Özellik Setleri Listesi                   
+			Malzeme Özellikleri                               
+			Malzeme Özellikleri Grupları                      
+			Malzeme Takımları                                 
+			Malzeme Varyant Listesi                           
+			Kayıt ve Atama Listeleri                          
+			Malzeme Ambar Durum Raporu                        
+			Malzeme Değer Raporu                              
+			Malzeme Ambar Seviye Kontrol Raporu               
+			Malzeme Stok Devir Hızı                           
+			Stok Yaşlandırma Raporu                           
+			Durum Raporları                                   
+			Fiş Listesi                                       
+			Hareket Dökümü                                    
+			Giriş / Çıkış Toplamları                          
+			Malzeme Ekstresi                                  
+			Özet Günlük Ekstre                                
+			ABC Analizi                                       
+			Malzeme / Stok Yeri Dağılımı                      
+			Birimlere Göre Malzeme Toplamları                 
+			Malzeme Sınıfı Toplamları                         
+			Hareket Özel Koduna Göre Giriş / Çıkış Toplamları 
+			Hareket Özel Koduna Göre Malzeme Ekstresi         
+			Hızlı Üretim Fişleri Listesi                      
+			Hızlı Üretim Malzeme Fiş Bağlantıları             
+			Malzeme Fişleri Muhasebe Kodları Listesi          
+			Fiş Dökümleri ve Ekstreler                        
+			İleriye Doğru İzleme                              
+			Geriye Doğru İzleme                               
+			Lot / Seri Hareketleri Dökümü                     
+			Son Kullanım Tarihleri Dökümü                     
+			Lot / Seri Numarası Raporları                     
+			Özet Maliyet Analizi                              
+			Ayrıntılı Maliyet Analizi                         
+			Envanter Raporu                                   
+			Lot / Seri Envanter Raporu                        
+			Stok Yeri Envanter Raporu                         
+			Standart Malzeme Maliyetleri Listesi              
+			Standart Maliyet Atanmamış Malzemeler Listesi     
+			Üretim Maliyet Analizi                            
+			Maliyet Raporları                                 
+			Malzeme Yönetimi                                  
+			Gayrimenkuller                                    
+			Nakil Vasıtaları                                  
+			Ekipmanlar                                        
+			Diğer Varlıklar                                   
+			Varlık Grupları                                   
+			Varlık Özellikleri                                
+			Varlık Belge Türleri                              
+			Sayaçlar                                          
+			Tanımlar                                          
+			Varlık Talepleri                                  
+			Varlık Hareketleri                                
+			Varlık Sayım İşlemleri                            
+			Hareketler                                        
+			Toplu Amortisman / Değerleme Hesaplama            
+			Amortisman Parametrelerini Güncelle               
+			Varlık Enflasyon Düzeltmesi Fark Mahsuplaştırması 
+			Varlık Sayımı                                     
+			Amortisman Kapat                                  
+			Amortisman Kapat Geri Al                          
+			Varlık Standart Maliyetleri Güncelleme            
+			Toplu Varlık Kartı Üretme                         
+			İşlemler                                          
+			Varlık Listesi                                    
+			Varlık Durumu                                     
+			Enflasyon Muhasebesi Sabit Kıymet Durumu          
+			İşletmeden Girişler                               
+			Varlık Mizanı                                     
+			Amortisman Tabloları                              
+			Enflasyon Muhasebesi Amortisman Tabloları         
+			Amortisman Özeti                                  
+			Yeniden Değerleme Özeti                           
+			KDV Listesi                                       
+			Aylık KDV Toplamları                              
+			Varlık Özellikleri Listesi                        
+			Org. Birimler Arası Varlık Transferleri Listesi   
+			Malzeme Varlık İlişkileri Listesi                 
+			Kullanım Talepleri Listesi                        
+			Kullanım Hareketleri Listesi                      
+			Varlık Enflasyon Farkları                         
+			Varlık Alternatif Enflasyon Farkları              
+			Varlık Masraf Dağıtım Raporu                      
+			Varlık Sayım İşlemleri Listesi                    
+			Bağlı Varlıkların Toplam Amortisman Tablosu       
+			Raporlar                                          
+			Varlık Yönetimi                                   
+			Bakım Parametreleri                               
+			Arıza Kodları                                     
+			Durma Nedenleri                                   
+			Aciliyet Durumları                                
+			Bakım Türleri                                     
+			İş Sorumluluk Alanları                            
+			Bakım İş Tanımları                                
+			Bakım Planları                                    
+			Bakım Tanımlamaları                               
+			Tanımlar                                          
+			Bakım Talepleri                                   
+			Bakım Emirleri                                    
+			Sözleşmeli Bakım Fişleri                          
+			Malzeme Talep Fişleri                             
+			Hareketler                                        
+			Toplu Bakım Emri Oluşturma                        
+			Malzeme Talep Fişleri Karşılama                   
+			Malzeme Karşılama Önerileri Gerçekleştirme        
+			İşlemler                                          
+			Bakım Parametreleri Listesi                       
+			Arıza Kodları Listesi                             
+			Durma Nedenleri Listesi                           
+			Aciliyet Durumları Listesi                        
+			Bakım Türleri Listesi                             
+			Bakım İş Tanımları Listesi                        
+			Bakım Planları Listesi                            
+			Bakım Tanımlamaları Listesi                       
+			Kayıt ve Atama Listeleri                          
+			Bakım Değerlendirme Raporu                        
+			Arızi ve Koruyucu Bakım Değerlendirme Raporu      
+			Açık Durumdaki Bakım Emirlerinin Varlıklara Dağılım Raporu
+			Bakım Maliyetleri Raporu                          
+			Varlık Tarihçe Raporu                             
+			Bakım Yerleri Maliyet Raporu                      
+			Bakım Durum Raporu                                
+			Kaynak Süreleri Fiili Standart Karşılaştırma Raporu
+			Bakım Süreleri Fiili Standart Karşılaştırma Raporu
+			Kaynak Çalışma Süreleri Raporu                    
+			Varlıkta Kullanılan Malzemeler Raporu             
+			Sözleşmeli Bakım Raporu                           
+			Malzeme Temin Hareketleri Dökümü                  
+			Detay Raporlar                                    
+			Bakım Yönetimi                                    
+			Talep Fişleri                                     
+			Hareketler                                        
+			Talep Karşılama                                   
+			Talep Önerileri Gerçekleştirme                    
+			İşlemler                                          
+			Talep Listesi                                     
+			Talep Karşılama Raporu                            
+			Raporlar                                          
+			Talep Yönetimi                                    
+			Maliyet Kaynakları                                
+			Maliyet Aktiviteleri                              
+			Maliyet Aktivitesi Türleri                        
+			Maliyet Kaynağı Türleri                           
+			Maliyet Dağıtım Tanımları                         
+			Maliyet Dağıtım Şablonları                        
+			Tanımlar                                          
+			Dağıtılan Maliyetler                              
+			Hareketler                                        
+			Maliyet Yükleme                                   
+			Yüklenen Maliyetleri Geri Alma                    
+			Maliyet Dağıtımı                                  
+			Dağıtılan Maliyetleri Geri Alma                   
+			İşlemler                                          
+			Maliyet Kaynakları Listesi                        
+			Maliyet Aktiviteleri Listesi                      
+			Maliyet Dağıtım Tanımları Listesi                 
+			Maliyet Dağıtım Şablonları Listesi                
+			Yüklenen Maliyetler Listesi                       
+			Dağıtılan Maliyetler Listesi                      
+			Maliyet Aktivite Türleri Listesi                  
+			Maliyet Kaynak Türleri Listesi                    
+			Raporlar                                          
+			Maliyet Muhasebesi                                
+			Tedarikçiler                                      
+			Hizmetler                                         
+			Satınalma İndirimleri                             
+			Satınalma Masrafları                              
+			Satınalma Promosyonları                           
+			Satınalma Fiyatları                               
+			Satınalma Fiyat Listeleri                         
+			Satınalma Kampanyaları                            
+			Satınalma Sevkiyat Planları                       
+			Satınalma Elemanları                              
+			Tedarikçi Değerlendirme Kriterleri                
+			Tedarikçi Değerlendirme Kriter Setleri            
+			Sözleşme Kesinti Türleri                          
+			Tanımlar                                          
+			Satınalma Talepleri                               
+			Satınalma Dosyaları                               
+			Satınalma Teklifleri                              
+			Satınalma Sözleşmeleri                            
+			Satınalma Siparişleri                             
+			Satınalma İrsaliyeleri                            
+			Satınalma Faturaları                              
+			Satınalma Noktası Faturaları                      
+			Sevkiyat İhtar Hareketleri                        
+			Tedarikçi Değerlendirme İşlemleri                 
+			Hareketler                                        
+			Fiyat Güncelleme                                  
+			Toplu İrsaliye Faturalama                         
+			Toplu Sipariş Faturalama                          
+			Toplu İrsaliye Oluşturma                          
+			Satınalma Talepleri Karşılama                     
+			Satınalma Talebi Önerileri Gerçekleştirme         
+			Otomatik Satınalma Siparişi Oluşturma             
+			Satınalma Siparişlerine Kampanya Uygulama         
+			Satınalma Siparişlerini Yeni Malzemelerle Güncelle
+			Toplu Satınalma Faturası Onaylama                 
+			Sevkiyat İhtar Seviye Belirleme İşlemleri         
+			Tedarikçi Değerlendirme                           
+			İşlemler                                          
+			Toplam Satınalma Rakamları                        
+			Ayrıntılı Satınalma Raporu                        
+			Satınalma Fişleri Listesi                         
+			Satınalma Hareketleri Dökümü                      
+			Alımlar Ekstresi                                  
+			Özet Günlük Satınalma Ekstresi                    
+			Aylara Göre Satınalma Dağılımı                    
+			Cari Hesaplara Göre Satınalma Dağılımı            
+			Organizasyonel Birimlere Göre Satınalma Dağılımı  
+			Mal Fazlası Raporu                                
+			AB İçi Satınalma (Intrastat)                      
+			Satınalma Fiyat Listesi                           
+			Tedarikçi Değerlendirme Hareketleri               
+			Malzeme ve Hizmet Raporları                       
+			Satınalma Talepleri Listesi                       
+			Talep Raporları                                   
+			Satınalma Siparişleri Dökümü                      
+			Satınalma Siparişi Hareketleri Dökümü             
+			Ayrıntılı Satınalma Siparişleri Dökümü            
+			Satınalma Siparişi Dağılımı                       
+			Özet Satınalma Siparişi Karşılama                 
+			Satınalma Siparişleri Karşılama Analizi           
+			Ayrıntılı Satınalma Siparişi Karşılama Raporu     
+			Sipariş Raporları                                 
+			Faturalanmamış Alımlar Listesi                    
+			Satınalma Faturaları Dökümü                       
+			Satınalma İndirimleri Dökümü                      
+			Satınalma Masrafları Dökümü                       
+			Satınalma Fiyat Analizi                           
+			Satınalma Toplamları                              
+			Alımlar Tablosu                                   
+			Satınalma Faturaları KDV Raporu                   
+			Fatura Raporları                                  
+			Satınalmada Cari Hesap - Kampanya Puan Durumu     
+			Satınalma Kampanyaları Dökümü                     
+			Satınalma Kampanyaları Listesi                    
+			Kampanya Raporları                                
+			Satınalma Sözleşmeleri Dökümü                     
+			Sözleşme Raporları                                
+			Satınalma Teklifleri Listesi                      
+			Teklif Raporları                                  
+			Satınalma Yönetimi                                
+			Müşteriler                                        
+			Hizmetler                                         
+			Satış İndirimleri                                 
+			Satış Masrafları                                  
+			Satış Promosyonları                               
+			Satış Elemanları                                  
+			Pozisyon Kodları                                  
+			Satış Fiyatları                                   
+			Satış Fiyat Listeleri                             
+			Teslimat Gecikme Cezaları                         
+			Satış Kampanyaları                                
+			Satış Sevkiyat Planları                           
+			Rotalar                                           
+			Potansiyel Müşteriler                             
+			Satış Elemanları                                  
+			Satış Temsilcileri                                
+			Satış Komisyonları                                
+			Sözleşme Kesinti Türleri                          
+			Tanımlar                                          
+			Satış Talepleri                                   
+			Satış Teklifleri                                  
+			Satış Sözleşmeleri                                
+			Satış Siparişleri                                 
+			Satış İrsaliyeleri                                
+			Satış Faturaları                                  
+			Satış Noktası Faturaları                          
+			Satış Temsilcisi Komisyonları                     
+			Paketleme Fişleri                                 
+			Teslimat Gecikme Cezası Talepleri                 
+			Sevkiyat Fişleri                                  
+			Hareketler                                        
+			Fiyat Güncelleme                                  
+			Toplu İrsaliye Faturalama                         
+			Toplu Sipariş Faturalama                          
+			Toplu İrsaliye Oluşturma                          
+			Sipariş Satıcı Güncelleme                         
+			Satış Siparişlerine Kampanya Uygulama             
+			Satış Siparişlerini Yeni Malzemelerle Güncelle    
+			Toplu Satış Faturası Onaylama                     
+			Satış Komisyonları Güncellemesi                   
+			Sevkiyat Planlama                                 
+			İşlemler                                          
+			Toplam Satış Rakamları                            
+			Ayrıntılı Satış Raporu                            
+			Satış Fişleri Listesi                             
+			Satış Hareketleri Dökümü                          
+			Satışlar Ekstresi                                 
+			Özet Günlük Satış Ekstresi                        
+			Aylara Göre Satış Dağılımı                        
+			Cari Hesaplara Göre Satış Dağılımı                
+			Organizasyonel Birimlere Göre Satış Dağılımı      
+			Çeki Listesi                                      
+			Toplama Listesi                                   
+			AB İçi Satış (Intrastat)                          
+			Özet Bildirim                                     
+			Satış Fiyat Listesi                               
+			Malzeme ve Hizmet Raporları                       
+			Satış Siparişleri Dökümü                          
+			Satış Siparişi Hareketleri Dökümü                 
+			Ayrıntılı Satış Siparişleri Dökümü                
+			Satış Siparişleri Dağılımı                        
+			Özet Satış Siparişi Karşılama                     
+			Satış Siparişi Karşılama Analizi                  
+			Ayrıntılı Satış Siparişi Karşılama Raporu         
+			Sales Orders / Material Transactions Connections  
+			Teslimat Gecikme Cezası Talepleri Listesi         
+			Sevkiyat Fişleri Listesi                          
+			Malzeme Çıkış ve Dağılım Raporu                   
+			Sipariş Raporları                                 
+			Faturalanmamış Satışlar Listesi                   
+			Satış Faturaları Dökümü                           
+			Satış İndirimleri Dökümü                          
+			Satış Masrafları Dökümü                           
+			Satış Fiyat Analizi                               
+			Satış Toplamları                                  
+			Satışlar Tablosu                                  
+			Satış Faturaları KDV Raporu                       
+			Fatura Raporları                                  
+			Satışta Cari Hesap - Kampanya Puan Durumu         
+			Satış Kampanyaları Dökümü                         
+			Satış Kampanya Listesi                            
+			Kampanya Raporları                                
+			Satış Sözleşmeleri Dökümü                         
+			Sözleşme Raporları                                
+			Satış Teklifleri Listesi                          
+			Teklif Raporları                                  
+			Satış Yönetimi                                    
+			Ortak Girişimler                                  
+			İhale Belgeleri                                   
+			İhale Yöntemleri                                  
+			Uygunsuzluk Nedenleri                             
+			Teklif İptal Nedenleri                            
+			Tanımlar                                          
+			Açılan İhaleler                                   
+			Girilen İhaleler                                  
+			Alınan Teklifler                                  
+			Verilen Teklifler                                 
+			Hareketler                                        
+			Teklif Avantajlılık Analizi Hesaplama             
+			İşlemler                                          
+			Ortak Girişimler Listesi                          
+			İhale Belgeleri Listesi                           
+			İhale Yöntemleri Listesi                          
+			Uygunsuzluk Nedenleri Listesi                     
+			Teklif İptal Nedenleri Listesi                    
+			Açılan İhale Listesi                              
+			Girilen İhale Listesi                             
+			Alınan Teklifler Listesi                          
+			Verilen Teklifler Listesi                         
+			Yeterlilik Alan Yükleniciler                      
+			İptal Edilen Alınan Teklifler Listesi             
+			İptal Edilen Verilen Teklifler Listesi            
+			Teklif Avantajlılık Analizi                       
+			Malzeme Bazında Teklif Avantajlılık Analizi       
+			Raporlar                                          
+			İhale Yönetimi                                    
+			Akreditifler                                      
+			Tanımlar                                          
+			İthalat Dosyaları                                 
+			Malzeme Dolaşım Fişleri                           
+			Dağıtım Fişleri                                   
+			Millileştirme Fişleri                             
+			Hareketler                                        
+			Masraf Kalemleri Listesi                          
+			Masraf Analiz Raporu                              
+			Malzeme İzleme Raporu                             
+			İthalat İstatistik Raporu                         
+			İthalat Envanter Raporu                           
+			Akreditif Ödemeleri Takip Listesi                 
+			İthalat Seri/Lot Envanter Raporu                  
+			GGB-DSB Eşleme Raporu                             
+			Raporlar                                          
+			İthalat Yönetimi                                  
+			Akreditifler                                      
+			Tanımlar                                          
+			İhracat Dosyaları                                 
+			Dahilde İşleme İzin Belgeleri                     
+			İhraç Kayıtlı Satınalma Faturaları                
+			İhraç Kayıtlı Satış Faturaları                    
+			Hareketler                                        
+			İhracat İstatistik Raporu                         
+			GÇB-DAB Eşleme raporu                             
+			DİİB/GKB Analiz Raporu                            
+			Hammadde Sarfiyat Tablosu                         
+			DİİB/İhracat Raporu                               
+			GKB/İhracat Raporu                                
+			Raporlar                                          
+			İhracat Yönetimi                                  
+			Operasyonlar                                      
+			Rotalar                                           
+			Reçeteler                                         
+			Üretim Parametreleri                              
+			Parametre Grupları                                
+			Durma Nedenleri                                   
+			Ürün Hatları                                      
+			Tanımlar                                          
+			Üretim Emirleri                                   
+			Reçete Mühendislik Değişiklikleri                 
+			Rota Mühendislik Değişiklikleri                   
+			İş Emirleri                                       
+			Malzeme Talep Fişleri                             
+			Hareketler                                        
+			Reçete Revizyon Güncelleme                        
+			Rota Revizyon Güncelleme                          
+			Toplu Reçete Güncelleme                           
+			Üretim Emri Çizelgeleme                           
+			Toplu Standart Reçete Maliyeti Hesaplama          
+			Toplu Planlanan Üretim Emri Maliyeti Hesaplama    
+			Toplu Gerçekleşen Üretim Emri Maliyeti Hesaplama  
+			Ürün Reçeteleri Karşılaştırma                     
+			Malzeme Talep Fişleri Karşılama                   
+			Malzeme Karşılama Önerileri Gerçekleştirme        
+			İşlemler                                          
+			Operasyon Listesi                                 
+			Rota Listesi                                      
+			Rota Revizyonu Listesi                            
+			Rota Mühendislik Değişiklikleri Listesi           
+			Reçete Listesi                                    
+			Reçete Revizyon Listesi                           
+			Seviyelere Göre Reçete Revizyonları Listesi       
+			Reçete Mühendislik Değişiklikleri Listesi         
+			Üretim Parametre Listesi                          
+			Üretim Parametre Grup Listesi                     
+			Durma Nedeni Listesi                              
+			Üretim Hattı Listesi                              
+			Parametre Atama Listesi                           
+			Reçete Revizyonu Malzeme Toplamları Listesi       
+			Seviyelere Göre Malzeme Kullanımları Listesi      
+			Kayıt ve Atama Listeleri                          
+			İş Emri Listesi                                   
+			Üretim Emri Listesi                               
+			Malzeme Fişi Bağlantıları Listesi                 
+			Durma İşlemleri Ekstresi                          
+			Üretim Emri Malzeme Hareket Toplamları Listesi    
+			Üretim Emri Durum Listesi                         
+			Malzeme İhtiyaçları Listesi                       
+			Malzeme Temin Hareketleri Raporu                  
+			Üretim Emri Malzeme Kullanım Raporu               
+			Üretim Emri İşlem Bağlantıları Raporu             
+			Üretim ve İş Emri Raporları                       
+			Standart Reçete Revizyonu Maliyetleri Listesi     
+			Seviyelere Göre Standart Reçete Revizyonu Maliyetleri Listesi
+			Maliyet Raporları                                 
+			Üretim Yönetimi                                   
+			İş Grupları                                       
+			İş Tanımları                                      
+			Proje Türleri                                     
+			Proje Şablonları                                  
+			Durma Nedenleri                                   
+			Dış Kaynaklar                                     
+			Geçici Malzemeler ve Kaynaklar                    
+			Tanımlar                                          
+			Projeler                                          
+			Aktiviteler                                       
+			Malzeme Talep Fişleri                             
+			Hakedişler                                        
+			Hareketler                                        
+			Kaynak Kullanım Çizelgesi                         
+			Toplu Kaynak Kullanım Girişi                      
+			Malzeme Talep Fişleri Karşılama                   
+			Malzeme Karşılama Önerileri Gerçekleştirme        
+			İşlemler                                          
+			Proje Listesi                                     
+			Proje Özeti                                       
+			Proje Maliyet Raporu                              
+			Durma İşlemleri Ekstresi                          
+			Durma Nedenleri Listesi                           
+			Malzeme Fişi Bağlantıları Raporu                  
+			Malzeme Temin Hareketleri Dökümü                  
+			Malzeme/Hizmet İhtiyaçları Listesi                
+			Kaynak Kullanım Raporu                            
+			Kritik Aktiviteler Listesi                        
+			Aktivite Listesi                                  
+			Hakediş Listesi                                   
+			Raporlar                                          
+			Proje Yönetimi                                    
+			Bütçe Kalemleri                                   
+			Bütçe Parametreleri                               
+			Hesaplama ve Kontrol Kriterleri                   
+			Tanımlar                                          
+			Bütçeler                                          
+			Ödenek Talepleri                                  
+			Ödenek Tahsisleri                                 
+			Hareketler                                        
+			Bütçe Değerleri Toplu Hesaplama                   
+			Bütçeye Proje Maliyetleri Aktarma                 
+			Bütçe Gerçekleşen İşlemler Toplu Güncelleme       
+			Bütçe Parametre Değerleri Toplu Güncelleme        
+			İşlemler                                          
+			Hesaplama ve Kontrol Kriterleri Listesi           
+			Bütçe Kalemleri Listesi                           
+			Bütçe Parametreleri Listesi                       
+			Bütçe Listesi                                     
+			Ödenek Talep Listesi                              
+			Ödenek Takip Listesi                              
+			Bütçe Gerçekleşen İşlemler Listesi                
+			Raporlar                                          
+			Bütçe Yönetimi                                    
+			Cari Hesaplar                                     
+			Ödeme ve Tahsilat Planları                        
+			Ödeme ve Tahsilat Planı Grupları                  
+			Çekler ve Senetler                                
+			Çek Defterleri                                    
+			Banka Şubeleri                                    
+			Banka Hesapları                                   
+			Kasalar                                           
+			Dış Ticaret İş Kolları                            
+			Teminat Araçları                                  
+			Teminatlar                                        
+			Krediler                                          
+			Nakit Tahminleme Şablonları                       
+			Nakit Tahminleme Kriterleri                       
+			Mali Yatırımlar                                   
+			Risk Tanımları                                    
+			Ek Faiz Oranları                                  
+			Tanımlar                                          
+			Cari Hesap Fişleri                                
+			Çek ve Senet Bordroları                           
+			Banka Fişleri                                     
+			Kasa İşlemleri                                    
+			Teminat Mektubu Fişleri                           
+			Leasing Kayıtları                                 
+			Cari Hesap Hareketleri                            
+			Banka Hareketleri                                 
+			Kasa Hareketleri                                  
+			Ödeme/Tahsilat Hareketleri                        
+			Cari Hesap İhtar Hareketleri                      
+			Nakit Tahminleme Hareketleri                      
+			Kredi Geri Ödeme Hareketleri                      
+			Teminat Komisyon Ödeme Hareketleri                
+			Ödeme Emirleri                                    
+			Hareketler                                        
+			Cari Hesap Kur Farkı Hesaplama                    
+			Banka Kur Farkı Hesaplama                         
+			Kasa Kur Farkı Hesaplama                          
+			Cari Hesap Risk Toplamları Güncelleme             
+			Cari Hesap İhtar Seviye Belirleme İşlemleri       
+			Cari Hesap İhtar Gönder/İptal İşlemleri           
+			Cari Hesap Borç Kapama İşlemleri                  
+			Toplu Mesaj Gönderme                              
+			Personel Ödemeleri Toplu Banka / Kasa İşlemi      
+			Nakit Tahminleme                                  
+			Borç/Alacak Kapatma                               
+			Borç/Alacak İptali                                
+			Kredi Kartı Tahsilatı                             
+			Kurum Kredi Kartı Ödemesi                         
+			Kredi Faiz Oranları Güncelleme                    
+			E-Fatura Bilgileri Güncelleme                     
+			İşlemler                                          
+			Cari Hesap Listesi                                
+			Adres Listesi                                     
+			Borç / Alacak Durum Raporu                        
+			Borç / Alacak Toplamları                          
+			Borçlu Cari Hesaplar                              
+			Alacaklı Cari Hesaplar                            
+			Cari Hesap Risk Durumu                            
+			Kara Liste                                        
+			Cari Hesap Özeti                                  
+			Cari Hesap / İşyeri Dağılımı                      
+			Cari Hesap Döviz Toplamları                       
+			Cari Hesap Hareket Dökümü                         
+			Cari Hesap Ekstresi                               
+			Cari Hesap Fiş Listesi                            
+			Cari Hesap Sevkiyat Adresleri Listesi             
+			Fiktif Kur Farkı Raporu                           
+			İhtar Tarihçesi Raporu                            
+			Ülkelere Göre Alacak Dökümü                       
+			Cari Hesap Raporları                              
+			Ödeme Planı Listesi                               
+			Tahsilat Listesi                                  
+			Ödeme Listesi                                     
+			Ayrıntılı Tahsilat Listesi                        
+			Ayrıntılı Ödeme Listesi                           
+			Kapanmamış İşlemler Dökümü                        
+			Kapanmamış İşlemler Özeti                         
+			Borç Takip Raporu                                 
+			Özet Adat Raporu                                  
+			Borç Yaşlandırma Raporu                           
+			Borç Dağılım Raporu                               
+			Detaylı Ortalama Vade Raporu                      
+			Satışlar ve Alımlar Vade Dağılımı Raporu          
+			Dönemsel Satışlar Raporu                          
+			Tahsilat Analizi Raporu                           
+			Ödeme ve Tahsilat Raporları                       
+			Müşteri Çek ve Senetleri                          
+			Firmanın Kendi Çek ve Senetleri                   
+			Özet Bordro Dökümü                                
+			Ayrıntılı Bordro Dökümü                           
+			Reeskont Raporu                                   
+			Reeskont Raporu (Firmanın Kendi Çek / Senetleri)  
+			Çek ve Senet Yaşlandırma Raporu                   
+			Kambiyo Senetleri Defteri                         
+			Çek ve Senet Raporları                            
+			Banka Şubeleri Listesi                            
+			Banka Durum Raporu                                
+			Banka Hesap Durum Raporu                          
+			Hesap Detayına Göre Dağılım                       
+			Banka Faiz Oranları                               
+			Banka Özet Faiz Raporu                            
+			Banka Ayrıntılı Faiz Raporu                       
+			Banka Hareketleri Dökümü                          
+			Banka Ekstresi                                    
+			Banka Hesap Ekstresi                              
+			Banka Fiş Listesi                                 
+			Kredi Kartı Hareketleri Listesi                   
+			Kurum Kredi Kartı Ekstresi                        
+			Kredi Listesi                                     
+			Kredi Geri Ödeme Hareketleri Listesi              
+			Teminat Komisyon Ödeme Hareketleri Listesi        
+			Banka Raporları                                   
+			Kasa Listesi                                      
+			Kasa Hesap Özeti                                  
+			Kasa Ekstresi                                     
+			Kasa Döviz Toplamları                             
+			Kasa Raporları                                    
+			Günlük Kur Listesi                                
+			Çapraz Kur Listesi                                
+			Döviz Raporları                                   
+			KDV Raporu                                        
+			Serbest Meslek Makbuzları KDV Raporu              
+			İşyeri Durum Raporu                               
+			Genel Durum Raporu                                
+			Teminat İzleme Raporu                             
+			Cari Hesap Muhasebe Mutabakat Raporu              
+			Sigorta Durum Raporu                              
+			Finansman Raporu                                  
+			Özet Satış Analizi                                
+			Banka Muhasebe Mutabakat Raporu                   
+			Kasa Muhasebe Mutabakat Raporu                    
+			Leasing Kayıtları Listesi                         
+			Diğer Raporlar                                    
+			Finans Yönetimi                                   
+			Ana Hesap Planı                                   
+			İkinci Hesap Planı                                
+			Üçüncü Hesap Planı                                
+			Konsolide Ana Hesap Planı                         
+			Konsolide İkinci Hesap Planı                      
+			Konsolide Üçüncü Hesap Planı                      
+			Konsolidasyon Kuralları (Ana Hesap Planı)         
+			Konsolidasyon Kuralları (İkinci Hesap Planı)      
+			Konsolidasyon Kuralları (Üçüncü Hesap Planı)      
+			Muhasebe Bağlantı Grupları                        
+			Ödemede İndirimler                                
+			Satınalma İndirimleri                             
+			Satış İndirimleri                                 
+			Satınalma Masrafları                              
+			Satış Masrafları                                  
+			Satınalma Promosyonları                           
+			Verilen Promosyonlar                              
+			Birim/İşyeri Muhasebe Kodları                     
+			Satınalma KDV                                     
+			Satış KDV                                         
+			Satınalma İade KDV                                
+			Satış İade KDV                                    
+			Satınalma Tevkifat KDV                            
+			Ödeme Tevkifat KDV                                
+			AB Satınalma KDV                                  
+			AB Satış KDV                                      
+			Banka İşlemleri KDV                               
+			İhraç Kayıtlı Vergi                               
+			Satınalma Fiyat Farkı Faturası KDV Muhasebe Kodları
+			Satış Fiyat Farkı Faturası KDV Muhasebe Kodları   
+			KDV                                               
+			Stopaj                                            
+			SSDF                                              
+			Borsa                                             
+			Komisyon                                          
+			Komisyon KDV                                      
+			Bağ-Kur                                           
+			Ek-1                                              
+			Ek-2                                              
+			Ek-3                                              
+			Ek-4                                              
+			Ek-5                                              
+			Müstahsil                                         
+			Eldeki Çekler                                     
+			Kesilen Çekler                                    
+			Eldeki Senetler                                   
+			Borç Senetleri                                    
+			Protestolu Senetler                               
+			Karşılıksız Çekler                                
+			Provizyon Masrafları                              
+			Protesto Masrafları                               
+			Çek / Senet İşlemleri                             
+			Teminat Mektupları                                
+			Nakit Tahsilat ve Ödeme Kasası                    
+			Kur Farkı Alacak Hesabı                           
+			Kur Farkı Borç Hesabı                             
+			Satış Vade Farkı                                  
+			Alınan Vade Farkı                                 
+			Ek Masraflar                                      
+			Euro Kur Farkı Hesabı                             
+			Takipten Düşülecek Borç / Alacak Hesabı           
+			Üretim Katma Değeri                               
+			Satınalma Ek Vergi                                
+			Satınalma İade Ek Vergi                           
+			Satış Ek Vergi                                    
+			Satış İade Ek Vergi                               
+			Sarf Ek Vergi                                     
+			Fire Ek Vergi                                     
+			Kullanıcı Tanımlı Çıkış Fişleri                   
+			İhraç Kayıtlı Ek Vergi                            
+			Ek Vergi                                          
+			Gerçekleşmemiş Faiz Geliri                        
+			Reeskont Faiz Geliri                              
+			Finansal Kiralama Gideri                          
+			Finansman Gideri                                  
+			Genel Yönetim Giderleri                           
+			TFRS Muhasebe Kodları                             
+			Haklar                                            
+			Ertelenmiş Finansal Kiralama Borçlanma Maliyetleri (Kısa)
+			Ertelenmiş Finansal Kiralama Borçlanma Maliyetleri (Uzun)
+			Finansal Kiralama İşlemlerinden Borçlar (Kısa)    
+			Finansal Kiralama İşlemlerinden Borçlar (Uzun)    
+			Leasing                                           
+			Gelecek Aylara Ait Giderler                       
+			Gelecek Yıllara Ait Giderler                      
+			Gelecek Aylara Ait Gelirler                       
+			Gelecek Yıllara Ait Gelirler                      
+			Hizmet Gelir ve Giderleri                         
+			Muhasebe Bağlantı Kodları                         
+			Bilanço Tablosu                                   
+			Kar / Zarar Tablosu                               
+			Satışların Maliyeti Tablosu                       
+			Fon Akım Tablosu                                  
+			Nakit Akış Tablosu                                
+			Kar Dağıtım Tablosu                               
+			Net Parasal Pozisyon Kar / Zarar Tablosu          
+			KDV Beyannamesi                                   
+			Muhtasar Beyanname                                
+			KDV Beyannamesi (2)                               
+			Geçici Vergi Beyannamesi                          
+			Satış Vergisi Beyannamesi                         
+			Mali Tablolar                                     
+			Muhasebe İşlem Tanımları                          
+			Hesap Dağıtım Şablonları                          
+			Yansıtma Şablonları                               
+			E-Beyannameler                                    
+			E-Defterler                                       
+			Tanımlar                                          
+			Muhasebe Fişleri (Ana Hesap Planı)                
+			Muhasebe Fişleri (İkinci Hesap Planı)             
+			Muhasebe Fişleri (Üçüncü Hesap Planı)             
+			Onaylı Muhasebe Fişleri (Ana Hesap Planı)         
+			Onaylı Muhasebe Fişleri (İkinci Hesap Planı)      
+			Onaylı Muhasebe Fişleri (Üçüncü Hesap Planı)      
+			Hareketler                                        
+			Yevmiye Madde Numaralama                          
+			Kur Farkı Hesaplama                               
+			Hesaplar Arası Aktarım                            
+			Hesap Planları Arası Aktarım                      
+			Yansıtma                                          
+			Giriş / Çıkış Hareketlerini İlişkilendir          
+			Fiyat Endeksi Atama                               
+			Amortisman ve Değerleme İşlemlerini Muhasebeleştir
+			Bordro Tahakkuklarını Muhasebeleştir              
+			Harcırah Kayıtlarını Muhasebeleştir               
+			Kıdem ve İzin Karşılıklarını Muhasebeleştir       
+			Toplu Hesap Dağıtımı                              
+			Hesap Tipi Güncelleme                             
+			Enflasyon Farklarını Muhasebeleştir               
+			Muhasebe Fişlerini Onayla                         
+			Muhasebe Fişlerinin Onayını Geri Al               
+			SMM Muhasebe Fişlerini Toplu Oluştur              
+			Konsolidasyon Verilerini Güncelle                 
+			Kaynak İşlemlerin Muhasebe Fişlerini Oluştur      
+			Mali Dönemi Kapat                                 
+			Hizmet Gelir ve Giderlerini Dağıt                 
+			İşlemler                                          
+			Muhasebe Hesap Listesi                            
+			Muhasebe Hesap Özeti                              
+			Muhasebe Hesabı / Döviz Toplamları                
+			Muhasebe Hesabı / Analiz Boyutu Dağılımı          
+			Genel Mizan                                       
+			Aylık Mizan                                       
+			İki Tarih Arası Mizan                             
+			Devirli Aylık Mizan                               
+			Devirli İki Tarih Arası Mizan                     
+			Hesaplararası Hareket Toplamları - Tablo          
+			Hesaplararası Hareket Toplamları - Döküm          
+			Bordro Tahakkukları Muhasebeleştirme Raporu       
+			Hesap Durumları                                   
+			Özet Fiş Listesi                                  
+			Ayrıntılı Fiş Listesi                             
+			Muavin Defter                                     
+			Defter-i Kebir                                    
+			Kasa Defteri                                      
+			Yevmiye Defteri                                   
+			Yevmiye Defteri (AB)                              
+			Enflasyon Düzeltme Defteri                        
+			Defter ve Dökümler                                
+			Analiz Boyutu Listesi                             
+			Analiz Boyutu Hesap Özeti                         
+			Analiz Boyutu / Hesap Dağılımı                    
+			Analiz Boyutu Döviz Toplamları                    
+			Analiz Boyutu Durum Raporu                        
+			Analiz Boyutu Ekstresi                            
+			Analiz Boyutu ve Proje Hareketleri                
+			Proje Durum Raporu                                
+			Proje Ekstresi                                    
+			Analiz Boyutu ve Proje Raporları                  
+			Muhasebe Bağlantı Kodları Dökümü                  
+			Muhasebe Bağlantı Grupları Dökümü                 
+			Bağlantı Raporları                                
+			Genel Muhasebe                                    
+			Personel Kartları                                 
+			Eski Personel Kartları                            
+			Çalışan Grupları                                  
+			Kaynak Havuzu Atama Kuralları                     
+			Kaynak Havuzları                                  
+			Tanımlar                                          
+			İşe Giriş Hareketleri                             
+			İşten Çıkış Talepleri                             
+			İşten Çıkış Hareketleri                           
+			Atama Talepleri                                   
+			Görevlendirme Talepleri                           
+			Geçici Görevlendirme Talepleri                    
+			Puantaja Esas Bilgi Satırları                     
+			Sınav/Anket Kayıtları                             
+			Kaynak Havuzu Atamaları                           
+			Personel Faaliyet Çizelgesi                       
+			E-Hizmet Belgeleri                                
+			Hareketler                                        
+			Toplu Ücret Ayarlama                              
+			Excel'den Ücret Aktarımı                          
+			Personel Standart Maliyetleri Güncelleme          
+			Toplu Terfi Uygulama                              
+			Personel Bilgileri Güncelleme                     
+			Toplu İşten Çıkarma                               
+			Yabancı Dil Düzey Düşürme                         
+			Puantaja Esas Bilgileri Güncelleme                
+			Excel'den Puantaja Esas Bilgi Aktarma             
+			Personel Ücret Parametreleri Güncelleme           
+			E-Hizmet Belgesi Oluşturma                        
+			Kaynak Havuzu Kuralları Uygulama                  
+			Toplu Mesaj Gönderme                              
+			Personel Pozisyon/Rol Uygunlukları Hesaplama      
+			İşlemler                                          
+			Personel Listesi                                  
+			Atamalar Listesi                                  
+			Atama Talepleri Listesi                           
+			Kanuni Değişiklikler Listesi                      
+			Personel Tarihçeleri Listesi                      
+			Hak ve Ödemeler Listesi                           
+			Puantaja Esas Bilgiler Listesi                    
+			Görevlendirmeler Listesi                          
+			Görevlendirme Talepleri Listesi                   
+			Geçici Görevlendirmeler Listesi                   
+			Geçici Görevlendirme Talepleri Listesi            
+			İntibak Bilgileri Raporu                          
+			Hizmet Bilgileri İcmali Raporu                    
+			Personel Terfi Listesi                            
+			Nüfus Bilgileri Dökümü                            
+			Sağlık Bilgileri Raporu                           
+			Personel Yetkinlikleri Raporu                     
+			Personel Rolleri Listesi                          
+			Personel Eğitim Bilgileri Listesi                 
+			Sınav/Anket Kayıtları Raporu                      
+			Personel Uygunluk Analizi                         
+			Personel Devir Raporu                             
+			Performans Değerlendiricileri Raporu              
+			Personel Varlık Ataması Raporu                    
+			Raporlar                                          
+			Ek-1                                              
+			Sigortalı İşe Giriş Bildirgesi                    
+			Dizi Pusulası                                     
+			Kimlik Bildirme Belgesi                           
+			İşe Giriş Hareketleri Listesi                     
+			İşe Giriş Bildirgeleri                            
+			Ek-2                                              
+			Kimlik Bildirme Belgesi                           
+			İşten Çıkış Talepleri Listesi                     
+			İşten Çıkış Hareketleri Listesi                   
+			SGK İşten Ayrılış Bildirgesi                      
+			İşten Çıkış Bildirgeleri                          
+			İş Gücü Çizelgesi                                 
+			İşten Ayrılma Bildirgesi                          
+			İŞ-KUR Bildirgeleri                               
+			Personel Yönetimi                                 
+			Hesap Şablonları                                  
+			Puantaj Öndeğerleri                               
+			Tanımlar                                          
+			Puantajlar                                        
+			Puantaj Satırları                                 
+			Dönem Bilgileri                                   
+			Aylık Prim ve Hizmet Belgeleri                    
+			Bordro Ödemeleri                                  
+			Hareketler                                        
+			Puantaj Kartları Hesaplama                        
+			Fark Puantajları Hesaplama                        
+			İade Puantajları Hesaplama                        
+			Emsal Maaş Hesaplama                              
+			Fiili / İtibari Hizmet Zammı Hesaplama            
+			PDKS'den Puantaja Veri Aktarımı                   
+			Excel'den Puantaja Veri Aktarımı                  
+			Aylık Prim ve Hizmet Belgesi Oluşturma            
+			Bordro Ödemeleri Oluştur                          
+			İşlemler                                          
+			Bordro Zarfı                                      
+			Tahakkuk Listesi                                  
+			Tahakkuk Toplamları                               
+			Mesai Bilgileri Listesi                           
+			Dönemsel Ödeme/Kesinti Listesi                    
+			SGK Primleri Listesi                              
+			Kıdem / İhbar Yükü                                
+			Banka Ödeme Emri                                  
+			Puantaj Bilgileri Listesi                         
+			Fark Bilgileri Listesi                            
+			İade Puantajları Raporu                           
+			Sendika Aidat Listesi                             
+			Asgari Geçim İndirimine Ait Bordro                
+			AR-GE Ücret Durum Raporu                          
+			Raporlar                                          
+			SGK Eksik Çalışma Günleri                         
+			Sosyal Sigorta Bildirgeleri                       
+			Emekli Sandığı Kesenek Oranları                   
+			Emekli Sandığı Aylık Kesenek Listesi              
+			Emekli Sandığı Yıllık Şahıs İcmali                
+			Fiili / İtibari Hizmet Zammı İcmal Bordrosu       
+			Emekli Sandığı Bildirgeleri                       
+			Ücret Yönetimi                                    
+			Borç Tanımları                                    
+			Alacak Tanımları                                  
+			Tanımlar                                          
+			Borç Talepleri                                    
+			Borç Kayıtları                                    
+			Alacak Kayıtları                                  
+			Harcırah Kayıtları                                
+			Hareketler                                        
+			Borç / Avans Üretme                               
+			Alacak Üretme                                     
+			İşlemler                                          
+			Borç Tanımları Listesi                            
+			Borç Talepleri Listesi                            
+			Borç Kayıtları Listesi                            
+			Borç Dağılımı Raporu                              
+			Personel Borç Dağılımı Raporu                     
+			Borç Faizleri Raporu                              
+			Banka Avans Ödemesi                               
+			Alacak Tanımları Listesi                          
+			Alacak Kayıtları Listesi                          
+			Alacak Dağılımı Raporu                            
+			Personel Alacak Dağılımı Raporu                   
+			Personel Borç Alacak Tablosu                      
+			Harcırah Kayıtları Raporu                         
+			Harcırah Tahakkuk Bordroları                      
+			İki Tarih Arası Harcırah Raporu                   
+			Raporlar                                          
+			Borç / Alacak Yönetimi                            
+			İzin Tanımları                                    
+			İzin Grupları                                     
+			Kritik Gruplar                                    
+			Tanımlar                                          
+			İzin Talepleri                                    
+			İzin Hareketleri                                  
+			Hareketler                                        
+			Toplu İzin Planlama                               
+			İzin Devri Hesaplama                              
+			İşlemler                                          
+			İzin Tanımları Listesi                            
+			İzin Grup Tanımları Listesi                       
+			Kritik Grup Tanımları Listesi                     
+			İzin Talepleri Listesi                            
+			İzin Hareketleri Listesi                          
+			İzin Defteri                                      
+			İzin Durum Raporu                                 
+			Raporlar                                          
+			İzin Yönetimi                                     
+			Eğitim Tanımları                                  
+			Ders Tanımları                                    
+			Eğitmenler                                        
+			Eğitim Yerleri                                    
+			Eğitim Kurumları                                  
+			Değerlendirme Kriterleri                          
+			Tanımlar                                          
+			Eğitim Talepleri                                  
+			Eğitim Kayıtları                                  
+			Hareketler                                        
+			Eğitim Talep Planlama                             
+			İşlemler                                          
+			Eğitim Tanımları Raporu                           
+			Eğitim Gereksinimleri Raporu                      
+			Eğitim Yerleri Raporu                             
+			Eğitmen Tanımları Raporu                          
+			Personel Eğitim İhtiyaçları Raporu                
+			Eğitim Talepleri Listesi                          
+			Eğitim Kayıtları Raporu                           
+			Eğitim Kurumları Raporu                           
+			Eğitim Değerlendirme Raporu                       
+			Eğitim Maliyetleri Raporu                         
+			Eğitim Sınav ve Anket Raporu                      
+			Raporlar                                          
+			Eğitim Yönetimi                                   
+			Başvurular                                        
+			Tanımlar                                          
+			Kadro Talepleri                                   
+			Başvuru Projeleri                                 
+			Sınav/Anket Kayıtları                             
+			Pozisyon Aday Analizi                             
+			Hareketler                                        
+			Açık Kadro Planlama                               
+			Toplu Mektup Gönderme/Üretme                      
+			Başvuru Pozisyon/Rol Uygunlukları Hesaplama       
+			İşlemler                                          
+			Başvuru Kartları Listesi                          
+			Proje Değerlendirme Raporu                        
+			Proje Duyuruları Raporu                           
+			Proje Görüşmeleri Raporu                          
+			Proje Sınav ve Anketleri Raporu                   
+			Proje Maliyetleri Raporu                          
+			Yanıt Mektubu Raporu                              
+			Kayıtlı Mektuplar Listesi                         
+			Kadro Talepleri Listesi                           
+			Raporlar                                          
+			Eleman Seçme ve Yerleştirme                       
+			Senaryo Kanun Parametreleri                       
+			Performans Dönemleri                              
+			Senaryo Personel Kartları                         
+			Performans Hedefleri                              
+			Dış Müşteri Tanımları                             
+			Ödül ve Ceza Tanımları                            
+			Hedef Grupları                                    
+			Performans Öndeğerleri                            
+			Tanımlar                                          
+			Senaryolar                                        
+			Performans Kayıtları                              
+			Hareketler                                        
+			Ödül / Ceza Uygulama                              
+			Performans Kaydı Üretme                           
+			Toplu Performans Hesaplama                        
+			Personel Yetkinlik Güncelleme                     
+			İşlemler                                          
+			Ücret Senaryo Sonuçları                           
+			Performans Dönemleri Listesi                      
+			Performans Hedefleri Listesi                      
+			Ödül / Ceza Tanımları Listesi                     
+			Performans Kayıtları Raporu                       
+			Performans Değerlendirmeleri Özeti                
+			Personel Ödül / Ceza Bilgileri Listesi            
+			Performans Analiz Raporu                          
+			Raporlar                                          
+			Performans Yönetimi                               
+			Rol Tanımları                                     
+			Derece / Basamak Tanımları                        
+			Kadro Tanımları                                   
+			Kadro Kartları                                    
+			İş Aileleri                                       
+			Kariyer Yolları                                   
+			Tanımlar                                          
+			Kariyer Planları                                  
+			Kariyer Önerileri                                 
+			Kurumsal Analiz                                   
+			Bireysel Kariyer Planlama                         
+			Hareketler                                        
+			İş Aileleri Listesi                               
+			Yedek Planları Listesi                            
+			Kariyer Planları Listesi                          
+			Kariyer Önerileri Listesi                         
+			Kariyer Yolları                                   
+			Kariyer Raporları                                 
+			Organizasyon / Görev Dağılımı                     
+			Kadro Tanımları Listesi                           
+			Rol Tanımları Listesi                             
+			Derece / Basamak Tanımları Listesi                
+			Kadro Kartları Listesi                            
+			Kurumsal Raporlar                                 
+			Kariyer Yönetimi                                  
+			Tanımlar                                          
+			Hareketler                                        
+			Raporlar                                          
+			Ücret Senaryoları Yönetimi                        
+			E-posta Şablonları                                
+			Görev Şablonları                                  
+			Kriter İfade Şablonları                           
+			Tetikleyiciler                                    
+			Zamanlanmış Görevler                              
+			Görev Tanımları                                   
+			Süreç Alanları                                    
+			Süreçler                                          
+			Süreç Hata Yönetimi Kayıtları                     
+			Süreç Kullanıcıları                               
+			Süreç Kullanıcı Belirteçleri                      
+			Süreç Tanımları                                   
+			Tanımlar                                          
+			Süreç İzleme                                      
+			Görev İzleme                                      
+			İzleme                                            
+			Süreç Yönetimi                                    
+			Fatura Eşleştirme Tabloları                       
+			Tanımlar                                          
+			Online Fatura Aktarımı                            
+			İşlemler                                          
+			Turkcell Hizmetleri                               
+			Tanımlı Malzeme Fişi Türleri                      
+			Malzeme Yönetimi                                  
+			Varlık Türleri                                    
+			Varlık Kısmı Türleri                              
+			(Nakil Vasıtaları) Yakıt Türleri                  
+			(Nakil Vasıtaları) Motor Türleri                  
+			(Nakil Vasıtaları) Kasa Türleri                   
+			Varlık Yönetimi                                   
+			Tanımlı Satınalma İrsaliyesi Türleri              
+			Satınalma Yönetimi                                
+			Tanımlı Satış İrsaliyesi Türleri                  
+			Satış Yönetimi                                    
+			Cari Hesap Fişi Türleri                           
+			Banka Fişi Türleri                                
+			Finans                                            
+			Muhasebe Fişi Türleri                             
+			Genel Muhasebe                                    
+			Personel Statüleri                                
+			Atama Türleri                                     
+			Erişim Türleri                                    
+			Aile Bireyi Türleri                               
+			Sağlık Kontrol Türleri                            
+			Özür Grubu Türleri                                
+			Öğrenim Durumu Türleri                            
+			Ehliyet Sınıfı Türleri                            
+			Özel Durum Türleri                                
+			Genel Bilgi Türleri                               
+			Giyim Bilgisi Türleri                             
+			Şirket İçi Yakınlık Türleri                       
+			Ödül ve Ceza Türleri                              
+			Mecburi Hizmet Sebepleri                          
+			Personel Kartı Metin Alan Başlıkları              
+			Personel Kartı Sayısal Alan Başlıkları            
+			Personel Kartı Tarih Alan Başlıkları              
+			Rol Türleri                                       
+			Nitelik Türleri                                   
+			Zorunlu Belge Türleri                             
+			Personel Yönetimi                                 
+			Eğitim Şekilleri                                  
+			Eğitim Gereksinim Grup Türleri                    
+			Eğitim Gereksinim Türleri                         
+			Eğitim Türleri                                    
+			Eğitim Yönetimi                                   
+			Mektup Türleri                                    
+			Başvuru Maliyet Türleri                           
+			Başvuru Şekilleri                                 
+			Başvuru Proje Aşama Türleri                       
+			Başvuru Görüşmesi Sonuçları                       
+			Başvuru Görüşmesi Türleri                         
+			Başvuru Değerlendirme Sonuçları                   
+			Eleman Seçme ve Yerleştirme                       
+			Yuvarlama Tabanı Türleri                          
+			Bordro Türleri                                    
+			Yan Ödeme Puan Türleri                            
+			SGK İndirim Kanunu Türleri                        
+			SGK Belge Türleri                                 
+			Puantaj Kartı Metin Alan Başlıkları               
+			Puantaj Kartı Sayısal Alan Başlıkları             
+			Puantaj Kartı Tarih Alan Başlıkları               
+			Ücret Yönetimi                                    
+			Masraf Türleri                                    
+			Borç Avans Yönetimi                               
+			İzin Türleri                                      
+			İzin Yönetimi                                     
+			Bütçe Türleri                                     
+			Analiz Boyutu Türleri                             
+			Para Birimleri                                    
+			Ticaret Türleri                                   
+			Teklif Türleri                                    
+			Genel                                             
+			Qualification Types                               
+			Job Definition Types                              
+			Türler                                            
+			Markalar                                          
+			Yeniden Değerleme Oranları                        
+			Dönemler                                          
+			İhtar Seviyeleri                                  
+			Sevkiyat Adresleri                                
+			Fatura Adresleri                                  
+			Mal Gönderim Şekilleri                            
+			Mal Gönderim Nedenleri                            
+			Sözleşme ve Teklif Aşamaları                      
+			Talep Karşılama Ambarları                         
+			Fiyat Grupları                                    
+			Nihai Müşteriler                                  
+			Önem Dereceleri                                   
+			Örnekleme Tabloları                               
+			Çapraz Hareket Kuralları                          
+			Malzeme Transfer Fişi Giriş Ambarları             
+			Tevkifat Limitleri                                
+			Ticari Sistem                                     
+			Self Servis Yetki Grubu Tanımları                 
+			Yan Hak Tanımları                                 
+			Yabancı Dil Tanımları                             
+			Okul Tanımları                                    
+			Okul Bölüm Tanımları                              
+			Özel Gün Tanımları                                
+			Zorunlu Belge Tanımları                           
+			Yer Tanımları                                     
+			Unvan Tanımları                                   
+			Tablo Tanımları                                   
+			Sınav/Anket Tanımları                             
+			Sendika Tanımları                                 
+			Yabancı Dil Düzeyi Tanımları                      
+			Terfi Kanun Maddeleri                             
+			Kıdem/İhbar Tazminatı Grupları                    
+			Ücret Tabloları                                   
+			Ödeme Grupları                                    
+			Organizasyon Şeması                               
+			Nitelikler                                        
+			Bordro Kodu Tanımları                             
+			Meslek Kodları                                    
+			İstihdam Teşvik Yasaları                          
+			İnsan Kaynakları                                  
+			Analiz Boyutları                                  
+			Özel Kodlar                                       
+			Yetki Kodları                                     
+			Revizyon Numarası Şablonları                      
+			Form Tanımlayıcı                                  
+			Zamanlanmış Görevler                              
+			E-imza Veri Tanımları                             
+			Genel                                             
+			Nitelik Tanımları                                 
+			Demirbaş Tanımları                                
+			Tablo Bilgi Girişi ve Güncelleme                  
+			Masraf Merkezi Tanımları                          
+			Tanımlar                                          
+			Personel Kartı Öndeğerleri                        
+			Personel Yönetimi                                 
+			Bordro Kanun Parametreleri                        
+			Bordro Çalışma Parametreleri                      
+			Mesailer                                          
+			Ek Mesailer                                       
+			Sosyal Yardımlar                                  
+			Ek Ödemeler                                       
+			Ek Kesintiler                                     
+			Ücret Parametreleri                               
+			Mesailer                                          
+			Ek Mesailer                                       
+			Sosyal Yardımlar                                  
+			Ek Ödemeler                                       
+			Ek Kesintiler                                     
+			Kurum Ücret Parametreleri                         
+			Ücret Grupları                                    
+			Ek Yasal Kesinti Parametreleri                    
+			Ücret Yönetimi                                    
+			Başvuru Kartı Öndeğerleri                         
+			Mektup Öndeğerleri                                
+			Eleman Seçme ve Yerleştirme                       
+			Öndeğer ve Parametreler                           
+			Döviz Kullanımı                                   
+			Genel                                             
+			Öndeğer ve Parametreler                           
+			Onaylama                                          
+			Kurumlara Parametre Aktarma                       
+			Kur Güncelleme                                    
+			Kayıt Numaralama                                  
+			İşlemler                                          
+			Yabancı Dil Tanımları Listesi                     
+			Okul Tanımları Listesi                            
+			Okul Bölüm Tanımları Listesi                      
+			Unvan Tanımları Listesi                           
+			Ücret Parametreleri Listesi                       
+			Kurum Ücret Parametreleri Listesi                 
+			Kullanıcı Tanımlı Tablo Dökümü                    
+			Adres Listesi                                     
+			Raporlar                                          
+			Sistem Ayarları                                   
+
+		New Nodes
+			Resource Type       Node Name                                         Form\Report Name                                  
+			-------------------------------------------------------------------------------------------------------------------------
+			Form                Mesaj Şablonları                                  Forms/MessageTemplatesBrowser.lfrm                
+			Form                Mobil Abone Grupları                              Forms/MobileSubscriberGroupsBrowser.lfrm          
+			Form                Mobil Aboneler                                    Forms/MobileSubscribersBrowser.lfrm               
+			Form                Durumu                                            Forms/Status.lfrm                                 
+			Form                Toplu Mesaj Gönder                                Forms/BatchSMSSending.lfrm                        
+			Form                Raporlar                                          Forms/Status.lfrm                                 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
