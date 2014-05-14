@@ -148,17 +148,17 @@ public class CXESMSAlert implements KeyListener{
 	private void resetDates(JLbsXUIControlEvent event)
 	{
 		batchHelper.reset(m_Container, 400, 500, -1);
-		batchHelper.reset(m_Container, 10000060, 10000065, -1);
+		//batchHelper.reset(m_Container, 10000060, 10000065, -1);
 			
 		JLbsDateEditWithCalendar startDate = (JLbsDateEditWithCalendar) m_Container.getComponentByTag(400);
 		JLbsTimeEdit startTime = (JLbsTimeEdit) m_Container.getComponentByTag(500);
 		ProjectUtil.setMemberValue(m_SMSAlert, "StartDate", startDate.getCalendar());
 		ProjectUtil.setMemberValue(m_SMSAlert, "StartTime", startTime.getTime());
 			
-		JLbsDateEditWithCalendar endDate = (JLbsDateEditWithCalendar) m_Container.getComponentByTag(10000060);
-		JLbsTimeEdit endTime = (JLbsTimeEdit) m_Container.getComponentByTag(10000065);
-		ProjectUtil.setMemberValue(m_SMSAlert, "EndDate", endDate.getCalendar());
-		ProjectUtil.setMemberValue(m_SMSAlert, "EndTime", endTime.getTime());
+		//JLbsDateEditWithCalendar endDate = (JLbsDateEditWithCalendar) m_Container.getComponentByTag(10000060);
+		//JLbsTimeEdit endTime = (JLbsTimeEdit) m_Container.getComponentByTag(10000065);
+		//ProjectUtil.setMemberValue(m_SMSAlert, "EndDate", endDate.getCalendar());
+		//ProjectUtil.setMemberValue(m_SMSAlert, "EndTime", endTime.getTime());
 		
 	}
 
@@ -410,22 +410,14 @@ public class CXESMSAlert implements KeyListener{
 
 		if(ProjectUtil.getBOStringFieldValue(m_SMSAlert, "MainMessage").length() == 0)
 		{
-			JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býralýlamaz!");
+			JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býrakýlamaz!");
 			event.setReturnObject(false);
 			return;
 		}
 		ArrayList smsObjectList = prepareSMSObjList(event);
 		if (smsObjectList.size() > 0)
 		{
-			CEOAlertInfo alertInfo = new CEOAlertInfo();
-			alertInfo.setSmsObjectList(smsObjectList);
-
-			CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
-			
-			alertInfo.setUserName(ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName"));
-			alertInfo.setPassword(ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password"));
-			
-			setAlertInfoPropertiesToCBO(alertInfo);
+			setAlertInfoPropertiesToCBO();
 			if (m_Context != null)
 				try
 				{
@@ -440,29 +432,6 @@ public class CXESMSAlert implements KeyListener{
 
 	}
 	
-	private void executeBatchByPeriod(JLbsXUIPane container, ClientBatchService batchServ, CustomBusinessObject smsSendingObj) {
-	
-		JLbsDateEditWithCalendar startDate = (JLbsDateEditWithCalendar) container.getComponentByTag(400);
-		JLbsTimeEdit startTime = (JLbsTimeEdit) container.getComponentByTag(500);
-		
-		Calendar batchBeginDate = ProjectUtil.concatDates(startDate.getCalendar(), startTime.getTime());
-		
-		
-		JLbsDateEditWithCalendar endDate = (JLbsDateEditWithCalendar) container.getComponentByTag(10000060);
-		JLbsTimeEdit endTime = (JLbsTimeEdit) container.getComponentByTag(10000065);
-		Calendar batchEndDate = ProjectUtil.concatDates(endDate.getCalendar(), endTime.getTime());
-		
-		JLbsComboBox periodCbx =  (JLbsComboBox) container.getComponentByTag(10000058);
-		int selectedTag = periodCbx.getSelectedItemTag();
-		
-		while(batchBeginDate.compareTo(batchEndDate)<=0)
-		{
-			batchServ.scheduleBatchOperation("BatchSMSAlert",  new Object[] {smsSendingObj}, batchBeginDate);
-			batchBeginDate.add(Calendar.MONTH, selectedTag);
-		}
-		
-	}
-
 	private CustomBusinessObject getSelectedSenderInfo()
 	{
 		String selected = cbxSenderInfo.getSelectedItemValue() != null ? (String) cbxSenderInfo.getSelectedItemValue() : "";
@@ -737,6 +706,10 @@ public class CXESMSAlert implements KeyListener{
 			m_Container.setPermanentStateByTag(10000058, JLbsXUITypes.XUISTATE_RESTRICTED);
 			m_Container.setPermanentStateByTag(10000060, JLbsXUITypes.XUISTATE_RESTRICTED);
 			m_Container.setPermanentStateByTag(10000065, JLbsXUITypes.XUISTATE_RESTRICTED);
+			ProjectUtil.setMemberValueUn(m_SMSAlert, "EndDate", null);
+			ProjectUtil.setMemberValueUn(m_SMSAlert, "EndTime", null);
+			m_Container.resetValueByTag(10000060);
+			m_Container.resetValueByTag(10000065);
 		}
 	}
 
@@ -749,19 +722,24 @@ public class CXESMSAlert implements KeyListener{
 			if (ProjectUtil.getBOStringFieldValue(user, "Phonenumber").length() == 0)
 				users.remove(i);
 		}
-		if(users.size() == 0)
+		
+		if(ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Active") == 1)
 		{
-			JOptionPane.showMessageDialog(null, "Alýcý bilgisi girilmelidir!");
-			event.setReturnObject(false);
-			return;
+			if(users.size() == 0 )
+			{
+				JOptionPane.showMessageDialog(null, "Alýcý bilgisi girilmelidir!");
+				event.setReturnObject(false);
+				return;
+			}
+			
+			if(ProjectUtil.getBOStringFieldValue(m_SMSAlert, "MainMessage").length() == 0)
+			{
+				JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býralýlamaz!");
+				event.setReturnObject(false);
+				return;
+			}
 		}
 		
-		if(ProjectUtil.getBOStringFieldValue(m_SMSAlert, "MainMessage").length() == 0)
-		{
-			JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býralýlamaz!");
-			event.setReturnObject(false);
-			return;
-		}
 		if(ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1 && ProjectUtil.getBOIntFieldValue(m_SMSAlert, "Period") == 0)
 		{
 			JOptionPane.showMessageDialog(null, "Period seçilmelidir!");
@@ -769,54 +747,38 @@ public class CXESMSAlert implements KeyListener{
 			return;
 		}
 		
-		CEOAlertInfo alertInfo = new CEOAlertInfo();
-		
-		JLbsCheckBox selectPeriodChbx = (JLbsCheckBox) m_Container.getComponentByTag(10000057);
-		alertInfo.setPeriodic(selectPeriodChbx.isSelected());
-
-		JLbsComboBox periodCbx =  (JLbsComboBox) m_Container.getComponentByTag(10000058);
-		alertInfo.setPeriod(periodCbx.getSelectedItemTag());
-		
-		JLbsDateEditWithCalendar startDate = (JLbsDateEditWithCalendar) m_Container.getComponentByTag(400);
-		JLbsTimeEdit startTime = (JLbsTimeEdit) m_Container.getComponentByTag(500);
-		Calendar batchBeginDate = ProjectUtil.concatDates(startDate.getCalendar(), startTime.getTime());
-		alertInfo.setBeginDate(batchBeginDate);
-		
-		JLbsDateEditWithCalendar endDate = (JLbsDateEditWithCalendar) m_Container.getComponentByTag(10000060);
-		JLbsTimeEdit endTime = (JLbsTimeEdit) m_Container.getComponentByTag(10000065);
-		Calendar batchEndDate = ProjectUtil.concatDates(endDate.getCalendar(), endTime.getTime());
-		alertInfo.setEndDate(batchEndDate);
-		
-		if (alertInfo.isPeriodic() && alertInfo.getEndDate().compareTo(alertInfo.getBeginDate()) < 0)
-		{
-			JOptionPane.showMessageDialog(null, "Bitiþ tarihi baþlangýç tarihinden önce olamaz!");
-			event.setReturnObject(false);
-			return;
-		}
-		alertInfo.setSchedule(true);
-		alertInfo.setScheduleDate(UnityBatchHelper.getScheduleDate(m_Container));
-		
-		ArrayList smsObjectList = prepareSMSObjList(event);
-		alertInfo.setSmsObjectList(smsObjectList);
-
-		CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
-		alertInfo.setUserName(ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName"));
-		alertInfo.setPassword(ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password"));
-		
-		setAlertInfoPropertiesToCBO(alertInfo);
+		setAlertInfoPropertiesToCBO();
 	}
 	
-	private void setAlertInfoPropertiesToCBO(CEOAlertInfo alertInfo) {
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "AlertRef", alertInfo.getAlertRef());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "BeginDate", alertInfo.getBeginDate());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "EndDate", alertInfo.getEndDate());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "UserName", alertInfo.getUserName());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "Password", alertInfo.getPassword());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "Schedule", alertInfo.isSchedule());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "ScheduleDate", alertInfo.getScheduleDate());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "Period", alertInfo.getPeriod());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "Periodic", alertInfo.isPeriodic());
-		ProjectUtil.setMemberValueUn(m_SMSAlert, "SmsObjectList", alertInfo.getSmsObjectList());
+	private void setAlertInfoPropertiesToCBO() {
+		
+		Calendar batchBeginDate = ProjectUtil.concatDates(
+				ProjectUtil.getBOCalendarFieldValue(m_SMSAlert, "StartDate"),
+				ProjectUtil.getBOCalendarFieldValue(m_SMSAlert, "StartTime"));
+		Calendar batchEndDate = ProjectUtil.concatDates(
+				ProjectUtil.getBOCalendarFieldValue(m_SMSAlert, "EndDate"),
+				ProjectUtil.getBOCalendarFieldValue(m_SMSAlert, "EndTime"));
+		
+		CustomBusinessObject selectedSenderInfo = getSelectedSenderInfo();
+		
+		boolean isPeriodic =  ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1;
+		if (isPeriodic && batchEndDate.compareTo(batchBeginDate) < 0)
+		{
+			JOptionPane.showMessageDialog(null, "Bitiþ tarihi baþlangýç tarihinden önce olamaz!");
+			m_Event.setReturnObject(false);
+			return;
+		}
+	
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "AlertRef", 0);
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "BeginDate", batchBeginDate);
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "EndDate", batchEndDate);
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "UserName", ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "UserName"));
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "Password", ProjectUtil.getBOStringFieldValue(selectedSenderInfo, "Password"));
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "Schedule", true);
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "ScheduleDate", UnityBatchHelper.getScheduleDate(m_Container));
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "Period", ProjectUtil.getBOIntFieldValue(m_SMSAlert, "Period"));
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "Periodic", isPeriodic);
+		ProjectUtil.setMemberValueUn(m_SMSAlert, "SmsObjectList", prepareSMSObjList(m_Event));
 		
 	}
 

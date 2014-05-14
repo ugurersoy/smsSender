@@ -33,6 +33,11 @@ public class CXESMSAlertsBrowser{
 		event.getClientContext().setVariable("ALERT", 1);
 	}
 	
+	public void onGridCanViewObject(JLbsXUIDataGridEvent event)
+	{
+		event.getClientContext().setVariable("ALERT", 1);
+	}
+	
 	public boolean openSMSBatches(ILbsXUIPane container, Object data,
 			IClientContext context) {
 		
@@ -73,6 +78,5 @@ public class CXESMSAlertsBrowser{
 			}
 		}
 	}
-
 
 }

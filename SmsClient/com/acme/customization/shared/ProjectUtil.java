@@ -88,7 +88,7 @@ public class ProjectUtil
 	}
 
 	
-	public static Calendar concatDates(Calendar date, JLbsTimeDuration time)
+	public static Calendar concatDates(Calendar date, Calendar time)
 	{
 		if(date != null){
 			Calendar cal = Calendar.getInstance();
@@ -96,9 +96,9 @@ public class ProjectUtil
 			cal.set(Calendar.MONTH, date.get(Calendar.MONTH));
 			cal.set(Calendar.DATE, date.get(Calendar.DATE));
 			if(time != null){
-				cal.set(Calendar.HOUR_OF_DAY, time.getHour());
-				cal.set(Calendar.MINUTE, time.getMinute());
-				cal.set(Calendar.SECOND, time.getSecond());
+				cal.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
+				cal.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+				cal.set(Calendar.SECOND, time.get(Calendar.SECOND));
 				cal.set(Calendar.MILLISECOND, 0);
 			}
 			return cal;
