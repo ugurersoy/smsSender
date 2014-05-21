@@ -208,7 +208,7 @@ public class CXESMSAlert implements KeyListener{
 	}
 	
 	private void addNewUserLine() {
-		CustomBusinessObject user = ProjectUtil.createNewCBO("CBOSMSAlert");
+		CustomBusinessObject user = ProjectUtil.createNewCBO("CBOSMSAlertUser");
 		CustomBusinessObjects users = (CustomBusinessObjects)ProjectUtil.getMemberValue(m_SMSAlert, "AlertUsers");
 		users.add(user);
 	}
