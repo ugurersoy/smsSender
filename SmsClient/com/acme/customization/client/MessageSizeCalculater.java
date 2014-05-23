@@ -46,7 +46,9 @@ public class MessageSizeCalculater {
 		     
 		}else 
 		{
-			return;
+			 sizeText.setNumber(0);  
+		     remainingText.setNumber(612);
+		     smsText.setNumber(1);
 		}
 	}
 	
@@ -61,6 +63,18 @@ public class MessageSizeCalculater {
 		JLbsNumericEdit remainingText = (JLbsNumericEdit) container.getComponentByTag(remainingNumberTag);	
 		JLbsNumericEdit smsText = (JLbsNumericEdit) container.getComponentByTag(smsNumberTag);
 		
+		if(mMessage.getText().length()>600)
+		{
+			sizeText.setForeground(Color.RED);
+			remainingText.setForeground(Color.RED);
+			smsText.setForeground(Color.RED);
+		}else 
+		{
+			sizeText.setForeground(Color.BLACK);
+			remainingText.setForeground(Color.BLACK);
+			smsText.setForeground(Color.BLACK);
+		} 
+		
 		if(mMessage.getText().length()>612)
 		{
 			String textmMessage = mMessage.getText().substring(0,612);
@@ -70,16 +84,10 @@ public class MessageSizeCalculater {
 			String testMainMessage= mainMessage.getText().substring(0,mainLength);
 			mainMessage.setText(testMainMessage);
 			
-			sizeText.setForeground(Color.RED);
-			remainingText.setForeground(Color.RED);
-			smsText.setForeground(Color.RED);
-		}else 
-		{
-			sizeText.setForeground(Color.BLACK);
-			remainingText.setForeground(Color.BLACK);
-			smsText.setForeground(Color.BLACK);
+			
 		}
-		 
-		
+		container.resetValueByTag(numericSizeTag);
+		container.resetValueByTag(remainingNumberTag);
+		container.resetValueByTag(smsNumberTag);		
 	}
 }

@@ -90,6 +90,12 @@ public class MessageSplitControl {
 	   return time;
    }
 
+   /**
+    *Bu metod Gönderilecek mesaja yazýlan alaný parametre olup olmadýðýný kontrol 
+    *edip ana mesaj alanýna eklenmesini saðlar. 
+    *
+    * @author Ugur.Ersoy
+    **/
 	public static void messageCalculaterControlEvent(JLbsXUIControlEvent event,
 			int mainMessageTag, int messageTag, int gridTag)
 	{
@@ -184,6 +190,8 @@ public class MessageSplitControl {
 				}
 			}
 
+		}else{
+			message.setText(mainMessage.getText());
 		}
 		
 		ProjectUtil.setMemberValue((CustomBusinessObject)event.getData(), "Message", message.getText());
