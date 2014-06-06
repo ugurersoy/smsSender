@@ -3,6 +3,8 @@ package com.acme.customization.client;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.mail.search.SentDateTerm;
+
 import com.acme.customization.shared.ProjectUtil;
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.data.objects.CustomBusinessObject;
@@ -180,9 +182,23 @@ public class MessageSplitControl {
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Name");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Title");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
@@ -200,7 +216,7 @@ public class MessageSplitControl {
 	
 	
 	public static void messageCalculaterGridEvent(JLbsXUIGridEvent event,
-			int mainMessageTag, int messageTag, int gridTag)
+			int mainMessageTag, int messageTag, int gridTag,CustomBusinessObject m_SMSAlert)
 	{
 		String sendToVisualMessage = "";
 		JLbsXUIPane container = event.getContainer();
@@ -283,31 +299,57 @@ public class MessageSplitControl {
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Name");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Title");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 			}
-
+		}else{
+			message.setText(mainMessage.getText());
 		}
+		
+		ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
 	}
 	
 	public static void messageCalculaterLookUp(ILbsXUIPane container, CustomBusinessObject smsAlert,
 			int mainMessageTag, int messageTag, int gridTag)
 	{
 		String sendToVisualMessage = "";
-		String mainMessage = ProjectUtil.getBOStringFieldValue(smsAlert, "MainMessage");
-		if (!mainMessage.isEmpty()) {
+		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(mainMessageTag)).getInnerComponent());
+		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(messageTag)).getInnerComponent());
+		if (!mainMessage.getText().isEmpty()) {
 			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 					.getComponentByTag(gridTag);
 
 			MessageSplitControl control = new MessageSplitControl();
 
-			String strlist[] = control.splitControl(mainMessage);
+			String strlist[] = control.splitControl(mainMessage.getText());
 
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
@@ -316,7 +358,7 @@ public class MessageSplitControl {
 				if (control.controlParamsText(strlist[i])) {
 					if (!strlist[i].isEmpty()) {
 						sendToVisualMessage += strlist[i];
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
@@ -326,7 +368,7 @@ public class MessageSplitControl {
 							"Name");
 					if (!strlist[i].isEmpty()) {
 						sendToVisualMessage += strlist[i];
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
@@ -336,7 +378,7 @@ public class MessageSplitControl {
 							"Name");
 					if (strlist[i] != null) {
 						sendToVisualMessage += strlist[i];
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
@@ -345,7 +387,7 @@ public class MessageSplitControl {
 							"SurName");
 					if (strlist[i] != null) {
 						sendToVisualMessage += strlist[i];
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 
 					continue;
@@ -355,36 +397,56 @@ public class MessageSplitControl {
 							"Phonenumber");
 					if (strlist[i] != null) {
 						sendToVisualMessage += strlist[i];
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Tarih.")) {
 					if (strlist[i] != null) {
 						sendToVisualMessage += returnDate();
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Saat.")) {
 					if (strlist[i] != null) {
 						sendToVisualMessage += returnTime();
-						ProjectUtil.setMemberValueUn(smsAlert, "Message", sendToVisualMessage);
+						message.setText(sendToVisualMessage);
 					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
+					
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Name");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"Title");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
 					continue;
 				}
 			}
-			container.resetValueByTag(4001);
+		}else{
+			message.setText(mainMessage.getText());
 		}
+		
+		ProjectUtil.setMemberValue((CustomBusinessObject) container.getData(), "Message", message.getText());
+		
+		container.resetValueByTag(4001);
 	}
 	
 }

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import com.lbs.controls.JLbsEditorPane;
 import com.lbs.controls.JLbsScrollPane;
+import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.grids.JLbsObjectListGrid;
 import com.lbs.xui.JLbsXUIPane;
 import com.lbs.xui.customization.JLbsXUIGridEvent;
 
 public class DoubleClickOnGridEvent {
 	
-	public void addDoubleClickOnText(JLbsXUIGridEvent event,int tagNumberMessage,int tagNumberGrid,Integer gridTag,Integer messageTag)
+	public void addDoubleClickOnText(JLbsXUIGridEvent event,int tagNumberMessage,int tagNumberGrid,Integer gridTag,Integer messageTag,CustomBusinessObject m_SMSAlert)
 	{
 		String addMessage="";
 		 JLbsXUIPane container = event.getContainer();
@@ -48,7 +49,7 @@ public class DoubleClickOnGridEvent {
 				}
 				
 				if (gridTag != null&& !messageTemplate.getText().isEmpty()) {
-					MessageSplitControl. messageCalculaterGridEvent(event, tagNumberMessage, messageTag, gridTag);
+					MessageSplitControl. messageCalculaterGridEvent(event, tagNumberMessage, messageTag, gridTag,m_SMSAlert);
 
 				}
 	 }

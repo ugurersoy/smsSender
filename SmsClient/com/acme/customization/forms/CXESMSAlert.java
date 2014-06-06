@@ -164,10 +164,10 @@ public class CXESMSAlert implements KeyListener{
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
-		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001);
+		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001,m_SMSAlert);
 	
 				try {
-					MessageSizeCalculater.messageFindSize(m_Container, 10000041, 10000042, 4001, 10000044);
+					MessageSizeCalculater.messageFindSize(m_Container, 10000053, 10000054, 4001, 10000056);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -179,7 +179,7 @@ public class CXESMSAlert implements KeyListener{
 		OnClickButtonEvent click = new OnClickButtonEvent();
 		click.addParameterOnGrid(event, 3001, 200,100,4001);
 		try {
-			MessageSizeCalculater.messageFindSize(m_Container, 10000041, 10000042, 4001, 10000044);
+			MessageSizeCalculater.messageFindSize(m_Container, 10000053, 10000054, 4001, 10000056);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -357,17 +357,28 @@ public class CXESMSAlert implements KeyListener{
 							continue;
 						}
 						if (StringUtil.equals(strlistMessage[i], ".Tarih.")) {
-
+							if(strlistMessage[i]!=null)
+						    message +=MessageSplitControl.returnDate(); 
 							continue;
 						}
 						if (StringUtil.equals(strlistMessage[i], ".Saat.")) {
-							continue;
+							if(strlistMessage[i]!=null)
+							    message +=MessageSplitControl.returnTime(); 
+								continue;
 						}
 						if (StringUtil.equals(strlistMessage[i], ".Cari Hesap Kodu.")) {
+							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
+									obj, "Name");
+							if(strlistMessage[i]!=null)
+							message += strlistMessage[i];
 							continue;
 						}
 						if (StringUtil
 								.equals(strlistMessage[i], ".Cari Hesap Unvaný.")) {
+							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
+									obj, "Title");
+							if(strlistMessage[i]!=null)
+							message += strlistMessage[i];
 							continue;
 						}
 						if (StringUtil.equals(strlistMessage[i],
@@ -498,7 +509,7 @@ public class CXESMSAlert implements KeyListener{
 	
 	public void onGridCellSelectedReceiver(JLbsXUIGridEvent event)
 	{  
-		OnGridCellSelectedReceivers.OnCellSelected(event, 3001, 4001, 100);
+		OnGridCellSelectedReceivers.OnCellSelected(event, 3001, 4001, 100,m_SMSAlert);
 		 try {
 				MessageSizeCalculater.messageFindSize(m_Container, 10000053, 10000054, 4001, 10000056);
 			} catch (ParseException e) {

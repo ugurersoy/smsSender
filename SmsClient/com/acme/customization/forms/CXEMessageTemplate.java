@@ -32,7 +32,7 @@ public class CXEMessageTemplate extends JLbsCustomXUIEventListener {
 	public void selectParameterDoubleClick(JLbsXUIGridEvent event)
 	{
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
-		doubleClick.addDoubleClickOnText(event, 3000002, 3000005,null,null);
+		doubleClick.addDoubleClickOnText(event, 3000002, 3000005,null,null,null);
 	}
 
 	public void onClick(JLbsXUIControlEvent event)
