@@ -26,13 +26,13 @@ public class CXEMobileSubsribersBrowser extends JLbsCustomXUIEventListener imple
 			Integer type = (Integer) qbo.getProperties().getValue("MBLINFUSER_USERTYPE");
 			switch (type) {
 			case 0:
-				event.setReturnObject("Kullanýcý");
+				event.setReturnObject(event.getContainer().getMessage(500009, 0)); //Kullanýcý
 				return ;
 			case 1:
-				event.setReturnObject("Cari");
+				event.setReturnObject(event.getContainer().getMessage(500009, 1)); //Cari
 				return;
 			case 2:
-				event.setReturnObject("Diðer");
+				event.setReturnObject(event.getContainer().getMessage(500009, 2)); //Diðer 
 				return;
 			default:
 				break;

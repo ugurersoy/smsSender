@@ -1,0 +1,16 @@
+<TaggedLists>
+	<TaggedList LI="2" ResourceGroup="UN" ResourceType="Localizable" ListID="500005" ListName="">
+		<ListItem Tag="1" Item="" Order="1" />
+		<ListItem Tag="2" Item="" Order="2" />
+		<ListItem Tag="3" Item="" Order="3" />
+		<ListItem Tag="4" Item="" Order="4" />
+		<ListItem Tag="5" Item="" Order="5" />
+		<ListItem Tag="6" Item="" Order="6" />
+		<ListItem Tag="100" Item="Phone or identity number should have entry." Order="100" />
+	</TaggedList>
+	<TaggedList LI="10" ResourceGroup="UN" ResourceType="Localizable" ListID="500009" ListName="">
+		<ListItem Tag="0" Item="User" Order="0" />
+		<ListItem Tag="1" Item="AR/AP" Order="1" />
+		<ListItem Tag="2" Item="Other" Order="2" />
+	</TaggedList>
+</TaggedLists>

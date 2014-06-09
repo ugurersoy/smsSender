@@ -2,7 +2,6 @@ package com.acme.customization.forms;
 
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 
 import com.acme.customization.shared.ProjectGlobals;
 import com.acme.customization.shared.ProjectUtil;
@@ -239,7 +238,7 @@ public class CXEMobileSubscriber{
 		JLbsTextEdit tcknoTxtEdit =  (JLbsTextEdit)event.getContainer().getComponentByTag(2003);
 		if(phoneNumTxtEdit.getText().length() == 0 && tcknoTxtEdit.getText().length()==0)
 		{
-			JOptionPane.showMessageDialog(null,"Telefon numarasý veya TC Kimlik No girilmelidir");
+			event.getContainer().messageDialog(500005, 100, "", null); //"Telefon numarasý veya TC Kimlik No girilmelidir"
 			event.setReturnObject(false);
 		}
 	}

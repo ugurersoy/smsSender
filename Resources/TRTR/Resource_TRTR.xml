@@ -1,0 +1,106 @@
+<TaggedLists>
+	<TaggedList LI="2" ResourceGroup="UN" ResourceType="Localizable" ListID="500000" ListName="Mesaj Şablonları Penceresi">
+		<ListItem Tag="0" Item="Mesaj Şablonları" Order="0" />
+		<ListItem Tag="1" Item="Kodu" Order="1" />
+		<ListItem Tag="2" Item="Açıklaması" Order="2" />
+		<ListItem Tag="3" Item="Mesaj" Order="3" />
+	</TaggedList>
+	<TaggedList LI="8" ResourceGroup="UN" ResourceType="Localizable" ListID="500001" ListName="Mesaj Şablonu Formu">
+		<ListItem Tag="0" Item="Mesaj Şablonu" Order="0" />
+		<ListItem Tag="1" Item="Kodu" Order="1" />
+		<ListItem Tag="2" Item="Açıklaması" Order="2" />
+		<ListItem Tag="3" Item="Mesaj" Order="3" />
+		<ListItem Tag="4" Item="Parametreler" Order="4" />
+	</TaggedList>
+	<TaggedList LI="15" ResourceGroup="UN" ResourceType="Localizable" ListID="500002" ListName="Mobil Abone Grupları Penceresi">
+		<ListItem Tag="0" Item="Mobil Abone Grupları" Order="0" />
+		<ListItem Tag="1" Item="Kodu" Order="1" />
+		<ListItem Tag="2" Item="Açıklaması" Order="2" />
+	</TaggedList>
+	<TaggedList LI="20" ResourceGroup="UN" ResourceType="Localizable" ListID="500003" ListName="Mobil Abone Grubu Formu">
+		<ListItem Tag="0" Item="Mobil Abone Grubu" Order="0" />
+		<ListItem Tag="1" Item="Kodu" Order="1" />
+		<ListItem Tag="2" Item="Açıklaması" Order="2" />
+		<ListItem Tag="3" Item="Abone Adı" Order="3" />
+		<ListItem Tag="4" Item="Soyadı" Order="4" />
+		<ListItem Tag="5" Item="Telefon" Order="5" />
+	</TaggedList>
+	<TaggedList LI="28" ResourceGroup="UN" ResourceType="Localizable" ListID="500004" ListName="Mobil Aboneler Penceresi">
+		<ListItem Tag="0" Item="Mobil Aboneler" Order="0" />
+		<ListItem Tag="2" Item="Soyadı" Order="2" />
+		<ListItem Tag="3" Item="Telefon Numarası" Order="3" />
+		<ListItem Tag="4" Item="T.C. Kimlik No" Order="4" />
+		<ListItem Tag="5" Item="Tipi" Order="5" />
+	</TaggedList>
+	<TaggedList LI="35" ResourceGroup="UN" ResourceType="Localizable" ListID="500005" ListName="Mobil Abone Formu">
+		<ListItem Tag="1" Item="Tipi" Order="1" />
+		<ListItem Tag="2" Item="Kullanıcılar" Order="2" />
+		<ListItem Tag="3" Item="Adı" Order="3" />
+		<ListItem Tag="4" Item="Soyadı" Order="4" />
+		<ListItem Tag="5" Item="Telefon No" Order="5" />
+		<ListItem Tag="6" Item="T.C. Kimlik" Order="6" />
+		<ListItem Tag="100" Item="Telefon numarası veya TC Kimlik No girilmelidir" Order="100" />
+	</TaggedList>
+	<TaggedList LI="43" ResourceGroup="UN" ResourceType="Localizable" ListID="500006" ListName="Mesaj Şablonları Formu">
+		<ListItem Tag="0" Item="Mesaj Şablonları" Order="0" />
+		<ListItem Tag="1" Item="Kodu" Order="1" />
+		<ListItem Tag="2" Item="Açıklaması" Order="2" />
+		<ListItem Tag="3" Item="Mesaj" Order="3" />
+	</TaggedList>
+	<TaggedList LI="49" ResourceGroup="UN" ResourceType="Localizable" ListID="500007" ListName="Toplu Mesaj Gönder Formu">
+		<ListItem Tag="0" Item="Toplu Mesaj Gönder" Order="0" />
+		<ListItem Tag="1" Item="Mesaj Gönder" Order="1" />
+		<ListItem Tag="2" Item="Telefon" Order="2" />
+		<ListItem Tag="3" Item="T.C. Kimlik No" Order="3" />
+		<ListItem Tag="4" Item="Alıcı Ünvanı" Order="4" />
+		<ListItem Tag="5" Item="Zamanlanmış Mesaj" Order="5" />
+		<ListItem Tag="6" Item="Etkinleştir" Order="6" />
+		<ListItem Tag="7" Item="Kullanıcı Ekle" Order="7" />
+		<ListItem Tag="8" Item="Grup Ekle" Order="8" />
+		<ListItem Tag="9" Item="Numaraları Sil" Order="9" />
+		<ListItem Tag="10" Item="Gönderilecek Mesaj" Order="10" />
+		<ListItem Tag="11" Item="Karakter Sayısı" Order="11" />
+		<ListItem Tag="12" Item="Kalan" Order="12" />
+		<ListItem Tag="13" Item="Mesaj" Order="13" />
+		<ListItem Tag="14" Item="Parametre Ekle" Order="14" />
+		<ListItem Tag="15" Item="Mesaj Şablonu" Order="15" />
+		<ListItem Tag="16" Item="Gönderici Kısa Tanımı" Order="16" />
+		<ListItem Tag="17" Item="Kalan Kredi" Order="17" />
+		<ListItem Tag="18" Item="Web hizmet hesap ayarları belirtilmemiş.ı " Order="18" />
+		<ListItem Tag="19" Item="Başlangıç Zamanı" Order="19" />
+		<ListItem Tag="20" Item="Bitiş Zamanı" Order="20" />
+		<ListItem Tag="21" Item="Period Seç" Order="21" />
+		<ListItem Tag="22" Item="Parametreler" Order="22" />
+		<ListItem Tag="50" Item="Gönderici Bilgileri" Order="50" />
+		<ListItem Tag="51" Item="Öndeğer" Order="51" />
+		<ListItem Tag="52" Item="Kullanıcı Adı" Order="52" />
+		<ListItem Tag="53" Item="Şifre" Order="53" />
+		<ListItem Tag="54" Item="Firma Adı" Order="54" />
+		<ListItem Tag="55" Item="Gönderici Kısa Tanımı" Order="55" />
+		<ListItem Tag="100" Item="Kısa Mesaj Gönder" Order="100" />
+		<ListItem Tag="101" Item="Vazgeç" Order="101" />
+		<ListItem Tag="500" Item="Alıcı bilgisi girilmelidir!" Order="500" />
+		<ListItem Tag="501" Item="Mesaj alanı boş bırakılamaz!" Order="501" />
+		<ListItem Tag="502" Item="Period seçimi kaldırılmalıdır!" Order="502" />
+		<ListItem Tag="503" Item="Bitiş tarihi başlangıç tarihinden önce olamaz!" Order="503" />
+	</TaggedList>
+	<TaggedList LI="86" ResourceGroup="UN" ResourceType="Localizable" ListID="500008" ListName="Zamanlanmış Mesajlar Penceresi">
+		<ListItem Tag="0" Item="Zamanlanmış Mesajlar" Order="0" />
+		<ListItem Tag="1" Item="Etkin" Order="1" />
+		<ListItem Tag="2" Item="Başlangıç Tarihi" Order="2" />
+		<ListItem Tag="3" Item="Başlangıç Saati" Order="3" />
+		<ListItem Tag="4" Item="Bitiş Tarihi" Order="4" />
+		<ListItem Tag="5" Item="Bitiş Saati" Order="5" />
+		<ListItem Tag="6" Item="Periyodik" Order="6" />
+		<ListItem Tag="7" Item="Periyodu" Order="7" />
+	</TaggedList>
+	<TaggedList LI="96" ResourceGroup="UN" ResourceType="Localizable" ListID="500009" ListName="Mobil Abone Tipleri Listesi">
+		<ListItem Tag="0" Item="Kullanıcı" Order="0" />
+		<ListItem Tag="1" Item="Cari" Order="1" />
+		<ListItem Tag="2" Item="Diğer" Order="2" />
+	</TaggedList>
+	<TaggedList LI="101" ResourceGroup="UN" ResourceType="Localizable" ListID="500050" ListName="Genel Tanımlar">
+		<ListItem Tag="1" Item="Kaydet" Order="1" />
+		<ListItem Tag="2" Item="Vazgeç" Order="2" />
+	</TaggedList>
+</TaggedLists>
