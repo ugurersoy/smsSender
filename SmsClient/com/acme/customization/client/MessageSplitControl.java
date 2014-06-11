@@ -1,5 +1,6 @@
 package com.acme.customization.client;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -28,13 +29,14 @@ public class MessageSplitControl {
 	public boolean controlParams(String[] strlist) {
 		boolean status = true;
 		for (int i = 0; i < strlist.length; i++) {
-			if (!StringUtil.equals(strlist[i], ".adý.")
-					&& !StringUtil.equals(strlist[i], ".Soyadý.")
-					&& !StringUtil.equals(strlist[i], ".Telfon Numarasý.")
+			if (!StringUtil.equals(strlist[i], ".Abone Adý.")
+					&& !StringUtil.equals(strlist[i], ".Abone Soyadý.")
+					&& !StringUtil.equals(strlist[i], ".Abone Telefonu.")
 					&& !StringUtil.equals(strlist[i], ".Tarih.")
 					&& !StringUtil.equals(strlist[i], ".Saat.")
 					&& !StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")
-					&& !StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+					&& !StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")
+					&& !StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
 				status = false;
 			} else {
 				status = true;
@@ -47,11 +49,11 @@ public class MessageSplitControl {
 	public boolean controlParamsText(String text) {
 		boolean status = true;
 
-		if (text.equals(".adý.")) {
+		if (text.equals(".Abone Adý.")) {
 			status = false;
-		} else if (text.equals(".Soyadý.")) {
+		} else if (text.equals(".Abone Soyadý.")) {
 			status = false;
-		} else if (text.equals(".Telfon Numarasý.")) {
+		} else if (text.equals(".Abone Telefonu.")) {
 			status = false;
 		} else if (text.equals(".Tarih.")) {
 			status = false;
@@ -59,7 +61,10 @@ public class MessageSplitControl {
 			status = false;
 		} else if (text.equals(".Cari Hesap Kodu.")) {
 			status = false;
-		} else if (text.equals(".Cari Hesap Unvaný.")) {
+		} else if (text.equals(".Cari Hesap Ünvaný.")) {
+			status = false; 
+		}
+		else if (text.equals(".Cari Hesap Bakiyesi.")) {
 			status = false; 
 		}
 		else 
@@ -119,7 +124,13 @@ public class MessageSplitControl {
 
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
-
+			
+			if(ProjectUtil.getBOStringFieldValue(obj, "Phonenumber").length() == 0)
+			{
+				message.setText("");
+				ProjectUtil.setMemberValue((CustomBusinessObject) event.getContainer().getData(), "Message", message.getText());
+				return ;
+			}
 			for (int i = 0; i < strlist.length; i++) {
 				if (control.controlParamsText(strlist[i])) {
 					if (!strlist[i].isEmpty()) {
@@ -139,7 +150,7 @@ public class MessageSplitControl {
 					continue;
 				}
 
-				if (StringUtil.equals(strlist[i], ".adý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Name");
 					if (strlist[i] != null) {
@@ -148,7 +159,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Soyadý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"SurName");
 					if (strlist[i] != null) {
@@ -158,7 +169,7 @@ public class MessageSplitControl {
 
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Telfon Numarasý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Phonenumber");
 					if (strlist[i] != null) {
@@ -191,7 +202,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Title");
 					if(strlist[i]!=null)
@@ -236,7 +247,14 @@ public class MessageSplitControl {
 
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
-
+			
+			if(ProjectUtil.getBOStringFieldValue(obj, "Phonenumber").length() == 0)
+			{
+				message.setText("");
+				ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
+				return ;
+			}
+			
 			for (int i = 0; i < strlist.length; i++) {
 				if (control.controlParamsText(strlist[i])) {
 					if (!strlist[i].isEmpty()) {
@@ -245,7 +263,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-
+				
 				if (control.controlParamsText(strlist[i])) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Name");
@@ -256,7 +274,7 @@ public class MessageSplitControl {
 					continue;
 				}
 
-				if (StringUtil.equals(strlist[i], ".adý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Name");
 					if (strlist[i] != null) {
@@ -265,7 +283,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Soyadý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"SurName");
 					if (strlist[i] != null) {
@@ -275,7 +293,7 @@ public class MessageSplitControl {
 
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Telfon Numarasý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Phonenumber");
 					if (strlist[i] != null) {
@@ -300,7 +318,7 @@ public class MessageSplitControl {
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
+							"ArpCode");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -309,9 +327,9 @@ public class MessageSplitControl {
 					
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Title");
+							"ArpTitle");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -320,6 +338,8 @@ public class MessageSplitControl {
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
+							"ArpBalance")).toString();
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -353,6 +373,7 @@ public class MessageSplitControl {
 
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
+			
 
 			for (int i = 0; i < strlist.length; i++) {
 				if (control.controlParamsText(strlist[i])) {
@@ -373,7 +394,7 @@ public class MessageSplitControl {
 					continue;
 				}
 
-				if (StringUtil.equals(strlist[i], ".adý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Name");
 					if (strlist[i] != null) {
@@ -382,7 +403,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Soyadý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"SurName");
 					if (strlist[i] != null) {
@@ -392,7 +413,7 @@ public class MessageSplitControl {
 
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Telfon Numarasý.")) {
+				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Phonenumber");
 					if (strlist[i] != null) {
@@ -426,7 +447,7 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Unvaný.")) {
+				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
 							"Title");
 					if(strlist[i]!=null)

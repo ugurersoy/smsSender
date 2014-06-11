@@ -7,6 +7,10 @@ import com.acme.customization.client.MessageSplitControl;
 import com.acme.customization.client.OnClickButtonEvent;
 import com.acme.customization.client.OnInitializeEvent;
 import com.acme.customization.client.Parameters;
+import com.acme.customization.shared.ProjectUtil;
+import com.lbs.controls.JLbsEditorPane;
+import com.lbs.controls.JLbsScrollPane;
+import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.xui.customization.JLbsXUIControlEvent;
 import com.lbs.xui.customization.JLbsXUIGridEvent;
 import com.lbs.xui.events.swing.JLbsCustomXUIEventListener;
@@ -26,13 +30,20 @@ public class CXEMessageTemplate extends JLbsCustomXUIEventListener {
 	public void parameterOnClick(JLbsXUIControlEvent event) {
 		OnClickButtonEvent click= new OnClickButtonEvent();
 		click.addParameterOnGrid(event,3000002 , 3000005,null,null);
-
+		JLbsEditorPane messageTemplate = ((JLbsEditorPane) ((JLbsScrollPane) event
+				.getContainer().getComponentByTag(3000002)).getInnerComponent());
+		ProjectUtil.setMemberValue((CustomBusinessObject)event.getContainer().getData(), "Msgtext", messageTemplate.getText());
+		event.getContainer().resetValueByTag(3000002);
 	}
 
 	public void selectParameterDoubleClick(JLbsXUIGridEvent event)
 	{
 		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
 		doubleClick.addDoubleClickOnText(event, 3000002, 3000005,null,null,null);
+		JLbsEditorPane messageTemplate = ((JLbsEditorPane) ((JLbsScrollPane) event
+				.getContainer().getComponentByTag(3000002)).getInnerComponent());
+		ProjectUtil.setMemberValue((CustomBusinessObject)event.getContainer().getData(), "Msgtext", messageTemplate.getText());
+		event.getContainer().resetValueByTag(3000002);
 	}
 
 	public void onClick(JLbsXUIControlEvent event)

@@ -28,7 +28,7 @@ public class CXESMSStatus {
 				public void run()
 				{
 					System.out.println("navigate run started...");
-					webBrowser.navigate("https://www.smsexplorer.com/panel/login.aspx");
+					webBrowser.navigate("http://app.maradit.com");
 					
 				}
 			});

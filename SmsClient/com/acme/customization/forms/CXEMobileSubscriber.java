@@ -241,16 +241,9 @@ public class CXEMobileSubscriber{
 			event.getContainer().messageDialog(500005, 100, "", null); //"Telefon numarasý veya TC Kimlik No girilmelidir"
 			event.setReturnObject(false);
 		}
-	}
-
-	public void onNameDataChanged(JLbsXUIControlEvent event) {
 		createTitle(event.getData());
 	}
 
-	public void onSurNameDataChanged(JLbsXUIControlEvent event) {
-		createTitle(event.getData());
-	}
-	
 	private void createTitle(Object data) {
 		CustomBusinessObject user = (CustomBusinessObject) data;
 		String userName = ProjectUtil.getBOStringFieldValue(data, "Name");

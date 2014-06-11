@@ -1,8 +1,8 @@
 package com.acme.customization.client;
 
 public enum Parameters {
-	NAME("<.adý.>"),SURNAME("<.Soyadý.>"),PHONENUMBER("<.Telfon Numarasý.>"),DATE("<.Tarih.>"),
-	TIME("<.Saat.>"),ACCOUNTCODE("<.Cari Hesap Kodu.>"),ACCOUNTTITLE("<.Cari Hesap Unvaný.>"),
+	NAME("<.Abone Adý.>"),SURNAME("<.Abone Soyadý.>"),PHONENUMBER("<.Abone Telefonu.>"),DATE("<.Tarih.>"),
+	TIME("<.Saat.>"),ACCOUNTCODE("<.Cari Hesap Kodu.>"),ACCOUNTTITLE("<.Cari Hesap Ünvaný.>"),
 	ACCOUNTBALANCE("<.Cari Hesap Bakiyesi.>");
 	
 	private String parameterName;

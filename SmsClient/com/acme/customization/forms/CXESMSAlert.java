@@ -3,6 +3,7 @@ package com.acme.customization.forms;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,12 +39,15 @@ import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.objects.CustomBusinessObjects;
 import com.lbs.data.objects.IBusinessObjectStates;
 import com.lbs.data.objects.ObjectValueManager;
+import com.lbs.data.query.IQueryFactory;
 import com.lbs.data.query.QueryBusinessObject;
 import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
+import com.lbs.data.query.QueryParams;
 import com.lbs.grids.JLbsObjectListGrid;
 import com.lbs.remoteclient.IClientContext;
 import com.lbs.unity.UnityBatchHelper;
+import com.lbs.unity.UnityConstants;
 import com.lbs.unity.dialogs.IUODMessageConstants;
 import com.lbs.unity.pj.PJHelper;
 import com.lbs.util.JLbsStringListEx;
@@ -194,7 +198,70 @@ public class CXESMSAlert implements KeyListener{
 		usersGrid.rowListChanged();
 		return true;
 	}
-
+	
+	public void setUserInfo(ILbsXUIPane container, Object data, IClientContext context)
+	{
+		CustomBusinessObjects users = (CustomBusinessObjects) ProjectUtil.getMemberValue(m_SMSAlert, "AlertUsers");
+		CustomBusinessObject user =  (CustomBusinessObject) users.get(usersGrid.getSelectedRow());
+		
+		if (user != null)
+		{
+			if(ProjectUtil.getBOIntFieldValue(user, "UserType") == 1) // Cari
+			{
+				int arpRef = ProjectUtil.getBOIntFieldValue(user, "CardRef");
+				if (arpRef == 0)
+					return;
+	
+				IQueryFactory qryFactory = context.getQueryFactory();
+				QueryBusinessObjects recs = new QueryBusinessObjects();
+				QueryParams arpBalanceParams = new QueryParams();
+				arpBalanceParams.setCustomization(ProjectGlobals.getM_ProjectGUID());
+				arpBalanceParams.getEnabledTerms().enable("T80");
+				arpBalanceParams.getVariables().put("V_ARPREF", arpRef);
+				BigDecimal totalBlanace = UnityConstants.bZero;
+				try
+				{
+					boolean okay = qryFactory.select("CQOArpCardBrowser", arpBalanceParams, recs, -1);
+					if (okay && recs.size() > 0)
+					{
+						for (int i = 0; i < recs.size(); i++)
+						{
+							QueryBusinessObject rec = (QueryBusinessObject) recs.get(i);
+							ProjectUtil.setMemberValueUn(user, "ArpCode", (String)rec.getProperties().getValue("Code"));
+							ProjectUtil.setMemberValueUn(user, "ArpTitle", (String)rec.getProperties().getValue("Title"));
+							BigDecimal debit = ((BigDecimal) rec.getProperties().getValue("Debit"));
+							BigDecimal credit = ((BigDecimal) rec.getProperties().getValue("Credit"));
+							BigDecimal grpDebit = ((BigDecimal) rec.getProperties().getValue("GroupDebit"));
+							BigDecimal grpCredit = ((BigDecimal) rec.getProperties().getValue("GroupCredit"));
+		
+							if (debit == null)
+								debit = UnityConstants.bZero;
+							if (grpDebit == null)
+								grpDebit = UnityConstants.bZero;
+							if (credit == null)
+								credit = UnityConstants.bZero;
+							if (grpCredit == null)
+								grpCredit = UnityConstants.bZero;
+		
+							BigDecimal balance = debit.add(grpDebit).subtract(credit).subtract(grpCredit);
+							totalBlanace = totalBlanace.add(balance);
+						}
+		
+					}
+				}
+				catch (Exception e)
+				{
+					context.getLogger().error("findArpBalance() exception", e);
+				}
+				ProjectUtil.setMemberValueUn(user, "ArpBalance", totalBlanace);		
+			}
+			else if(ProjectUtil.getBOIntFieldValue(user, "UserType") == 2) // personel
+			{
+				
+			}
+		}
+	}
+	
 	public boolean createMsgWithTemplate(ILbsXUIPane container, Object data,
 			IClientContext context) {
 		CustomBusinessObject cBO = (CustomBusinessObject) data;
@@ -333,14 +400,14 @@ public class CXESMSAlert implements KeyListener{
 							message += strlistMessage[i];
 							continue;
 						}
-						if (StringUtil.equals(strlistMessage[i], ".adý.")) {
+						if (StringUtil.equals(strlistMessage[i], ".Abone Adý.")) {
 							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
 									obj, "Name");
 							if(strlistMessage[i]!=null)
 							message += strlistMessage[i];
 							continue;
 						}
-						if (StringUtil.equals(strlistMessage[i], ".Soyadý.")) {
+						if (StringUtil.equals(strlistMessage[i], ".Abone Soyadý.")) {
 
 							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
 									obj, "SurName");
@@ -348,7 +415,7 @@ public class CXESMSAlert implements KeyListener{
 							message += strlistMessage[i];
 							continue;
 						}
-						if (StringUtil.equals(strlistMessage[i], ".Telfon Numarasý.")) {
+						if (StringUtil.equals(strlistMessage[i], ".Abone Telefonu.")) {
 
 							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
 									obj, "Phonenumber");
@@ -374,7 +441,7 @@ public class CXESMSAlert implements KeyListener{
 							continue;
 						}
 						if (StringUtil
-								.equals(strlistMessage[i], ".Cari Hesap Unvaný.")) {
+								.equals(strlistMessage[i], ".Cari Hesap Ünvaný.")) {
 							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
 									obj, "Title");
 							if(strlistMessage[i]!=null)
@@ -538,6 +605,8 @@ public class CXESMSAlert implements KeyListener{
 		 for(int i=0; i<senderInfoGrid.getObjects().size();i++)
 		 {
 			 CustomBusinessObject cBO = (CustomBusinessObject)senderInfoGrid.getObjects().get(i);
+			 if (ProjectUtil.getBOStringFieldValue(cBO, "ShortDef").length() == 0)
+				continue;
 			 cBO.setObjectName("CBOSenderInfo");
 			 cBO.setCustomization(ProjectGlobals.getM_ProjectGUID());
 			if (ProjectUtil.getBOIntFieldValue(cBO, "LogicalReference") == 0) {

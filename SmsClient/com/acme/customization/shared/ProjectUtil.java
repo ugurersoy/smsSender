@@ -1,5 +1,6 @@
 package com.acme.customization.shared;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import com.lbs.xui.JLbsXUITypes;
 import com.lbs.xui.customization.JLbsXUIControlEvent;
 import com.lbs.xui.customization.JLbsXUIEventBase;
 import com.lbs.xui.customization.JLbsXUIGridEvent;
+import com.lbs.unity.UnityConstants;
 import com.lbs.unity.UnityHelper;
 import com.lbs.unity.bo.UNEORecInfo;
 import com.lbs.data.grids.JLbsQuerySelectionGrid;
@@ -622,6 +624,23 @@ public class ProjectUtil
 		return o == null
 				? false
 				: ((Boolean) o).booleanValue();
+	}
+	
+	public static BigDecimal getBOBigDecimalFieldValue(Object bo, String fieldName)
+	{
+		Object o = getBOFieldValue(bo, fieldName);
+		if ( o instanceof Double)
+			return new BigDecimal(((Double)  o).doubleValue());
+		else if ( o instanceof BigDecimal)
+			return (BigDecimal)  o;
+			
+		return UnityConstants.bZero;
+	}
+	
+	public static Integer getBOIntegerFieldValue(Object bo, String fieldName)
+	{
+		Object o = getBOFieldValue(bo, fieldName);
+		return o != null ? ((Integer) o) : Integer.valueOf(0);
 	}
 	
 	public static int getBOIntFieldValue(Object bo, String fieldName)
