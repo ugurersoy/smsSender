@@ -35,6 +35,7 @@ import com.lbs.data.query.QueryBusinessObject;
 import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryParams;
 import com.lbs.grids.JLbsObjectListGrid;
+import com.lbs.hr.em.EMConstants;
 import com.lbs.hr.em.bo.EMBOPerson;
 import com.lbs.invoke.MethodInvoker;
 import com.lbs.invoke.SessionReestablishedException;
@@ -50,6 +51,7 @@ import com.lbs.transport.RemoteMethodResponse;
 import com.lbs.util.ConvertUtil;
 import com.lbs.util.JLbsStringList;
 import com.lbs.util.JLbsStringListItemEx;
+import com.lbs.util.QueryUtil;
 import com.lbs.util.StringUtil;
 import com.lbs.util.StringUtilExtra;
 import com.lbs.xui.JLbsXUILookupInfo;
@@ -65,6 +67,96 @@ import com.lbs.data.grids.JLbsQuerySelectionGrid;
 
 public class ProjectUtil
 {
+	
+	public static CustomBusinessObjects getUserListWithPersonInfo(IClientContext context,  ArrayList personRefList) 
+	{
+		CustomBusinessObjects<CustomBusinessObject> userList = new CustomBusinessObjects<CustomBusinessObject>();
+		try {
+			QueryParams params = new QueryParams();
+			params.setCustomization(ProjectGlobals.getM_ProjectGUID());
+			params.getEnabledTerms().enable("T12");
+			params.getEnabledTerms().enable("T20");
+			params.getParameters().put("P_CONTACTTYPE", EMConstants.CONTACT_TYPE_CELLPHONE);
+			params.getVariables().put("V_PERSONREFS", personRefList);
+			QueryBusinessObjects results = new QueryBusinessObjects();
+			IQueryFactory factory = (IQueryFactory) context.getQueryFactory();
+			factory.select("CQOPersonContacts", params, results, -1);
+			if (results!=null && results.size() > 0) {
+				for (int i = 0; i < results.size(); i++) {
+					QueryBusinessObject result = results
+							.get(i);
+					CustomBusinessObject user = ProjectUtil.createNewCBO("CBOSMSAlertUser");
+					ProjectUtil.setMemberValueUn(user, "PersonRef", QueryUtil.getIntProp(result, "Logical_Reference"));
+					ProjectUtil.setMemberValueUn(user, "PersonCode", QueryUtil.getStringProp(result, "Code"));
+					ProjectUtil.setMemberValueUn(user, "PersonName",  QueryUtil.getStringProp(result, "Name"));
+					ProjectUtil.setMemberValueUn(user, "PersonSurName", QueryUtil.getStringProp(result, "Surname"));
+					ProjectUtil.setMemberValueUn(user, "PersonIdTCNo", QueryUtil.getStringProp(result, "IDTCNO"));
+					ProjectUtil.setMemberValueUn(user, "PersonPhonenumber", QueryUtil.getStringProp(result, "Explanation1"));
+					userList.add(user);
+				}
+			}
+		}
+			
+		catch (Exception e) {
+			context.getLogger().error("CQOPersonContacts query could not be executed properly :",
+							e);
+
+		}
+		return userList	;
+	}
+	
+	public static CustomBusinessObjects getUserListWithArpInfo(IClientContext context,  ArrayList arpRefList) 
+	{
+		CustomBusinessObjects<CustomBusinessObject> userList = new CustomBusinessObjects<CustomBusinessObject>();
+		IQueryFactory qryFactory = context.getQueryFactory();
+		QueryBusinessObjects recs = new QueryBusinessObjects();
+		QueryParams arpBalanceParams = new QueryParams();
+		arpBalanceParams.setCustomization(ProjectGlobals.getM_ProjectGUID());
+		arpBalanceParams.getEnabledTerms().enable("T80");
+		arpBalanceParams.getVariables().put("V_ARPREF", arpRefList);
+		try
+		{
+			boolean okay = qryFactory.select("CQOArpCardBrowser", arpBalanceParams, recs, -1);
+			if (okay && recs.size() > 0)
+			{
+				for (int i = 0; i < recs.size(); i++)
+				{
+					QueryBusinessObject rec = (QueryBusinessObject) recs.get(i);
+					CustomBusinessObject user = ProjectUtil.createNewCBO("CBOSMSAlertUser");
+					ProjectUtil.setMemberValueUn(user, "ArpCode", QueryUtil.getStringProp(rec, "Code"));
+					ProjectUtil.setMemberValueUn(user, "ArpTitle", QueryUtil.getStringProp(rec, "Title"));
+					ProjectUtil.setMemberValueUn(user, "ArpIDTCNo", QueryUtil.getStringProp(rec, "IDTCNo"));
+					ProjectUtil.setMemberValueUn(user, "ArpMobilePhone", QueryUtil.getStringProp(rec, "MobilePhone"));
+					ProjectUtil.setMemberValueUn(user, "ArpRef", QueryUtil.getIntProp(rec, "Reference"));
+					
+					BigDecimal debit = QueryUtil.getBigDecimalProp(rec, "Debit");
+					BigDecimal credit = QueryUtil.getBigDecimalProp(rec, "Credit");
+					BigDecimal grpDebit = QueryUtil.getBigDecimalProp(rec,"GroupDebit");
+					BigDecimal grpCredit = QueryUtil.getBigDecimalProp(rec, "GroupCredit");
+
+					if (debit == null)
+						debit = UnityConstants.bZero;
+					if (grpDebit == null)
+						grpDebit = UnityConstants.bZero;
+					if (credit == null)
+						credit = UnityConstants.bZero;
+					if (grpCredit == null)
+						grpCredit = UnityConstants.bZero;
+
+					BigDecimal balance = debit.add(grpDebit).subtract(credit).subtract(grpCredit);
+					ProjectUtil.setMemberValueUn(user, "ArpBalance", balance);		
+					userList.add(user);
+				}
+
+			}
+		}
+		catch (Exception e)
+		{
+			context.getLogger().error("findArpBalance() exception", e);
+		}
+		return userList;
+	}
+	
 	
 	public static void setAlertInfoPropFromCBO(CEOAlertInfo alertInfo, CustomBusinessObject alertCBO) {
 		alertInfo.setAlertRef(ProjectUtil.getBOIntFieldValue(alertCBO, "AlertRef"));

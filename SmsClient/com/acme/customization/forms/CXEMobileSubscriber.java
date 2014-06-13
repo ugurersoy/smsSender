@@ -1,6 +1,12 @@
 package com.acme.customization.forms;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+
+
+
+
+
 
 
 import com.acme.customization.shared.ProjectGlobals;
@@ -9,9 +15,18 @@ import com.lbs.appobjects.GOBOUser;
 import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.maskededit.JLbsTextEdit;
 import com.lbs.data.objects.CustomBusinessObject;
+import com.lbs.data.objects.CustomBusinessObjects;
+import com.lbs.data.query.IQueryFactory;
 import com.lbs.data.query.QueryBusinessObject;
 import com.lbs.data.query.QueryBusinessObjects;
+import com.lbs.data.query.QueryFactoryException;
+import com.lbs.data.query.QueryParams;
+import com.lbs.hr.em.EMConstants;
+import com.lbs.hr.em.bo.EMBOPerson;
+import com.lbs.invoke.SessionReestablishedException;
+import com.lbs.invoke.SessionTimeoutException;
 import com.lbs.remoteclient.IClientContext;
+import com.lbs.unity.UnityConstants;
 import com.lbs.unity.UnityHelper;
 import com.lbs.unity.fi.bo.FIBOARPCard;
 import com.lbs.unity.fi.bo.FIBOARPCardLink;
@@ -37,8 +52,11 @@ public class CXEMobileSubscriber{
 		CustomBusinessObject data = (CustomBusinessObject) event.getData();
 		data.createLinkedObjects();
 		if (event.getContainer().getMode() == JLbsXUITypes.XUIMODE_DBENTRY) {
+			
 			ProjectUtil.setMemberValueUn(data, "ArpCardLink",
 					new FIBOARPCardLink());
+			ProjectUtil.setMemberValueUn(data, "PersonCardLink",
+					new EMBOPerson());
 		}
 		setPermanentStates(event,  ProjectUtil.getBOIntFieldValue(data, "UserType"));
 	}
@@ -48,19 +66,28 @@ public class CXEMobileSubscriber{
 		
 		if(userType == ProjectGlobals.USER_TYPE_USER)
 		{
-			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_EXCLUDED); // usercombo
-			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_ACTIVE); // arpcode
+			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_EXCLUDED); // arpcode
+			event.getContainer().setPermanentStateByTag(19, JLbsXUITypes.XUISTATE_EXCLUDED); // personCode
+			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_ACTIVE); // usercombo
 			fillUserList(event, userType);
 		}
 		else if(userType == ProjectGlobals.USER_TYPE_ARP)
 		{
-			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_EXCLUDED); // arpcode
-			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_ACTIVE); // usercombo
+			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_EXCLUDED); // usercombo
+			event.getContainer().setPermanentStateByTag(19, JLbsXUITypes.XUISTATE_EXCLUDED); // personCode
+			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_ACTIVE); // arpcode
+		}
+		else if(userType == ProjectGlobals.USER_TYPE_EMPLOYEE)
+		{
+			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_EXCLUDED); // usercombo
+			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_EXCLUDED); // arpCode
+			event.getContainer().setPermanentStateByTag(19, JLbsXUITypes.XUISTATE_ACTIVE); // personCode
 		}
 		else
 		{
 			event.getContainer().setPermanentStateByTag(16, JLbsXUITypes.XUISTATE_EXCLUDED); 
 			event.getContainer().setPermanentStateByTag(18, JLbsXUITypes.XUISTATE_EXCLUDED);
+			event.getContainer().setPermanentStateByTag(19, JLbsXUITypes.XUISTATE_EXCLUDED);
 		}
 		resetValues(null, event);
 	}
@@ -119,27 +146,10 @@ public class CXEMobileSubscriber{
 				((JLbsComboBox) event.getComponent()).getSelectedItemTag());
 		CustomBusinessObject cBO = (CustomBusinessObject) event.getData();
 		ProjectUtil.setMemberValueUn(cBO, "ArpCardLink.Code", "");
+		ProjectUtil.setMemberValueUn(cBO, "PersonCardLink.Code", "");
 		ProjectUtil.setMemberValueUn(cBO, "CardReference", 0);
 		GOBOUser user = new GOBOUser();
 		setUserFields(event, user);
-		event.getContainer().resetValueByTag(18);
-	}
-
-	public void onArpCodeLookup(JLbsXUIControlEvent event) {
-		JLbsXUILookupInfo info = new JLbsXUILookupInfo();
-		String[] terms = { "T1" };
-		info.setOrderName("byActiveCode");
-		info.setQueryTerms(terms);
-		info.setQueryParamValue("P_STATUS", new Integer(0));
-		info.setQueryVariableValue("V_LKPCOL", new String("CODE"));
-		event.getContainer().openChild("FIXFARPCardBrowser.jfm", info, true,
-				JLbsXUITypes.XUIMODE_DBSELECT);
-		if (info.getResult() == JLbsXUILookupInfo.XUILU_OK) {
-			CustomBusinessObject data = (CustomBusinessObject) event.getData();
-			ProjectUtil.setMemberValueUn(data, "CardReference", info.getIntegerData("Reference"));
-			ProjectUtil.setMemberValueUn(data, "ArpCardLink.Code", info.getStringData("Code"));
-			setArpInfoFields(null, null, event, info.getStringData("Title"),info.getIntegerData("Reference"));
-		}
 		event.getContainer().resetValueByTag(18);
 	}
 
@@ -199,37 +209,39 @@ public class CXEMobileSubscriber{
 		return new GOBOUser();
 	}
 	
-	public boolean verifyArpCode(ILbsXUIPane container, Object data, IClientContext context)
+	public boolean setPersonInfo(ILbsXUIPane container, Object data, IClientContext context)
 	{
-		setArpInfoFields(container, data, null,
-				ProjectUtil.getBOStringFieldValue(data, "Name"),
-				ProjectUtil.getBOIntFieldValue(data, "CardReference"));
+		int personRef =  ProjectUtil.getBOIntFieldValue(data, "CardReference");
+		if(personRef > 0)
+		{
+			if (personRef != 0)
+			{
+				ArrayList personRefList = new ArrayList();
+				personRefList.add(personRef);
+				CustomBusinessObjects personList = ProjectUtil.getUserListWithPersonInfo(context, personRefList);
+				if (personList.size() > 0)
+				{
+					CustomBusinessObject person = (CustomBusinessObject) personList.get(0);
+					ProjectUtil.setMemberValueUn((CustomBusinessObject)data, "Phonenumber", ProjectUtil.getBOStringFieldValue(person, "PersonPhonenumber"));						
+				}
+				resetValues(container, null);
+			}
+			
+		}
+		return true;
+	}
+	
+	public boolean checkMblUserName(ILbsXUIPane container, Object data, IClientContext context)
+	{
+		CustomBusinessObject cBO = (CustomBusinessObject) data; 
+		String [] strArr = StringUtil.split(ProjectUtil.getBOStringFieldValue(data, "Name"), ' ');
+		ProjectUtil.setMemberValueUn(cBO, "Name", strArr != null ? strArr[0] :" ");
+		ProjectUtil.setMemberValueUn(cBO, "SurName", strArr != null ? strArr[1] :" ");
+		resetValues(container, null);
 		return true;
 	}
 	
 	
-	public void setArpInfoFields(ILbsXUIPane container, Object cBO, JLbsXUIControlEvent event, String name, int arpRef) {
-		
-		CustomBusinessObject data = cBO == null ? (CustomBusinessObject) event.getData() : (CustomBusinessObject)cBO;
-		FIBOARPCard arpCard = new FIBOARPCard();
-		String[] strArr = null;
-		if (arpRef != 0)
-		{
-			strArr = StringUtil.split(name, ' ');
-			IClientContext context = cBO == null ? event.getContainer().getContext():container.getContext();
-			arpCard = (FIBOARPCard) UnityHelper.getBOFieldsByRef(
-					context, FIBOARPCard.class, arpRef, new String[] {
-							"Internal_Reference", "MobilePhone", "IDTCNo" });
-		}
-		
-		ProjectUtil.setMemberValueUn(data, "Name", strArr != null ? strArr[0] :" ");
-		ProjectUtil.setMemberValueUn(data, "SurName", strArr != null ? strArr[1] :" ");
-		ProjectUtil.setMemberValueUn(data, "Phonenumber", arpCard.getMobilePhone());
-		ProjectUtil.setMemberValueUn(data, "Tckno", arpCard.getIDTCNo());
-		
-		resetValues(container, event);
-	}
-
 	public void onSaveData(JLbsXUIControlEvent event)
 	{
 		/** onSaveData : This method is called before form data is saved to determine whether the form data can be saved or not. Event parameter object (JLbsXUIControlEvent) contains form object in 'container' and 'component' properties, and form data object in 'data' property. A boolean ('true' means form data can be saved) return value is expected. If no return value is specified or the return value is not of type boolean, default value is 'true'. */

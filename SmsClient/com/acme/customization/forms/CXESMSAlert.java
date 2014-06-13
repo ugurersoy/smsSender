@@ -45,6 +45,7 @@ import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
 import com.lbs.data.query.QueryParams;
 import com.lbs.grids.JLbsObjectListGrid;
+import com.lbs.hr.em.EMConstants;
 import com.lbs.remoteclient.IClientContext;
 import com.lbs.unity.UnityBatchHelper;
 import com.lbs.unity.UnityConstants;
@@ -86,6 +87,8 @@ public class CXESMSAlert implements KeyListener{
 	private JLbsXUIControlEvent m_Event = null;
 	private JLbsXUIPane m_Container = null;
 	private IClientContext m_Context = null;
+	
+	private int selectedRow = -1;
 	
 	public void onInitialize(JLbsXUIControlEvent event) {
 		
@@ -193,7 +196,7 @@ public class CXESMSAlert implements KeyListener{
 
 	public boolean createNewLine(ILbsXUIPane container, Object data,
 			IClientContext context) {
-		if (usersGrid.getSelectedRow() + 1 == usersGrid.getObjects().size())
+		if (selectedRow + 1 == usersGrid.getObjects().size())
 			addNewUserLine();
 		usersGrid.rowListChanged();
 		return true;
@@ -202,65 +205,48 @@ public class CXESMSAlert implements KeyListener{
 	public void setUserInfo(ILbsXUIPane container, Object data, IClientContext context)
 	{
 		CustomBusinessObjects users = (CustomBusinessObjects) ProjectUtil.getMemberValue(m_SMSAlert, "AlertUsers");
-		CustomBusinessObject user =  (CustomBusinessObject) users.get(usersGrid.getSelectedRow());
+		CustomBusinessObject user =  (CustomBusinessObject) users.get(selectedRow);
 		
 		if (user != null)
 		{
-			if(ProjectUtil.getBOIntFieldValue(user, "UserType") == 1) // Cari
+			if(ProjectUtil.getBOIntFieldValue(user, "UserType") == ProjectGlobals.USER_TYPE_ARP) 
 			{
-				int arpRef = ProjectUtil.getBOIntFieldValue(user, "CardRef");
-				if (arpRef == 0)
-					return;
-	
-				IQueryFactory qryFactory = context.getQueryFactory();
-				QueryBusinessObjects recs = new QueryBusinessObjects();
-				QueryParams arpBalanceParams = new QueryParams();
-				arpBalanceParams.setCustomization(ProjectGlobals.getM_ProjectGUID());
-				arpBalanceParams.getEnabledTerms().enable("T80");
-				arpBalanceParams.getVariables().put("V_ARPREF", arpRef);
-				BigDecimal totalBlanace = UnityConstants.bZero;
-				try
+				int arpRef = ProjectUtil.getBOIntFieldValue(user, "CardReference");
+				if (arpRef > 0)
 				{
-					boolean okay = qryFactory.select("CQOArpCardBrowser", arpBalanceParams, recs, -1);
-					if (okay && recs.size() > 0)
+					ArrayList arpRefList = new ArrayList();
+					arpRefList.add(arpRef);
+					CustomBusinessObjects userList = ProjectUtil.getUserListWithArpInfo(context, arpRefList);
+					if (userList.size() > 0)
 					{
-						for (int i = 0; i < recs.size(); i++)
-						{
-							QueryBusinessObject rec = (QueryBusinessObject) recs.get(i);
-							ProjectUtil.setMemberValueUn(user, "ArpCode", (String)rec.getProperties().getValue("Code"));
-							ProjectUtil.setMemberValueUn(user, "ArpTitle", (String)rec.getProperties().getValue("Title"));
-							BigDecimal debit = ((BigDecimal) rec.getProperties().getValue("Debit"));
-							BigDecimal credit = ((BigDecimal) rec.getProperties().getValue("Credit"));
-							BigDecimal grpDebit = ((BigDecimal) rec.getProperties().getValue("GroupDebit"));
-							BigDecimal grpCredit = ((BigDecimal) rec.getProperties().getValue("GroupCredit"));
-		
-							if (debit == null)
-								debit = UnityConstants.bZero;
-							if (grpDebit == null)
-								grpDebit = UnityConstants.bZero;
-							if (credit == null)
-								credit = UnityConstants.bZero;
-							if (grpCredit == null)
-								grpCredit = UnityConstants.bZero;
-		
-							BigDecimal balance = debit.add(grpDebit).subtract(credit).subtract(grpCredit);
-							totalBlanace = totalBlanace.add(balance);
-						}
-		
+						CustomBusinessObject listUser = (CustomBusinessObject) userList.get(0);
+						ProjectUtil.setMemberValueUn(user, "ArpCode",  ProjectUtil.getBOStringFieldValue(listUser, "ArpCode"));
+						ProjectUtil.setMemberValueUn(user, "ArpTitle",  ProjectUtil.getBOStringFieldValue(listUser, "ArpTitle"));
+						ProjectUtil.setMemberValueUn(user, "ArpBalance", ProjectUtil.getBOBigDecimalFieldValue(listUser, "ArpBalance"));
 					}
 				}
-				catch (Exception e)
-				{
-					context.getLogger().error("findArpBalance() exception", e);
-				}
-				ProjectUtil.setMemberValueUn(user, "ArpBalance", totalBlanace);		
+	
 			}
-			else if(ProjectUtil.getBOIntFieldValue(user, "UserType") == 2) // personel
+			else if(ProjectUtil.getBOIntFieldValue(user, "UserType") == ProjectGlobals.USER_TYPE_EMPLOYEE) 
 			{
-				
+				int personRef = ProjectUtil.getBOIntFieldValue(user, "CardReference");
+				if (personRef > 0)
+				{
+					ArrayList personRefList = new ArrayList();
+					personRefList.add(personRef);
+					CustomBusinessObjects userList = ProjectUtil.getUserListWithPersonInfo(context, personRefList);
+					if (userList.size() > 0)
+					{
+						CustomBusinessObject listUser = (CustomBusinessObject) userList.get(0);
+						ProjectUtil.setMemberValueUn(user, "PersonCode",  ProjectUtil.getBOStringFieldValue(listUser, "PersonCode"));
+						ProjectUtil.setMemberValueUn(user, "PersonName",  ProjectUtil.getBOStringFieldValue(listUser, "PersonName"));
+						ProjectUtil.setMemberValueUn(user, "PersonSurName", ProjectUtil.getBOStringFieldValue(listUser, "PersonSurName"));
+					}
+				}
 			}
 		}
 	}
+			
 	
 	public boolean createMsgWithTemplate(ILbsXUIPane container, Object data,
 			IClientContext context) {
@@ -448,8 +434,32 @@ public class CXESMSAlert implements KeyListener{
 							message += strlistMessage[i];
 							continue;
 						}
-						if (StringUtil.equals(strlistMessage[i],
-								".Cari Hesap Bakiyesi.")) {
+						if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+							strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
+									"ArpBalance")).toString();
+							if(strlistMessage[i]!=null)
+								message += strlistMessage[i];
+							continue;
+						}
+						if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
+							strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+									"PersonCode");
+							if(strlistMessage[i]!=null)
+								message += strlistMessage[i];
+							continue;
+						}
+						if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
+							strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+									"PersonName");
+							if(strlistMessage[i]!=null)
+								message += strlistMessage[i];
+							continue;
+						}
+						if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
+							strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
+									"PersonSurName")).toString();
+							if(strlistMessage[i]!=null)
+								message += strlistMessage[i];
 							continue;
 						}
 
@@ -576,6 +586,7 @@ public class CXESMSAlert implements KeyListener{
 	
 	public void onGridCellSelectedReceiver(JLbsXUIGridEvent event)
 	{  
+		selectedRow = event.getRow();
 		OnGridCellSelectedReceivers.OnCellSelected(event, 3001, 4001, 100,m_SMSAlert);
 		 try {
 				MessageSizeCalculater.messageFindSize(m_Container, 10000053, 10000054, 4001, 10000056);
@@ -890,6 +901,57 @@ public class CXESMSAlert implements KeyListener{
 		 	e1.printStackTrace();
 		}
 		 MessageSizeCalculater.sizeControl(m_Container, 4001, 3001,10000053, 10000054,10000056);
+	}
+
+	public void onGridCellDataChanged(JLbsXUIGridEvent event)
+	{
+		CustomBusinessObject user = (CustomBusinessObject) event.getData();
+		QueryParams params = new QueryParams();
+		switch (event.getColumnTag()) {
+			case 10000013:
+				params.getEnabledTerms().enable("T_PHONENUM");
+				params.getParameters().put("P_PHONENUM", ProjectUtil.getBOStringFieldValue(user, "Phonenumber"));
+				break;
+			case 10000014:
+				params.getEnabledTerms().enable("T_TCKNO");
+				params.getParameters().put("P_TCKNO", ProjectUtil.getBOStringFieldValue(user, "Tckno"));
+				break;
+			case 10000015:
+				params.getEnabledTerms().enable("T_TITLE");
+				params.getParameters().put("P_TITLE", ProjectUtil.getBOStringFieldValue(user, "Title"));
+				break;
+			default:
+				break;
+			}
+		
+		try {
+			
+			params.setCustomization(ProjectGlobals.getM_ProjectGUID());
+			QueryBusinessObjects results = new QueryBusinessObjects();
+			IQueryFactory factory = (IQueryFactory) event.getClientContext().getQueryFactory();
+			factory.select("CQOMobileSubscribersBrowser", params, results, -1);
+			if (results != null && results.size() > 0) {
+				QueryBusinessObject result = results.get(0);
+				ProjectUtil.setMemberValueUn(user, "Name", QueryUtil.getStringProp(result, "MBLINFUSER_NAME"));
+				ProjectUtil.setMemberValueUn(user, "SurName", QueryUtil.getStringProp(result, "MBLINFUSER_SURNAME"));
+				ProjectUtil.setMemberValueUn(user, "Title", QueryUtil.getStringProp(result, "MBLINFUSER_TITLE"));
+				ProjectUtil.setMemberValueUn(user, "Tckno",  QueryUtil.getStringProp(result, "MBLINFUSER_TCKNO"));
+				ProjectUtil.setMemberValueUn(user, "Phonenumber", QueryUtil.getStringProp(result, "MBLINFUSER_PHONENUMBER"));
+				ProjectUtil.setMemberValueUn(user, "CardReference", QueryUtil.getIntProp(result, "MBLINFUSER_CARDREF"));
+				ProjectUtil.setMemberValueUn(user, "LogicalReference", QueryUtil.getIntProp(result, "MBLINFUSER_REF"));
+				ProjectUtil.setMemberValueUn(user, "UserType", QueryUtil.getIntProp(result, "MBLINFUSER_USERTYPE"));
+				setUserInfo(event.getContainer(), event.getContainer().getData(), event.getClientContext());
+				createNewLine(event.getContainer(), event.getContainer().getData(), event.getClientContext());
+				lookupSelected(event.getContainer(), event.getContainer().getData(), event.getClientContext());
+			}
+			
+		} 
+		catch (Exception e) {
+			event.getClientContext().getLogger()
+					.error("CQOMobileSubscribersBrowser query could not be executed properly :",
+							e);
+
+		}
 	}
 
 

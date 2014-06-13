@@ -36,7 +36,10 @@ public class MessageSplitControl {
 					&& !StringUtil.equals(strlist[i], ".Saat.")
 					&& !StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")
 					&& !StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")
-					&& !StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+					&& !StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")
+					&& !StringUtil.equals(strlist[i], ".Personel Sicil No.")
+					&& !StringUtil.equals(strlist[i], ".Personel Adý.")
+					&& !StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
 				status = false;
 			} else {
 				status = true;
@@ -65,6 +68,15 @@ public class MessageSplitControl {
 			status = false; 
 		}
 		else if (text.equals(".Cari Hesap Bakiyesi.")) {
+			status = false; 
+		}
+		else if (text.equals(".Personel Sicil No.")) {
+			status = false; 
+		}
+		else if (text.equals(".Personel Adý.")) {
+			status = false; 
+		}
+		else if (text.equals(".Personel Soyadý.")) {
 			status = false; 
 		}
 		else 
@@ -194,7 +206,7 @@ public class MessageSplitControl {
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
+							"ArpCode");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -204,7 +216,7 @@ public class MessageSplitControl {
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Title");
+							"ArpTitle");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -213,6 +225,44 @@ public class MessageSplitControl {
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
+							"ArpBalance")).toString();
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				
+				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonCode");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonName");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
+					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
+							"PersonSurName")).toString();
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 			}
@@ -347,6 +397,37 @@ public class MessageSplitControl {
 					}
 					continue;
 				}
+				
+				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonCode");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonName");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
+					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
+							"PersonSurName")).toString();
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
 			}
 		}else{
 			message.setText(mainMessage.getText());
@@ -439,7 +520,7 @@ public class MessageSplitControl {
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
 					
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
+							"ArpCode");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -449,7 +530,7 @@ public class MessageSplitControl {
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
 					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Title");
+							"ArpTitle");
 					if(strlist[i]!=null)
 					{
 						sendToVisualMessage += strlist[i];
@@ -458,6 +539,43 @@ public class MessageSplitControl {
 					continue;
 				}
 				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
+							"ArpBalance")).toString();
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonCode");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
+					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+							"PersonName");
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
+					continue;
+				}
+				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
+					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
+							"PersonSurName")).toString();
+					if(strlist[i]!=null)
+					{
+						sendToVisualMessage += strlist[i];
+						message.setText(sendToVisualMessage);
+					}
 					continue;
 				}
 			}
