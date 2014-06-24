@@ -22,6 +22,7 @@ import com.acme.customization.client.OnClickButtonEvent;
 import com.acme.customization.client.OnGridCellSelectedReceivers;
 import com.acme.customization.client.OnInitializeEvent;
 import com.acme.customization.client.OnKeyPressedMessages;
+import com.acme.customization.client.ParameterName;
 import com.acme.customization.client.Parameters;
 import com.acme.customization.shared.ProjectGlobals;
 import com.acme.customization.shared.ProjectUtil;
@@ -73,6 +74,7 @@ public class CXESMSAlert implements KeyListener{
 	private JLbsComboBox cbxSenderInfo = null;
 	
 	private Parameters parameter[] = Parameters.values();
+	private ParameterName parameterName[]=ParameterName.values();
 	
 	private OnInitializeEvent initialize;
 	
@@ -106,7 +108,7 @@ public class CXESMSAlert implements KeyListener{
 		usersGrid = ((com.lbs.grids.JLbsObjectListGrid) m_Container.getComponentByTag(100));
 		usersGrid.setObjects((CustomBusinessObjects)ProjectUtil.getMemberValue(m_SMSAlert, "AlertUsers"));
 		initialize = new OnInitializeEvent();
-		initialize.getterParameter(parameter, event, 200);
+		initialize.getterParameter(parameter, event, 200,parameterName);
 
 		senderInfoGrid =  ((com.lbs.grids.JLbsObjectListGrid) m_Container.getComponentByTag(10000032));
 		cbxSenderInfo = (JLbsComboBox) m_Container.getComponentByTag(10000021);
@@ -170,7 +172,7 @@ public class CXESMSAlert implements KeyListener{
 	}
 
 	public void ParameterOnGridCellDblClick(JLbsXUIGridEvent event) {
-		DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
+	DoubleClickOnGridEvent doubleClick = new DoubleClickOnGridEvent();
 		doubleClick.addDoubleClickOnText(event, 3001, 200,100,4001,m_SMSAlert);
 	
 				try {
@@ -498,7 +500,8 @@ public class CXESMSAlert implements KeyListener{
 
 		if(ProjectUtil.getBOStringFieldValue(m_SMSAlert, "MainMessage").length() == 0)
 		{
-			JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býrakýlamaz!");
+			//JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býrakýlamaz!");
+			m_Context.showMessage("deneme", null);
 			event.setReturnObject(false);
 			return;
 		}

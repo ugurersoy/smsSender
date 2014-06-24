@@ -109,480 +109,542 @@ public class MessageSplitControl {
 	   return time;
    }
 
+   
+   
+   public static void messageCalculaterControlEvent(JLbsXUIControlEvent event,
+			int mainMessageTag, int messageTag, int gridTag)
+	{
+
+	    String m_Message=null;
+		JLbsXUIPane container = event.getContainer();
+		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(mainMessageTag)).getInnerComponent());
+		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+				.getComponentByTag(messageTag)).getInnerComponent());
+
+		if (!mainMessage.getText().isEmpty()) {
+			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
+					.getComponentByTag(gridTag);
+
+			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
+					.getRowObject(messageReveiverGrid.getSelectedRow());
+			
+			 m_Message=mainMessage.getText();
+
+			if(m_Message.contains("P1"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"Name")!=null)
+           m_Message= m_Message.replace("P1",(String) ProjectUtil.getMemberValue(obj,
+							"Name"));	
+				else 
+					m_Message= m_Message.replace("P1","");
+				
+			}
+			
+			if(m_Message.contains("P2"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"SurName")!=null)
+				m_Message=m_Message.replace("P2",(String) ProjectUtil.getMemberValue(obj,
+							"SurName"));
+				else 
+					m_Message= m_Message.replace("P2","");
+			}
+			
+			if(m_Message.contains("P3"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"Phonenumber")!=null)
+				m_Message=m_Message.replace("P3",(String) ProjectUtil.getMemberValue(obj,
+							"Phonenumber"));
+				else 
+					m_Message= m_Message.replace("P3","");
+			}
+			
+			if(m_Message.contains("P4"))
+			{
+				m_Message=m_Message.replace("P4",returnDate());
+			}
+			
+			if(m_Message.contains("P5"))
+			{
+				m_Message=m_Message.replace("P5",returnTime());
+			}
+			
+			if(m_Message.contains("P6"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpCode")!=null)
+				m_Message=m_Message.replace("P6",(String) ProjectUtil.getMemberValue(obj,
+						"ArpCode"));
+				else 
+					m_Message= m_Message.replace("P6","");
+			}
+			
+			if(m_Message.contains("P7"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpTitle")!=null)
+				m_Message=m_Message.replace("P7",(String) ProjectUtil.getMemberValue(obj,
+						"ArpTitle"));
+				else 
+					m_Message= m_Message.replace("P7","");
+			}
+	
+			if(m_Message.contains("P8"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpBalance")!=null)
+				m_Message=m_Message.replace("P8",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"ArpBalance")).toString());
+				else 
+					m_Message= m_Message.replace("P8","");
+			}
+			
+			if(m_Message.contains("P9"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonCode")!=null)
+				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"PersonCode")).toString());
+				else 
+					m_Message= m_Message.replace("P9","");
+			}
+			
+			if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+				else 
+					m_Message= m_Message.replace("P10","");
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
+		}
+		message.setText(m_Message);
+		ProjectUtil.setMemberValue((CustomBusinessObject)event.getData(), "Message", m_Message);
+	}
+	
+   
+   
    /**
     *Bu metod Gönderilecek mesaja yazýlan alaný parametre olup olmadýðýný kontrol 
     *edip ana mesaj alanýna eklenmesini saðlar. 
     *
     * @author Ugur.Ersoy
     **/
-	public static void messageCalculaterControlEvent(JLbsXUIControlEvent event,
-			int mainMessageTag, int messageTag, int gridTag)
-	{
-		String sendToVisualMessage = "";
-		JLbsXUIPane container = event.getContainer();
-		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
-				.getComponentByTag(mainMessageTag)).getInnerComponent());
-
-		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
-				.getComponentByTag(messageTag)).getInnerComponent());
-
-		if (!mainMessage.getText().isEmpty()) {
-			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
-					.getComponentByTag(gridTag);
-
-			MessageSplitControl control = new MessageSplitControl();
-
-			String strlist[] = control.splitControl(mainMessage.getText());
-
-			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
-					.getRowObject(messageReveiverGrid.getSelectedRow());
-			
-			if(ProjectUtil.getBOStringFieldValue(obj, "Phonenumber").length() == 0)
-			{
-				message.setText("");
-				ProjectUtil.setMemberValue((CustomBusinessObject) event.getContainer().getData(), "Message", message.getText());
-				return ;
-			}
-			for (int i = 0; i < strlist.length; i++) {
-				if (control.controlParamsText(strlist[i])) {
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-
-				if (control.controlParamsText(strlist[i])) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-
-				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"SurName");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Phonenumber");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Tarih.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnDate();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Saat.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnTime();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpTitle");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
-					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
-							"ArpBalance")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				
-				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonName");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
-					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
-							"PersonSurName")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-			}
-
-		}else{
-			message.setText(mainMessage.getText());
-		}
-		
-		ProjectUtil.setMemberValue((CustomBusinessObject)event.getData(), "Message", message.getText());
-	}
+//	public static void messageCalculaterControlEvent(JLbsXUIControlEvent event,
+//			int mainMessageTag, int messageTag, int gridTag)
+//	{
+//		String sendToVisualMessage = "";
+//		JLbsXUIPane container = event.getContainer();
+//		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+//				.getComponentByTag(mainMessageTag)).getInnerComponent());
+//
+//		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+//				.getComponentByTag(messageTag)).getInnerComponent());
+//
+//		if (!mainMessage.getText().isEmpty()) {
+//			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
+//					.getComponentByTag(gridTag);
+//
+//			MessageSplitControl control = new MessageSplitControl();
+//
+//			String strlist[] = control.splitControl(mainMessage.getText());
+//
+//			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
+//					.getRowObject(messageReveiverGrid.getSelectedRow());
+//			
+//			if(ProjectUtil.getBOStringFieldValue(obj, "Phonenumber").length() == 0)
+//			{
+//				message.setText("");
+//				ProjectUtil.setMemberValue((CustomBusinessObject) event.getContainer().getData(), "Message", message.getText());
+//				return ;
+//			}
+//			for (int i = 0; i < strlist.length; i++) {
+//				if (control.controlParamsText(strlist[i])) {
+//					if (!strlist[i].isEmpty()) {
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//
+//				if (control.controlParamsText(strlist[i])) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"Name");
+//					if (!strlist[i].isEmpty()) {
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//
+//				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"Name");
+//					if (strlist[i] != null) {
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"SurName");
+//					if (strlist[i] != null) {
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"Phonenumber");
+//					if (strlist[i] != null) {
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Tarih.")) {
+//					if (strlist[i] != null) {
+//						sendToVisualMessage += returnDate();
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Saat.")) {
+//					if (strlist[i] != null) {
+//						sendToVisualMessage += returnTime();
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"ArpCode");
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"ArpTitle");
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
+//					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
+//							"ArpBalance")).toString();
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				
+//				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"PersonCode");
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
+//					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
+//							"PersonName");
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
+//					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
+//							"PersonSurName")).toString();
+//					if(strlist[i]!=null)
+//					{
+//						sendToVisualMessage += strlist[i];
+//						message.setText(sendToVisualMessage);
+//					}
+//					continue;
+//				}
+//			}
+//
+//		}else{
+//			message.setText(mainMessage.getText());
+//		}
+//		
+//		ProjectUtil.setMemberValue((CustomBusinessObject)event.getData(), "Message", message.getText());
+//	}
 	
 	
 	
 	public static void messageCalculaterGridEvent(JLbsXUIGridEvent event,
 			int mainMessageTag, int messageTag, int gridTag,CustomBusinessObject m_SMSAlert)
 	{
-		String sendToVisualMessage = "";
 		JLbsXUIPane container = event.getContainer();
 		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(mainMessageTag)).getInnerComponent());
-
-		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
+        String m_Message=null;
+		
+        JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(messageTag)).getInnerComponent());
 
 		if (!mainMessage.getText().isEmpty()) {
 			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 					.getComponentByTag(gridTag);
 
-			MessageSplitControl control = new MessageSplitControl();
-
-			String strlist[] = control.splitControl(mainMessage.getText());
-
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
 			
-			if(ProjectUtil.getBOStringFieldValue(obj, "Phonenumber").length() == 0)
+			 m_Message=mainMessage.getText();
+
+			if(m_Message.contains("P1"))
 			{
-				message.setText("");
-				ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
-				return ;
+				if(ProjectUtil.getMemberValue(obj,
+						"Name")!=null)
+           m_Message= m_Message.replace("P1",(String) ProjectUtil.getMemberValue(obj,
+							"Name"));	
+				else 
+					m_Message= m_Message.replace("P1","");
 			}
 			
-			for (int i = 0; i < strlist.length; i++) {
-				if (control.controlParamsText(strlist[i])) {
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				
-				if (control.controlParamsText(strlist[i])) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-
-				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"SurName");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Phonenumber");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Tarih.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnDate();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Saat.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnTime();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpTitle");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
-					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
-							"ArpBalance")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				
-				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonName");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
-					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
-							"PersonSurName")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
+			if(m_Message.contains("P2"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"SurName")!=null)
+				m_Message=m_Message.replace("P2",(String) ProjectUtil.getMemberValue(obj,
+							"SurName"));
+				else 
+					m_Message= m_Message.replace("P2","");
 			}
-		}else{
-			message.setText(mainMessage.getText());
+			
+			if(m_Message.contains("P3"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"Phonenumber")!=null)
+				m_Message=m_Message.replace("P3",(String) ProjectUtil.getMemberValue(obj,
+							"Phonenumber"));
+				else 
+					m_Message= m_Message.replace("P3","");
+			}
+			
+			if(m_Message.contains("P4"))
+			{
+				m_Message=m_Message.replace("P4",returnDate());
+			}
+			
+			if(m_Message.contains("P5"))
+			{
+				m_Message=m_Message.replace("P5",returnTime());
+			}
+			
+			if(m_Message.contains("P6"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpCode")!=null)
+				m_Message=m_Message.replace("P6",(String) ProjectUtil.getMemberValue(obj,
+						"ArpCode"));
+				else 
+					m_Message= m_Message.replace("P6","");
+			}
+			
+			if(m_Message.contains("P7"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpTitle")!=null)
+				m_Message=m_Message.replace("P7",(String) ProjectUtil.getMemberValue(obj,
+						"ArpTitle"));
+				else 
+					m_Message= m_Message.replace("P7","");
+			}
+	
+			if(m_Message.contains("P8"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpBalance")!=null)
+				m_Message=m_Message.replace("P8",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"ArpBalance")).toString());
+				else 
+					m_Message= m_Message.replace("P8","");
+			}
+			
+			if(m_Message.contains("P9"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonCode")!=null)
+				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"PersonCode")).toString());
+				else 
+					m_Message= m_Message.replace("P9","");
+			}
+			
+			if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+				else 
+					m_Message= m_Message.replace("P10","");
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
 		}
-		
+		message.setText(m_Message);
 		ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
 	}
 	
 	public static void messageCalculaterLookUp(ILbsXUIPane container, CustomBusinessObject smsAlert,
 			int mainMessageTag, int messageTag, int gridTag)
 	{
-		String sendToVisualMessage = "";
 		JLbsEditorPane mainMessage = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(mainMessageTag)).getInnerComponent());
 		JLbsEditorPane message = ((JLbsEditorPane) ((com.lbs.controls.JLbsScrollPane) container
 				.getComponentByTag(messageTag)).getInnerComponent());
+	    String m_Message=null;
+		
+		
 		if (!mainMessage.getText().isEmpty()) {
 			JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 					.getComponentByTag(gridTag);
 
-			MessageSplitControl control = new MessageSplitControl();
-
-			String strlist[] = control.splitControl(mainMessage.getText());
-
 			CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid
 					.getRowObject(messageReveiverGrid.getSelectedRow());
 			
+			 m_Message=mainMessage.getText();
 
-			for (int i = 0; i < strlist.length; i++) {
-				if (control.controlParamsText(strlist[i])) {
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-
-				if (control.controlParamsText(strlist[i])) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (!strlist[i].isEmpty()) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-
-				if (StringUtil.equals(strlist[i], ".Abone Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Name");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Soyadý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"SurName");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Abone Telefonu.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"Phonenumber");
-					if (strlist[i] != null) {
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Tarih.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnDate();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Saat.")) {
-					if (strlist[i] != null) {
-						sendToVisualMessage += returnTime();
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Kodu.")) {
-					
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Ünvaný.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"ArpTitle");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
-					strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
-							"ArpBalance")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonCode");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
-					strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-							"PersonName");
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
-				if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
-					strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
-							"PersonSurName")).toString();
-					if(strlist[i]!=null)
-					{
-						sendToVisualMessage += strlist[i];
-						message.setText(sendToVisualMessage);
-					}
-					continue;
-				}
+			if(m_Message.contains("P1"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"Name")!=null)
+           m_Message= m_Message.replace("P1",(String) ProjectUtil.getMemberValue(obj,
+							"Name"));	
+				else 
+					m_Message= m_Message.replace("P1","");
 			}
-		}else{
-			message.setText(mainMessage.getText());
+			
+			if(m_Message.contains("P2"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"SurName")!=null)
+				m_Message=m_Message.replace("P2",(String) ProjectUtil.getMemberValue(obj,
+							"SurName"));
+				else 
+					m_Message= m_Message.replace("P2","");
+			}
+			
+			if(m_Message.contains("P3"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"Phonenumber")!=null)
+				m_Message=m_Message.replace("P3",(String) ProjectUtil.getMemberValue(obj,
+							"Phonenumber"));
+				else 
+					m_Message= m_Message.replace("P3","");
+			}
+			
+			if(m_Message.contains("P4"))
+			{
+				m_Message=m_Message.replace("P4",returnDate());
+			}
+			
+			if(m_Message.contains("P5"))
+			{
+				m_Message=m_Message.replace("P5",returnTime());
+			}
+			
+			if(m_Message.contains("P6"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpCode")!=null)
+				m_Message=m_Message.replace("P6",(String) ProjectUtil.getMemberValue(obj,
+						"ArpCode"));
+				else 
+					m_Message= m_Message.replace("P6","");
+			}
+			
+			if(m_Message.contains("P7"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpTitle")!=null)
+				m_Message=m_Message.replace("P7",(String) ProjectUtil.getMemberValue(obj,
+						"ArpTitle"));
+				else 
+					m_Message= m_Message.replace("P8","");
+			}
+	
+			if(m_Message.contains("P8"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"ArpBalance")!=null)
+				m_Message=m_Message.replace("P8",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"ArpBalance")).toString());
+			}
+			
+			if(m_Message.contains("P9"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonCode")!=null)
+				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						"PersonCode")).toString());
+				else 
+					m_Message= m_Message.replace("P9","");
+			}
+			
+			if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
 		}
-		
+		message.setText(m_Message);
 		ProjectUtil.setMemberValue((CustomBusinessObject) container.getData(), "Message", message.getText());
 		
 		container.resetValueByTag(4001);

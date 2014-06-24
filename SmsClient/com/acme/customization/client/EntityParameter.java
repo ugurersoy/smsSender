@@ -3,10 +3,21 @@ package com.acme.customization.client;
 public class EntityParameter {
 	
 	public String parameter;
+	public String paramName;
+	
+	
 
-
-	public EntityParameter(String parameter) {
+	public EntityParameter(String parameter, String paramName) {
 		this.parameter = parameter;
+		this.paramName = paramName;
+	}
+
+	public String getParamName() {
+		return paramName;
+	}
+
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
 	}
 
 	public String getParameter() {

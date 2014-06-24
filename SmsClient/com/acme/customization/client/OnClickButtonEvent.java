@@ -36,15 +36,15 @@ public class OnClickButtonEvent {
 					if(possion>=messageTemplate.getText().length())
 					{
 						messageTemplate.setText(messageTemplate.getText() + " "
-								+ param.parameter);
+								+ param.paramName);
 					}
 					else{
-						messageTemplate.setText(messageTemplate.getText().substring(0,possion) + param.parameter + messageTemplate.getText().substring(possion));
+						messageTemplate.setText(messageTemplate.getText().substring(0,possion) +" "+ param.paramName+" "+ messageTemplate.getText().substring(possion));
 						
 					}
 				
 				} else{
-					messageTemplate.setText(param.parameter);
+					messageTemplate.setText(param.paramName+" ");
 				  }
 				
 				break;

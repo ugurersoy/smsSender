@@ -6,6 +6,7 @@ import com.acme.customization.client.DoubleClickOnGridEvent;
 import com.acme.customization.client.MessageSplitControl;
 import com.acme.customization.client.OnClickButtonEvent;
 import com.acme.customization.client.OnInitializeEvent;
+import com.acme.customization.client.ParameterName;
 import com.acme.customization.client.Parameters;
 import com.acme.customization.shared.ProjectUtil;
 import com.lbs.controls.JLbsEditorPane;
@@ -17,6 +18,7 @@ import com.lbs.xui.events.swing.JLbsCustomXUIEventListener;
 
 public class CXEMessageTemplate extends JLbsCustomXUIEventListener {
 	private Parameters parameter[] = Parameters.values();
+	private ParameterName parameterName[]=ParameterName.values();
 	private OnInitializeEvent  initialize;
 	public CXEMessageTemplate() {
 		// TODO Auto-generated constructor stub
@@ -24,7 +26,7 @@ public class CXEMessageTemplate extends JLbsCustomXUIEventListener {
 
 	public void onInitialize(JLbsXUIControlEvent event) {
 		initialize=new OnInitializeEvent();
-		initialize.getterParameter(parameter, event, 3000005);
+		initialize.getterParameter(parameter, event, 3000005,parameterName);
 	}
 
 	public void parameterOnClick(JLbsXUIControlEvent event) {

@@ -13,7 +13,6 @@ public class DoubleClickOnGridEvent {
 	
 	public void addDoubleClickOnText(JLbsXUIGridEvent event,int tagNumberMessage,int tagNumberGrid,Integer gridTag,Integer messageTag,CustomBusinessObject m_SMSAlert)
 	{
-		String addMessage="";
 		 JLbsXUIPane container = event.getContainer();
 			//	((JLbsEditorPane)((com.lbs.controls.JLbsScrollPane)container.getComponentByTag(3000007)).getInnerComponent()).getText();
 				JLbsEditorPane messageTemplate =((JLbsEditorPane)((JLbsScrollPane)container.getComponentByTag(tagNumberMessage)).getInnerComponent());
@@ -33,15 +32,15 @@ public class DoubleClickOnGridEvent {
 							if(possion>=messageTemplate.getText().length())
 							{
 								messageTemplate.setText(messageTemplate.getText() + " "
-										+ param.parameter);
+										+ param.paramName);
 							}
 							else{
-								messageTemplate.setText(messageTemplate.getText().substring(0,possion) + param.parameter + messageTemplate.getText().substring(possion));
+								messageTemplate.setText(messageTemplate.getText().substring(0,possion) +" "+param.paramName+" "+ messageTemplate.getText().substring(possion));
 								
 							}
 						
 						} else{
-							messageTemplate.setText(param.parameter);
+							messageTemplate.setText(param.paramName+" ");
 						  }
 						
 						break;
