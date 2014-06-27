@@ -130,6 +130,26 @@ public class MessageSplitControl {
 					.getRowObject(messageReveiverGrid.getSelectedRow());
 			
 			 m_Message=mainMessage.getText();
+			 
+		   if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+				else 
+					m_Message= m_Message.replace("P10","");
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
 
 			if(m_Message.contains("P1"))
 			{
@@ -206,31 +226,12 @@ public class MessageSplitControl {
 			{
 				if(ProjectUtil.getMemberValue(obj,
 						"PersonCode")!=null)
-				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+				m_Message=m_Message.replace("P9",((String) ProjectUtil.getMemberValue(obj,
 						"PersonCode")).toString());
 				else 
 					m_Message= m_Message.replace("P9","");
 			}
 			
-			if(m_Message.contains("P10"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonName")!=null)
-				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
-						"PersonName"));
-				else 
-					m_Message= m_Message.replace("P10","");
-			}
-			
-			if(m_Message.contains("P11"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonSurName")!=null)
-				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
-						"PersonSurName"));
-				else 
-					m_Message= m_Message.replace("P11","");
-			}
 		}
 		message.setText(m_Message);
 		ProjectUtil.setMemberValue((CustomBusinessObject)event.getData(), "Message", m_Message);
@@ -424,7 +425,27 @@ public class MessageSplitControl {
 					.getRowObject(messageReveiverGrid.getSelectedRow());
 			
 			 m_Message=mainMessage.getText();
-
+			 
+		   if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+				else 
+					m_Message= m_Message.replace("P10","");
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
+			
 			if(m_Message.contains("P1"))
 			{
 				if(ProjectUtil.getMemberValue(obj,
@@ -499,31 +520,12 @@ public class MessageSplitControl {
 			{
 				if(ProjectUtil.getMemberValue(obj,
 						"PersonCode")!=null)
-				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+				m_Message=m_Message.replace("P9",((String) ProjectUtil.getMemberValue(obj,
 						"PersonCode")).toString());
 				else 
 					m_Message= m_Message.replace("P9","");
 			}
 			
-			if(m_Message.contains("P10"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonName")!=null)
-				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
-						"PersonName"));
-				else 
-					m_Message= m_Message.replace("P10","");
-			}
-			
-			if(m_Message.contains("P11"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonSurName")!=null)
-				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
-						"PersonSurName"));
-				else 
-					m_Message= m_Message.replace("P11","");
-			}
 		}
 		message.setText(m_Message);
 		ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
@@ -547,6 +549,24 @@ public class MessageSplitControl {
 					.getRowObject(messageReveiverGrid.getSelectedRow());
 			
 			 m_Message=mainMessage.getText();
+			 
+			if(m_Message.contains("P10"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonName")!=null)
+				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+						"PersonName"));
+			}
+			
+			if(m_Message.contains("P11"))
+			{
+				if(ProjectUtil.getMemberValue(obj,
+						"PersonSurName")!=null)
+				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+						"PersonSurName"));
+				else 
+					m_Message= m_Message.replace("P11","");
+			}
 
 			if(m_Message.contains("P1"))
 			{
@@ -620,29 +640,12 @@ public class MessageSplitControl {
 			{
 				if(ProjectUtil.getMemberValue(obj,
 						"PersonCode")!=null)
-				m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+				m_Message=m_Message.replace("P9",((String) ProjectUtil.getMemberValue(obj,
 						"PersonCode")).toString());
 				else 
 					m_Message= m_Message.replace("P9","");
 			}
 			
-			if(m_Message.contains("P10"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonName")!=null)
-				m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
-						"PersonName"));
-			}
-			
-			if(m_Message.contains("P11"))
-			{
-				if(ProjectUtil.getMemberValue(obj,
-						"PersonSurName")!=null)
-				m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
-						"PersonSurName"));
-				else 
-					m_Message= m_Message.replace("P11","");
-			}
 		}
 		message.setText(m_Message);
 		ProjectUtil.setMemberValue((CustomBusinessObject) container.getData(), "Message", message.getText());

@@ -363,7 +363,26 @@ public class CXESMSAlert implements KeyListener{
 						.length() == 0)
 					continue;
 				  m_Message=messageMain;
-				
+				  
+				  if(m_Message.contains("P10"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"PersonName")!=null)
+						m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+								"PersonName"));
+						else 
+							m_Message= m_Message.replace("P10","");
+					}
+					
+					if(m_Message.contains("P11"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"PersonSurName")!=null)
+						m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+								"PersonSurName"));
+						else 
+							m_Message= m_Message.replace("P11","");
+					}
 				
 				 if(m_Message.contains("P1"))
 					{
@@ -439,33 +458,12 @@ public class CXESMSAlert implements KeyListener{
 					{
 						if(ProjectUtil.getMemberValue(obj,
 								"PersonCode")!=null)
-						m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+						m_Message=m_Message.replace("P9",((String) ProjectUtil.getMemberValue(obj,
 								"PersonCode")).toString());
 						else 
 							m_Message= m_Message.replace("P9","");
 					}
 					
-					if(m_Message.contains("P10"))
-					{
-						if(ProjectUtil.getMemberValue(obj,
-								"PersonName")!=null)
-						m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
-								"PersonName"));
-						else 
-							m_Message= m_Message.replace("P10","");
-					}
-					
-					if(m_Message.contains("P11"))
-					{
-						if(ProjectUtil.getMemberValue(obj,
-								"PersonSurName")!=null)
-						m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
-								"PersonSurName"));
-						else 
-							m_Message= m_Message.replace("P11","");
-					}
-					
-				     
 					ProjectUtil.setMemberValueUn(obj, "Message", m_Message);
 					smsObjectList.add(obj);
 		     	}
