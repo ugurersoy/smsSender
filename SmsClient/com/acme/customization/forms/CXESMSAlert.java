@@ -1,6 +1,5 @@
 package com.acme.customization.forms;
 
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
@@ -10,11 +9,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-
-import com.acme.customization.cbo.CEOAlertInfo;
 import com.acme.customization.client.DoubleClickOnGridEvent;
 import com.acme.customization.client.MessageSizeCalculater;
 import com.acme.customization.client.MessageSplitControl;
@@ -27,11 +22,9 @@ import com.acme.customization.client.Parameters;
 import com.acme.customization.shared.ProjectGlobals;
 import com.acme.customization.shared.ProjectUtil;
 import com.acme.customization.ws.maradit.Response;
-import com.lbs.batch.ClientBatchService;
 import com.lbs.controls.JLbsCheckBox;
 import com.lbs.controls.JLbsComboBox;
 import com.lbs.controls.JLbsEditorPane;
-import com.lbs.controls.JLbsScrollPane;
 import com.lbs.controls.datedit.JLbsDateEditWithCalendar;
 import com.lbs.controls.datedit.JLbsTimeEdit;
 import com.lbs.controls.numericedit.JLbsNumericEdit;
@@ -39,31 +32,23 @@ import com.lbs.data.grids.MultiSelectionList;
 import com.lbs.data.objects.CustomBusinessObject;
 import com.lbs.data.objects.CustomBusinessObjects;
 import com.lbs.data.objects.IBusinessObjectStates;
-import com.lbs.data.objects.ObjectValueManager;
 import com.lbs.data.query.IQueryFactory;
 import com.lbs.data.query.QueryBusinessObject;
 import com.lbs.data.query.QueryBusinessObjects;
 import com.lbs.data.query.QueryObjectIdentifier;
 import com.lbs.data.query.QueryParams;
 import com.lbs.grids.JLbsObjectListGrid;
-import com.lbs.hr.em.EMConstants;
 import com.lbs.remoteclient.IClientContext;
 import com.lbs.unity.UnityBatchHelper;
-import com.lbs.unity.UnityConstants;
 import com.lbs.unity.dialogs.IUODMessageConstants;
-import com.lbs.unity.pj.PJHelper;
 import com.lbs.util.JLbsStringListEx;
-import com.lbs.util.ObjectUtil;
 import com.lbs.util.QueryUtil;
-import com.lbs.util.StringUtil;
 import com.lbs.xui.ILbsXUIPane;
 import com.lbs.xui.JLbsXUILookupInfo;
 import com.lbs.xui.JLbsXUIPane;
 import com.lbs.xui.JLbsXUITypes;
 import com.lbs.xui.customization.JLbsXUIControlEvent;
 import com.lbs.xui.customization.JLbsXUIGridEvent;
-
-import java.awt.event.KeyListener;
 
 public class CXESMSAlert implements KeyListener{
 
@@ -352,8 +337,8 @@ public class CXESMSAlert implements KeyListener{
 			String number = ProjectUtil.getBOStringFieldValue(user, "Phonenumber");
 			if (number != null && number.compareTo(phoneNumber) == 0)
 			{
-				String warningMsg = "\""+phoneNumber +"\""+ " numaralý telefon " +"\""+ name+"\""+ " alýcý ünvanýyla eklenmiþ.";
-				JOptionPane.showMessageDialog(null, warningMsg);
+				String warningMsg = "\""+phoneNumber +"\""+ " "+m_Container.getMessage(500052,0)+" " +"\""+ name+"\""+ " "+m_Container.getMessage(500052,1)+".";
+				m_Context.showMessage(null,warningMsg);
 				return true;
 			}
 		}
@@ -368,116 +353,133 @@ public class CXESMSAlert implements KeyListener{
 		ArrayList smsObjectList = new ArrayList();
 		JLbsObjectListGrid messageReveiverGrid = (JLbsObjectListGrid) container
 				.getComponentByTag(100);
-
+		String m_Message=null;
 		if (!messageMain.isEmpty()) {
-			MessageSplitControl control = new MessageSplitControl();
-			String strlist[] = control.splitControl(messageMain);
-			String strlistMessage[]=null;
+			
+			if(messageReveiverGrid.getObjects().size()>0){
 			for (int j = 0; j < messageReveiverGrid.getObjects().size(); j++) {
 				CustomBusinessObject obj = (CustomBusinessObject) messageReveiverGrid.getObjects().get(j);
 				if (ProjectUtil.getBOStringFieldValue(obj, "Phonenumber")
 						.length() == 0)
 					continue;
-				if (control.controlParams(strlist)) {
+				  m_Message=messageMain;
 				
-					strlistMessage=control.splitControl(messageMain);
-					for (int i = 0; i < strlistMessage.length; i++) {
-					
-						if (control.controlParamsText(strlistMessage[i])) {
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Abone Adý.")) {
-							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Name");
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Abone Soyadý.")) {
-
-							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
-									obj, "SurName");
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Abone Telefonu.")) {
-
-							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Phonenumber");
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Tarih.")) {
-							if(strlistMessage[i]!=null)
-						    message +=MessageSplitControl.returnDate(); 
-							continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Saat.")) {
-							if(strlistMessage[i]!=null)
-							    message +=MessageSplitControl.returnTime(); 
-								continue;
-						}
-						if (StringUtil.equals(strlistMessage[i], ".Cari Hesap Kodu.")) {
-							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Name");
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil
-								.equals(strlistMessage[i], ".Cari Hesap Ünvaný.")) {
-							strlistMessage[i] = (String) ProjectUtil.getMemberValue(
-									obj, "Title");
-							if(strlistMessage[i]!=null)
-							message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Cari Hesap Bakiyesi.")) {
-							strlist[i] = ((BigDecimal) ProjectUtil.getMemberValue(obj,
-									"ArpBalance")).toString();
-							if(strlistMessage[i]!=null)
-								message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Personel Sicil No.")) {
-							strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-									"PersonCode");
-							if(strlistMessage[i]!=null)
-								message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Personel Adý.")) {
-							strlist[i] = (String) ProjectUtil.getMemberValue(obj,
-									"PersonName");
-							if(strlistMessage[i]!=null)
-								message += strlistMessage[i];
-							continue;
-						}
-						if (StringUtil.equals(strlist[i], ".Personel Soyadý.")) {
-							strlist[i] = ((String) ProjectUtil.getMemberValue(obj,
-									"PersonSurName")).toString();
-							if(strlistMessage[i]!=null)
-								message += strlistMessage[i];
-							continue;
-						}
-
+				
+				 if(m_Message.contains("P1"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"Name")!=null)
+		              m_Message= m_Message.replace("P1",(String) ProjectUtil.getMemberValue(obj,
+									"Name"));	
+						else 
+							m_Message= m_Message.replace("P1","");
 					}
-				}
-				else 
-					message = messageMain;
-				
-					ProjectUtil.setMemberValueUn(obj, "Message", message);
+					
+					if(m_Message.contains("P2"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"SurName")!=null)
+						m_Message=m_Message.replace("P2",(String) ProjectUtil.getMemberValue(obj,
+									"SurName"));
+						else 
+							m_Message= m_Message.replace("P2","");
+					}
+					
+					if(m_Message.contains("P3"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"Phonenumber")!=null)
+						m_Message=m_Message.replace("P3",(String) ProjectUtil.getMemberValue(obj,
+									"Phonenumber"));
+						else 
+							m_Message= m_Message.replace("P3","");
+					}
+					
+					if(m_Message.contains("P4"))
+					{
+						m_Message=m_Message.replace("P4",MessageSplitControl.returnDate());
+					}
+					
+					if(m_Message.contains("P5"))
+					{
+						m_Message=m_Message.replace("P5",MessageSplitControl.returnTime());
+					}
+					
+					if(m_Message.contains("P6"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"ArpCode")!=null)
+						m_Message=m_Message.replace("P6",(String) ProjectUtil.getMemberValue(obj,
+								"ArpCode"));
+						else 
+							m_Message= m_Message.replace("P6","");
+					}
+					
+					if(m_Message.contains("P7"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"ArpTitle")!=null)
+						m_Message=m_Message.replace("P7",(String) ProjectUtil.getMemberValue(obj,
+								"ArpTitle"));
+						else 
+							m_Message= m_Message.replace("P7","");
+					}
+			
+					if(m_Message.contains("P8"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"ArpBalance")!=null)
+						m_Message=m_Message.replace("P8",((BigDecimal) ProjectUtil.getMemberValue(obj,
+								"ArpBalance")).toString());
+						else 
+							m_Message= m_Message.replace("P8","");
+					}
+					
+					if(m_Message.contains("P9"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"PersonCode")!=null)
+						m_Message=m_Message.replace("P9",((BigDecimal) ProjectUtil.getMemberValue(obj,
+								"PersonCode")).toString());
+						else 
+							m_Message= m_Message.replace("P9","");
+					}
+					
+					if(m_Message.contains("P10"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"PersonName")!=null)
+						m_Message=m_Message.replace("P10",(String) ProjectUtil.getMemberValue(obj,
+								"PersonName"));
+						else 
+							m_Message= m_Message.replace("P10","");
+					}
+					
+					if(m_Message.contains("P11"))
+					{
+						if(ProjectUtil.getMemberValue(obj,
+								"PersonSurName")!=null)
+						m_Message=m_Message.replace("P11",(String) ProjectUtil.getMemberValue(obj,
+								"PersonSurName"));
+						else 
+							m_Message= m_Message.replace("P11","");
+					}
+					
+				     
+					ProjectUtil.setMemberValueUn(obj, "Message", m_Message);
 					smsObjectList.add(obj);
-				}
-				message = "";
+		     	}
+			
+				}else 
+		     	 {
+					m_Context.showMessage(null,m_Container.getMessage(500052,2));
+			     	 }
+				
 
 			}
-			 else {
-						// TO DO UYAR MESAJI EKLENECEK
+			 else  {
+				     m_Context.showMessage(null,m_Container.getMessage(500052,3));
+				    return null;
 					}
 		return smsObjectList;
 	}
@@ -493,7 +495,7 @@ public class CXESMSAlert implements KeyListener{
 		}
 		if(users.size() == 0)
 		{
-			JOptionPane.showMessageDialog(null, "Alýcý bilgisi girilmelidir!");
+			m_Context.showMessage(null,m_Container.getMessage(500052,4));
 			event.setReturnObject(false);
 			return;
 		}
@@ -751,7 +753,7 @@ public class CXESMSAlert implements KeyListener{
 		{
 			if(ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1)
 			{
-				JOptionPane.showMessageDialog(null, "Period seçimi kaldýrýlmalýdýr!");
+				m_Context.showMessage(null, m_Container.getMessage(500052,5));
 				checkbox.setSelected(true);
 			}
 			else
@@ -821,14 +823,14 @@ public class CXESMSAlert implements KeyListener{
 		{
 			if(users.size() == 0 )
 			{
-				JOptionPane.showMessageDialog(null, "Alýcý bilgisi girilmelidir!");
+				m_Context.showMessage(null,m_Container.getMessage(500052,4));
 				event.setReturnObject(false);
 				return;
 			}
 			
 			if(ProjectUtil.getBOStringFieldValue(m_SMSAlert, "MainMessage").length() == 0)
 			{
-				JOptionPane.showMessageDialog(null, "Mesaj alaný boþ býralýlamaz!");
+				m_Context.showMessage(null, m_Container.getMessage(500052,6));
 				event.setReturnObject(false);
 				return;
 			}
@@ -836,7 +838,7 @@ public class CXESMSAlert implements KeyListener{
 		
 		if(ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1 && ProjectUtil.getBOIntFieldValue(m_SMSAlert, "Period") == 0)
 		{
-			JOptionPane.showMessageDialog(null, "Period seçilmelidir!");
+			m_Context.showMessage(null, m_Container.getMessage(500052,7));
 			event.setReturnObject(false);
 			return;
 		}
@@ -858,7 +860,7 @@ public class CXESMSAlert implements KeyListener{
 		boolean isPeriodic =  ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1;
 		if (isPeriodic && batchEndDate.compareTo(batchBeginDate) < 0)
 		{
-			JOptionPane.showMessageDialog(null, "Bitiþ tarihi baþlangýç tarihinden önce olamaz!");
+			m_Context.showMessage(null, m_Container.getMessage(500052,7));
 			m_Event.setReturnObject(false);
 			return;
 		}

@@ -119,4 +119,16 @@
 		<ListItem Tag="9" Item="Personel Adı" Order="9" />
 		<ListItem Tag="10" Item="Personel Soyadı" Order="10" />
 	</TaggedList>
+	<TaggedList LI="113" ResourceGroup="UN" ResourceType="Localizable" ListID="500052" ListName="Uyarı Mesajları">
+	  <ListItem Tag="0" Item="numaralı telefon" Order="0" />
+	  <ListItem Tag="1" Item="alıcı ünvanıyla eklenmiş" Order="1" />
+	  <ListItem Tag="2" Item="Mesaj Gönderilecek Kişi bulunamadı Lütfen Mesaj gönderilecek kişi belirtiniz" Order="2" />
+	  <ListItem Tag="3" Item="Gönderilecek mesaj Girilmelidir." Order="3" />
+	  <ListItem Tag="4" Item="Alıcı bilgisi girilmelidir!" Order="4" />
+	  <ListItem Tag="5" Item="Period seçimi kaldırılmalıdır!" Order="5" />
+	  <ListItem Tag="6" Item="Mesaj alanı boş bıralılamaz!" Order="6" />
+	  <ListItem Tag="7" Item="Period seçilmelidir!" Order="7" />
+	  <ListItem Tag="8" Item="Bitiş tarihi başlangıç tarihinden önce olamaz!" Order="8" />
+	</TaggedList>
+	
 </TaggedLists>
