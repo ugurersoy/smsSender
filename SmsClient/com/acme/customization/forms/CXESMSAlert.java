@@ -361,18 +361,20 @@ public class CXESMSAlert implements KeyListener{
 			CustomBusinessObject mblInfoUserLink = (CustomBusinessObject) ProjectUtil
 					.getMemberValue(groupLine, "MblInfoUserLink");
 
-			String name = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Name");
-			String surName = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "SurName");
-			String phoneNumber = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Phonenumber");
-			String title = ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Title");
-			ProjectUtil.setMemberValueUn(user, "Name", name);
-			ProjectUtil.setMemberValueUn(user, "SurName", surName);
-			ProjectUtil.setMemberValueUn(user, "Phonenumber", phoneNumber);
-			ProjectUtil.setMemberValueUn(user, "Tckno", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Tckno"));
-			ProjectUtil.setMemberValueUn(user, "Title", title);
-
-			if (!isPhoneNumberInList(phoneNumber, title)) {
-				usersGrid.getObjects().set(usersGrid.getObjects().size() - 1, user);
+			ProjectUtil.setMemberValue(user, "Name", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Name"));
+			ProjectUtil.setMemberValue(user, "SurName", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "SurName"));
+			ProjectUtil.setMemberValue(user, "Title", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Title"));
+			ProjectUtil.setMemberValue(user, "Phonenumber", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Phonenumber"));
+			ProjectUtil.setMemberValue(user, "Tckno", ProjectUtil.getBOStringFieldValue(mblInfoUserLink, "Tckno"));
+			ProjectUtil.setMemberValue(user, "CardReference", ProjectUtil.getBOIntFieldValue(mblInfoUserLink, "CardReference"));
+			ProjectUtil.setMemberValue(user, "UserType", ProjectUtil.getBOIntFieldValue(mblInfoUserLink, "UserType"));
+			setUserInfo(user);
+			
+			if (!isPhoneNumberInList(
+					ProjectUtil.getBOStringFieldValue(user, "Phonenumber"),
+					ProjectUtil.getBOStringFieldValue(user, "Title"))) {
+				usersGrid.getObjects().set(usersGrid.getObjects().size() - 1,
+						user);
 				addNewUserLine();
 			}
 		}
@@ -394,16 +396,19 @@ public class CXESMSAlert implements KeyListener{
 			QueryBusinessObject qbo = (QueryBusinessObject) qId
 					.getAssociatedData();
 			CustomBusinessObject user = ProjectUtil.createNewCBO("CBOMaster");
-			String name = QueryUtil.getStringProp(qbo, "MBLINFUSER_NAME");
-			String surName = QueryUtil.getStringProp(qbo, "MBLINFUSER_SURNAME");
-			String phoneNumber = QueryUtil.getStringProp(qbo,"MBLINFUSER_PHONENUMBER");
-			String title = QueryUtil.getStringProp(qbo,"MBLINFUSER_TITLE");
-			String tckNo = QueryUtil.getStringProp(qbo, "MBLINFUSER_TCKNO");
-			ProjectUtil.setMemberValueUn(user, "Name", name + ' ' + surName);
-			ProjectUtil.setMemberValueUn(user, "Phonenumber", phoneNumber);
-			ProjectUtil.setMemberValueUn(user, "Tckno", tckNo);
-			ProjectUtil.setMemberValueUn(user, "Title", title);
-			if (!isPhoneNumberInList(phoneNumber, name + ' ' + surName)) {
+			ProjectUtil.setMemberValueUn(user, "Name", QueryUtil.getStringProp(qbo, "MBLINFUSER_NAME"));
+			ProjectUtil.setMemberValueUn(user, "SurName", QueryUtil.getStringProp(qbo, "MBLINFUSER_SURNAME"));
+			ProjectUtil.setMemberValueUn(user, "Title", QueryUtil.getStringProp(qbo, "MBLINFUSER_TITLE"));
+			ProjectUtil.setMemberValueUn(user, "Tckno",  QueryUtil.getStringProp(qbo, "MBLINFUSER_TCKNO"));
+			ProjectUtil.setMemberValueUn(user, "Phonenumber", QueryUtil.getStringProp(qbo, "MBLINFUSER_PHONENUMBER"));
+			ProjectUtil.setMemberValueUn(user, "CardReference", QueryUtil.getIntProp(qbo, "MBLINFUSER_CARDREF"));
+			ProjectUtil.setMemberValueUn(user, "LogicalReference", QueryUtil.getIntProp(qbo, "MBLINFUSER_REF"));
+			ProjectUtil.setMemberValueUn(user, "UserType", QueryUtil.getIntProp(qbo, "MBLINFUSER_USERTYPE"));
+			
+			setUserInfo(user);
+			if (!isPhoneNumberInList(
+					ProjectUtil.getBOStringFieldValue(user, "Phonenumber"),
+					ProjectUtil.getBOStringFieldValue(user, "Title"))) {
 				usersGrid.getObjects().set(usersGrid.getObjects().size() - 1,
 						user);
 				addNewUserLine();
