@@ -529,6 +529,9 @@ public class MessageSplitControl {
 		}
 		message.setText(m_Message);
 		ProjectUtil.setMemberValue(m_SMSAlert, "Message", message.getText());
+		ProjectUtil.setMemberValue(m_SMSAlert, "MainMessage", mainMessage.getText());
+		container.resetValueByTag(3001);
+		container.resetValueByTag(4001);
 	}
 	
 	public static void messageCalculaterLookUp(ILbsXUIPane container, CustomBusinessObject smsAlert,
@@ -649,7 +652,8 @@ public class MessageSplitControl {
 		}
 		message.setText(m_Message);
 		ProjectUtil.setMemberValue((CustomBusinessObject) container.getData(), "Message", message.getText());
-		
+		ProjectUtil.setMemberValue((CustomBusinessObject) container.getData(), "MainMessage", mainMessage.getText());
+		container.resetValueByTag(3001);
 		container.resetValueByTag(4001);
 	}
 	
