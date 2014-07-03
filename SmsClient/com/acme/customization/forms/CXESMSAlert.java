@@ -85,6 +85,8 @@ public class CXESMSAlert implements KeyListener{
 	
 	private int selectedRow = -1;
 	
+	private boolean m_Alert = false;
+	
 	public void onInitialize(JLbsXUIControlEvent event) {
 		
 		m_Event = event;
@@ -210,6 +212,7 @@ public class CXESMSAlert implements KeyListener{
 				m_Container.setPermanentStateByTag(10000065, JLbsXUITypes.XUISTATE_ACTIVE); //end time
 				m_Container.setPermanentStateByTag(10000058, JLbsXUITypes.XUISTATE_ACTIVE); //period
 			}
+			m_Alert = true;
 			m_Context.setVariable("ALERT", null);
 		}
 		else
@@ -727,12 +730,23 @@ public class CXESMSAlert implements KeyListener{
 
 	public void onPageChange(JLbsXUIControlEvent event) {
 		JTabbedPane tabbedPane = (JTabbedPane) event.getComponent();
-		if (tabbedPane.getSelectedIndex() == 0 && senderInfoGrid != null) {
-			fillSenderShortDefinition(senderInfoList);
-			checkSelectedSenderInfo();
+		if (tabbedPane.getSelectedIndex() == 0)
+		 {
+			if (senderInfoGrid != null) {
+
+				fillSenderShortDefinition(senderInfoList);
+				checkSelectedSenderInfo();
+			}
+			m_Container.setPermanentStateByTag(m_Alert ? 10000033 : 10000030, JLbsXUITypes.XUISTATE_ACTIVE); //save alert or send sms button 
+			m_Container.setPermanentStateByTag(10000051, JLbsXUITypes.XUISTATE_EXCLUDED); // save sender info button
+		 }
+		else if (tabbedPane.getSelectedIndex() == 1)
+		{
+			m_Container.setPermanentStateByTag(m_Alert ? 10000033 : 10000030, JLbsXUITypes.XUISTATE_EXCLUDED); //save alert or send sms button 
+			m_Container.setPermanentStateByTag(10000051, JLbsXUITypes.XUISTATE_ACTIVE); // save sender info button
 		}
 	}
-	
+	 
 	private void updateSenderInfoGrid(JLbsXUIControlEvent event)
 	{
 		senderInfoList.clear();
@@ -932,7 +946,7 @@ public class CXESMSAlert implements KeyListener{
 		Calendar batchBeginDate = null;
 		Calendar batchEndDate = null;
 		boolean isPeriodic =  ProjectUtil.getIntValueOfCheckBox(m_SMSAlert, "Periodic") == 1;
-		if(m_Context.getVariable("ALERT") != null && m_Context.getVariable("ALERT") instanceof Integer)
+		if(m_Alert)
 		{
 			batchBeginDate = ProjectUtil.concatDates(
 					ProjectUtil.getBOCalendarFieldValue(m_SMSAlert, "StartDate"),
