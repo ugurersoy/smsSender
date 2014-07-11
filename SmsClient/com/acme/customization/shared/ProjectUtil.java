@@ -64,9 +64,28 @@ import com.lbs.unity.UnityConstants;
 import com.lbs.unity.UnityHelper;
 import com.lbs.unity.bo.UNEORecInfo;
 import com.lbs.data.grids.JLbsQuerySelectionGrid;
+import com.lbs.dialog.JLbsMessageDialog;
+import com.lbs.dialog.JLbsMessageDialogResult;
 
 public class ProjectUtil
 {
+	
+	public static boolean confirmed(JLbsXUIPane container, int listNr, int msgNr, int defButton)
+	{
+		JLbsStringList msgList = container.getTaggedList(listNr);
+		if (msgList == null)
+			return false;
+		String msg = msgList.getValueAtTag(msgNr);
+		if (msg != null)
+		{
+			JLbsMessageDialogResult result = JLbsMessageDialog.showLbsMessageDialog(msg, null, container.getTitle(),
+					JLbsMessageDialog.BUT_OK + JLbsMessageDialog.BUT_CANCEL, container.getCulture(), JLbsMessageDialog.BUT_CANCEL);
+
+			return (result.button == JLbsMessageDialog.BUT_OK);
+		}
+		return false;
+	}
+
 	
 	public static CustomBusinessObjects getUserListWithPersonInfo(IClientContext context,  ArrayList personRefList) 
 	{

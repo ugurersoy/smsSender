@@ -97,7 +97,7 @@ public class CXEMobileSubscriber{
 		JLbsComboBox cbxUserList = (JLbsComboBox) event.getContainer()
 				.getComponentByTag(16);
 		JLbsStringListEx list = new JLbsStringListEx();
-		list.add("(Belirtilmemiþ)", -1);
+		list.add(event.getContainer().getMessage(500005, 9), -1);
 		if (userType == ProjectGlobals.USER_TYPE_USER) {
 			try {
 				QueryBusinessObjects results = ProjectUtil.runQuery(event, "CQOGetUserInfo", new String[0] , new Object[0]);

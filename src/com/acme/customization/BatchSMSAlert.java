@@ -86,7 +86,7 @@ public class BatchSMSAlert extends BatchOperationBase implements IBatchTerminata
 	{
 			Maradit maradit = new Maradit(m_AlertInfo.getUserName(), m_AlertInfo.getPassword());
         	maradit.validityPeriod = 120;
-        	maradit.from =  ProjectUtil.getCompanyName(m_ServerContext);
+        	//maradit.from =  ProjectUtil.getCompanyName(m_ServerContext);
 			for (int i = recStartCount; i < m_SMSObjectList.size(); i++)
 			{
 				totalCount++;
