@@ -235,8 +235,8 @@ public class CXEMobileSubscriber{
 	{
 		CustomBusinessObject cBO = (CustomBusinessObject) data; 
 		String [] strArr = StringUtil.split(ProjectUtil.getBOStringFieldValue(data, "Name"), ' ');
-		ProjectUtil.setMemberValueUn(cBO, "Name", strArr != null ? strArr[0] :" ");
-		ProjectUtil.setMemberValueUn(cBO, "SurName", strArr != null ? strArr[1] :" ");
+		ProjectUtil.setMemberValueUn(cBO, "Name", strArr.length > 0 ? strArr[0] :" ");
+		ProjectUtil.setMemberValueUn(cBO, "SurName", strArr.length > 1  ? strArr[1] :" ");
 		resetValues(container, null);
 		return true;
 	}

@@ -431,7 +431,7 @@ public class CXESMSAlert implements KeyListener{
 			String number = ProjectUtil.getBOStringFieldValue(user, "Phonenumber");
 			if (number != null && number.compareTo(phoneNumber) == 0)
 			{
-				String warningMsg = "\""+phoneNumber +"\""+ " "+m_Container.getMessage(500052,0)+" " +"\""+ name+"\""+ " "+m_Container.getMessage(500052,1)+".";
+				String warningMsg = "\""+phoneNumber +"\""+ " "+m_Container.getMessage(500052,0)+" "+m_Container.getMessage(500052,1)+" " +"\""+ name+"\""+ ".";
 				m_Context.showMessage(null,warningMsg);
 				return true;
 			}
@@ -598,21 +598,24 @@ public class CXESMSAlert implements KeyListener{
 				}
 			}
 		}
-		ArrayList smsObjectList = prepareSMSObjList(event);
-		if (smsObjectList.size() > 0)
+		if(users.size()> 0)
 		{
-			setAlertInfoPropertiesToCBO();
-			if (m_Context != null)
-				try
-				{
-					m_Context.requestBatchOperation("BatchSMSAlert", new Object[] { m_SMSAlert });
-					m_Container.showMessage(IUODMessageConstants.TRANSACTION_STARTED, "", null);
-				}
-				catch (Exception e)
-				{
-					m_Context.getLogger().error("BatchSMSAlert operation batch exception :", e);
-				}
-			m_Container.saveDataAndClose();
+			ArrayList smsObjectList = prepareSMSObjList(event);
+			if (smsObjectList.size() > 0)
+			{
+				setAlertInfoPropertiesToCBO();
+				if (m_Context != null)
+					try
+					{
+						m_Context.requestBatchOperation("BatchSMSAlert", new Object[] { m_SMSAlert });
+						m_Container.showMessage(IUODMessageConstants.TRANSACTION_STARTED, "", null);
+					}
+					catch (Exception e)
+					{
+						m_Context.getLogger().error("BatchSMSAlert operation batch exception :", e);
+					}
+				m_Container.saveDataAndClose();
+			}
 		}
 		
 	}
